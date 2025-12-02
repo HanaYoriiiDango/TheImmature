@@ -8,6 +8,9 @@
 
 using namespace std;
 
+enum Emotion_ { JOY, SADNESS, POWER, FEAR, CALM, ANGER, COUNT_Emotions };
+
+
 struct {
 	int width, height;
     HWND hwnd;
@@ -16,6 +19,12 @@ struct {
 
 
 }window;
+
+struct Player {
+    int current_loc = SADNESS;
+    int emotions[COUNT_Emotions] = { 50, 50, 50, 50, 50, 50 };
+    bool life = true;
+};
 
 void InitWindow() {
 
@@ -50,6 +59,15 @@ HBITMAP LoadBMP(const wchar_t* name) {
 
 }
 
+void ShowText(const wchar_t* text, int size, int x, int y) {
+
+    // Настройки текста: 
+    SetTextColor(window.mem_dc, RGB(0, 0, 0)); // черный
+    SetBkMode(window.mem_dc, TRANSPARENT);            // Прозрачный фон
+    TextOutW(window.mem_dc, x, y, text, size); // положение, какой текст вывести и размер
+
+}
+
 void InitGame() {
 
     window.hBack = LoadBMP(L"WhileBack.bmp");
@@ -79,6 +97,13 @@ void ShowSprite(int x, int y, int w, int h, HBITMAP hBitmap, bool transparent) {
 
 void ShowObject() {
 
+    //// Вместо сложной отрисовки - просто закрашиваем фон
+    //HBRUSH hBrush = CreateSolidBrush(RGB(100, 100, 100));
+    //RECT rc = { 0, 0, window.width, window.height };
+    //FillRect(window.mem_dc, &rc, hBrush);
+    //DeleteObject(hBrush);  // ← Важно!
+
+
     ShowSprite(0, 0, window.width, window.height, window.hBack, false);
 
 }
@@ -89,11 +114,12 @@ void ShowGame() {
     HBITMAP hOldBmp = (HBITMAP)SelectObject(window.mem_dc, hMemBmp);
 
     ShowObject();
+    ShowText(L"GFGFGFGF", 8, 100, 100);
 
     BitBlt(window.hdc, 0, 0, window.width, window.height, window.mem_dc, 0, 0, SRCCOPY);
 
-    SelectObject(window.mem_dc, hOldBmp);
-    DeleteObject(hOldBmp);
+    SelectObject(window.mem_dc, hMemBmp);
+    DeleteObject(hMemBmp);
     DeleteDC(window.mem_dc);
 }
 
