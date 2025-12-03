@@ -21,6 +21,11 @@ struct {
     HWND hwnd;
 	HBITMAP hBack;
     HDC hdc, mem_dc;
+    HBITMAP BackScales;
+    HBITMAP BackReplace;
+    HBITMAP BackHero;
+    HBITMAP BackCharacter;
+    HBITMAP BackMainText;
 
 
 }window;
@@ -87,12 +92,16 @@ void ShowText(const std::wstring& text, int x, int y) {
 
 void InitGame() {
 
-    window.hBack = LoadBMP(L"WhileBack.bmp");
-
+    window.hBack = LoadBMP(L"SadBack.bmp");
+    window.BackScales = LoadBMP(L"WhileBack.bmp");
+    window.BackReplace = LoadBMP(L"WhileBack.bmp");
+    window.BackMainText = LoadBMP(L"WhileBack.bmp");
+    window.BackCharacter = LoadBMP(L"WhileBack.bmp");
+    window.BackHero = LoadBMP(L"WhileBack.bmp");
 
 }
 
-void ShowSprite(int x, int y, int w, int h, HBITMAP hBitmap, bool transparent) {
+void ShowBMP(int x, int y, int w, int h, HBITMAP hBitmap, bool transparent) {
 
     BITMAP bm;
     HDC memDC = CreateCompatibleDC(window.mem_dc);
@@ -115,11 +124,11 @@ void ShowSprite(int x, int y, int w, int h, HBITMAP hBitmap, bool transparent) {
 void ShowObject() {
 
     // Рисуем спрайты
-    ShowSprite(0, 0, window.width, window.height, window.hBack, false);
+    ShowBMP(0, 0, window.width, window.height, window.hBack, false);
+    ShowBMP(GetPercentX(0.001f), GetPercentY(0.7f), 300, 300, window.BackScales, true);
 
     // Рисуем тексты 
-
-    for (int i = 0; i < COUNT_Emotions; i++) {
+    for (int i = 0; i < COUNT_Emotions; i++) { 
         
         wstring text = Emotion_Names[i];
         wstring value_text = to_wstring(Hero.emotions[i]);
