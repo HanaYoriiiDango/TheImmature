@@ -4,11 +4,16 @@
 //linker::input::additional dependensies Msimg32.lib; Winmm.lib
 
 #include <windows.h>
+#include <string>
+#include <vector>
 #include <iostream>
 
 using namespace std;
 
 enum Emotion_ { JOY, SADNESS, POWER, FEAR, CALM, ANGER, COUNT_Emotions };
+vector<Emotion_> Emotion{ JOY, SADNESS, POWER, FEAR, CALM, ANGER };
+
+wstring Emotion_Names[COUNT_Emotions] = { L"Радость", L"Грусть", L"Сила", L"Страх", L"Спокойствие", L"Гнев" };
 
 
 struct {
@@ -25,6 +30,21 @@ struct Player {
     int emotions[COUNT_Emotions] = { 50, 50, 50, 50, 50, 50 };
     bool life = true;
 };
+
+Player Hero;
+
+int GetPercentX(float percent) {
+    return (int)(window.width * percent);
+}
+
+int GetPercentY(float percent) {
+    return (int)(window.height * percent);
+}
+
+// Функция для конвертации числа в wstring
+std::wstring IntToWString(int value) {
+    return to_wstring(value);
+}
 
 void InitWindow() {
 
@@ -59,13 +79,10 @@ HBITMAP LoadBMP(const wchar_t* name) {
 
 }
 
-void ShowText(const wchar_t* text, int size, int x, int y) {
-
-    // Настройки текста: 
-    SetTextColor(window.mem_dc, RGB(0, 0, 0)); // черный
-    SetBkMode(window.mem_dc, TRANSPARENT);            // Прозрачный фон
-    TextOutW(window.mem_dc, x, y, text, size); // положение, какой текст вывести и размер
-
+void ShowText(const std::wstring& text, int x, int y) {
+    SetTextColor(window.mem_dc, RGB(0, 0, 0));
+    SetBkMode(window.mem_dc, TRANSPARENT);
+    TextOutW(window.mem_dc, x, y, text.c_str(), text.length());
 }
 
 void InitGame() {
@@ -97,16 +114,21 @@ void ShowSprite(int x, int y, int w, int h, HBITMAP hBitmap, bool transparent) {
 
 void ShowObject() {
 
-    //// Вместо сложной отрисовки - просто закрашиваем фон
-    //HBRUSH hBrush = CreateSolidBrush(RGB(100, 100, 100));
-    //RECT rc = { 0, 0, window.width, window.height };
-    //FillRect(window.mem_dc, &rc, hBrush);
-    //DeleteObject(hBrush);  // ← Важно!
-
-
+    // Рисуем спрайты
     ShowSprite(0, 0, window.width, window.height, window.hBack, false);
 
+    // Рисуем тексты 
+
+    for (int i = 0; i < COUNT_Emotions; i++) {
+        
+        wstring text = Emotion_Names[i];
+        wstring value_text = to_wstring(Hero.emotions[i]);
+
+        ShowText(text, GetPercentX(0.001f), GetPercentY(0.8f) + (i * 30));
+        ShowText(value_text, GetPercentX(0.1f), GetPercentY(0.8f) + (i * 30));
+    }
 }
+
 void ShowGame() {
 
     window.mem_dc = CreateCompatibleDC(window.hdc);
@@ -114,7 +136,6 @@ void ShowGame() {
     HBITMAP hOldBmp = (HBITMAP)SelectObject(window.mem_dc, hMemBmp);
 
     ShowObject();
-    ShowText(L"GFGFGFGF", 8, 100, 100);
 
     BitBlt(window.hdc, 0, 0, window.width, window.height, window.mem_dc, 0, 0, SRCCOPY);
 
@@ -180,6 +201,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     {
         PAINTSTRUCT ps;
         window.hdc = BeginPaint(hwnd, &ps);
+
         ShowGame();
         EndPaint(hwnd, &ps);
 
