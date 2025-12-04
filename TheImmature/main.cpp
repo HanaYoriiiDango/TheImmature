@@ -1,4 +1,4 @@
-﻿// Настройки: 
+// ?????????: 
 //linker::system::subsystem  - Windows(/ SUBSYSTEM:WINDOWS) 
 //configuration::advanced::character set - use unicode character set 
 //linker::input::additional dependensies Msimg32.lib; Winmm.lib
@@ -13,7 +13,7 @@ using namespace std;
 enum Emotion_ { JOY, SADNESS, POWER, FEAR, CALM, ANGER, COUNT_Emotions };
 vector<Emotion_> Emotion{ JOY, SADNESS, POWER, FEAR, CALM, ANGER };
 
-wstring Emotion_Names[COUNT_Emotions] = { L"Радость", L"Грусть", L"Сила", L"Страх", L"Спокойствие", L"Гнев" };
+wstring Emotion_Names[COUNT_Emotions] = { L"JOY", L"SADNESS", L"POWER", L"FEAR", L"CALM", L"ANGER" };
 
 
 struct {
@@ -46,7 +46,7 @@ int GetPercentY(float percent) {
     return (int)(window.height * percent);
 }
 
-// Функция для конвертации числа в wstring
+// ??????? ??? ??????????? ????? ? wstring
 std::wstring IntToWString(int value) {
     return to_wstring(value);
 }
@@ -61,45 +61,51 @@ void InitWindow() {
 
 }
 
-bool FindFiles(const wchar_t* filename) { // ищет файл в проекте
-    // true - найден, false - не найден
+bool FindFiles(const wchar_t* filename) { // ???? ???? ? ???????
+    // true - ??????, false - ?? ??????
     return GetFileAttributesW(filename) != INVALID_FILE_ATTRIBUTES;
 }
 
 HBITMAP LoadBMP(const wchar_t* name) {
 
-    // сначало проверяем существует ли такой файл в проекте  
+    // ??????? ????????? ?????????? ?? ????? ???? ? ???????  
     if (!FindFiles(name)) { 
         
-        MessageBoxW(NULL, L"Файл в проекте не найден", L"Ошибка", MB_ICONERROR);
+        MessageBoxW(NULL, L"???? ? ??????? ?? ??????", L"??????", MB_ICONERROR);
         return NULL;
     }
 
-    // если он есть, то пробуем загружать файл
+    // ???? ?? ????, ?? ??????? ????????? ????
     HBITMAP hBmp = (HBITMAP)LoadImageW(NULL, name, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 
-    // проверяем загрузился ли файл
-    if (!hBmp) MessageBox(NULL, L"Ошибка загрузки файла", L"Ошибка", MB_ICONERROR);
-    return hBmp; // если да, то возвращаем
+    // ????????? ?????????? ?? ????
+    if (!hBmp) MessageBox(NULL, L"?????? ???????? ?????", L"??????", MB_ICONERROR);
+    return hBmp; // ???? ??, ?? ??????????
 
 }
 
 void ShowText(const std::wstring& text, int x, int y) {
-    HFONT hFont = CreateFontW(24, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,  )
+
+    HFONT hFont = CreateFontW(46, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+    HFONT hOldFont = (HFONT)SelectObject(window.mem_dc, hFont);
 
     SetTextColor(window.mem_dc, RGB(0, 0, 0));
     SetBkMode(window.mem_dc, TRANSPARENT);
     TextOutW(window.mem_dc, x, y, text.c_str(), text.length());
+
+    SelectObject(window.mem_dc, hOldFont);
+    DeleteObject(hFont);
+
 }
 
 void InitGame() {
 
     window.hBack = LoadBMP(L"SadBack.bmp");
-    window.BackScales = LoadBMP(L"WhileBack.bmp");
-    window.BackReplace = LoadBMP(L"WhileBack.bmp");
-    window.BackMainText = LoadBMP(L"WhileBack.bmp");
-    window.BackCharacter = LoadBMP(L"WhileBack.bmp");
-    window.BackHero = LoadBMP(L"WhileBack.bmp");
+    window.BackScales = LoadBMP(L"WhiteBack.bmp");
+    window.BackReplace = LoadBMP(L"WhiteBack.bmp");
+    window.BackMainText = LoadBMP(L"WhiteBack.bmp");
+    window.BackCharacter = LoadBMP(L"WhiteBack.bmp");
+    window.BackHero = LoadBMP(L"WhiteBack.bmp");
 
 }
 
@@ -125,18 +131,26 @@ void ShowBMP(int x, int y, int w, int h, HBITMAP hBitmap, bool transparent) {
 
 void ShowObject() {
 
-    // Рисуем спрайты
+    // ?????? ???????
     ShowBMP(0, 0, window.width, window.height, window.hBack, false);
-    ShowBMP(GetPercentX(0.01f), GetPercentY(0.7f), 300, 300, window.BackScales, true);
+    ShowBMP(GetPercentX(0.0090f), GetPercentY(0.63f), 600, 500, window.BackScales, true);
+    ShowBMP(GetPercentX(0.28f), GetPercentY(0.63f), 1800, 500, window.BackReplace, true);
+    ShowBMP(GetPercentX(0.28f), GetPercentY(0.01f), 1100, 800, window.BackMainText, true);
+    ShowBMP(GetPercentX(0.0075f), GetPercentY(0.01f), 600, 800, window.BackHero, true);
+    ShowBMP(GetPercentX(0.748f), GetPercentY(0.01f), 600, 800, window.BackCharacter, true);
 
-    // Рисуем тексты 
+    // ?????? ?????? 
     for (int i = 0; i < COUNT_Emotions; i++) { 
         
-        wstring text = Emotion_Names[i];
+        wstring colon = L": ";
+        wstring text = Emotion_Names[i] + colon;
         wstring value_text = to_wstring(Hero.emotions[i]);
+        int h = 50;
+        h++;
+        int height = (i * h); 
 
-        ShowText(text, GetPercentX(0.01f), GetPercentY(0.8f) + (i * 30));
-        ShowText(value_text, GetPercentX(0.1f), GetPercentY(0.8f) + (i * 30));
+        ShowText(text, GetPercentX(0.01f), GetPercentY(0.7f) + height);
+        ShowText(value_text, GetPercentX(0.1f), GetPercentY(0.7f) + height);
     }
 }
 
@@ -169,7 +183,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     wc.lpszClassName = CLASS_NAME;  
 
     if (!RegisterClassEx(&wc)) { 
-        MessageBox(NULL, L"Ошибка регистрации класса окна!", L"Ошибка", MB_ICONERROR);
+        MessageBox(NULL, L"?????? ??????????? ?????? ????!", L"??????", MB_ICONERROR);
         return 0;
     }
 
@@ -179,7 +193,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     window.hwnd = CreateWindowEx(0, CLASS_NAME, L"The Immature", WS_POPUP | WS_MAXIMIZE, 0, 0, window.width, window.height, NULL, NULL, hInstance, NULL);
 
     if (!window.hwnd) {  
-        MessageBox(NULL, L"Ошибка создания окна!", L"Ошибка", MB_ICONERROR);
+        MessageBox(NULL, L"?????? ???????? ????!", L"??????", MB_ICONERROR);
         return 0; 
 
     }
@@ -220,7 +234,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     }
 
     case WM_KEYDOWN:
-        if (wParam == VK_ESCAPE) DestroyWindow(window.hwnd); // уничтожаем окно
+        if (wParam == VK_ESCAPE) DestroyWindow(window.hwnd); // ?????????? ????
 
         break;
 
