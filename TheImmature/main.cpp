@@ -85,6 +85,8 @@ HBITMAP LoadBMP(const wchar_t* name) {
 }
 
 void ShowText(const std::wstring& text, int x, int y) {
+    HFONT hFont = CreateFontW(24, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,  )
+
     SetTextColor(window.mem_dc, RGB(0, 0, 0));
     SetBkMode(window.mem_dc, TRANSPARENT);
     TextOutW(window.mem_dc, x, y, text.c_str(), text.length());
@@ -125,7 +127,7 @@ void ShowObject() {
 
     // Рисуем спрайты
     ShowBMP(0, 0, window.width, window.height, window.hBack, false);
-    ShowBMP(GetPercentX(0.001f), GetPercentY(0.7f), 300, 300, window.BackScales, true);
+    ShowBMP(GetPercentX(0.01f), GetPercentY(0.7f), 300, 300, window.BackScales, true);
 
     // Рисуем тексты 
     for (int i = 0; i < COUNT_Emotions; i++) { 
@@ -133,7 +135,7 @@ void ShowObject() {
         wstring text = Emotion_Names[i];
         wstring value_text = to_wstring(Hero.emotions[i]);
 
-        ShowText(text, GetPercentX(0.001f), GetPercentY(0.8f) + (i * 30));
+        ShowText(text, GetPercentX(0.01f), GetPercentY(0.8f) + (i * 30));
         ShowText(value_text, GetPercentX(0.1f), GetPercentY(0.8f) + (i * 30));
     }
 }
