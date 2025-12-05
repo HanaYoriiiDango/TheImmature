@@ -1,4 +1,4 @@
-// ?????????: 
+﻿// ?????????: 
 //linker::system::subsystem  - Windows(/ SUBSYSTEM:WINDOWS) 
 //configuration::advanced::character set - use unicode character set 
 //linker::input::additional dependensies Msimg32.lib; Winmm.lib
@@ -18,15 +18,18 @@ wstring Emotion_Names[COUNT_Emotions] = { L"JOY", L"SADNESS", L"POWER", L"FEAR",
 
 struct {
 	int width, height;
+    float scale_x, scale_y;
+    float ui_scale; // Единый масштаб для всего
+
     HWND hwnd;
 	HBITMAP hBack;
     HDC hdc, mem_dc;
+
     HBITMAP BackScales;
     HBITMAP BackReplace;
     HBITMAP BackHero;
     HBITMAP BackCharacter;
     HBITMAP BackMainText;
-
 
 }window;
 
@@ -38,19 +41,6 @@ struct Player {
 
 Player Hero;
 
-int GetPercentX(float percent) {
-    return (int)(window.width * percent);
-}
-
-int GetPercentY(float percent) {
-    return (int)(window.height * percent);
-}
-
-// ??????? ??? ??????????? ????? ? wstring
-std::wstring IntToWString(int value) {
-    return to_wstring(value);
-}
-
 void InitWindow() {
 
     RECT r;
@@ -59,34 +49,53 @@ void InitWindow() {
     window.width = r.right - r.left;
     window.height = r.bottom - r.top;
 
+    const int BASE_WIDTH = 1920;
+    const int BASE_HEIGHT = 1080;
+
+    window.scale_x = (float)window.width / BASE_WIDTH;
+    window.scale_y = (float)window.height / BASE_HEIGHT;
+
+    window.ui_scale = min(window.scale_x, window.scale_y);
+
 }
 
-bool FindFiles(const wchar_t* filename) { // ???? ???? ? ???????
-    // true - ??????, false - ?? ??????
+wstring IntToWString(int value) {
+    return to_wstring(value);
+}
+
+int GetScaledX(int x) { return (int)(x * window.scale_x); }
+int GetScaledY(int y) { return (int)(y * window.scale_y); }
+int GetScaledSize(int size) { return (int)(size * window.ui_scale); }
+
+bool FindFiles(const wchar_t* filename) { 
+    
     return GetFileAttributesW(filename) != INVALID_FILE_ATTRIBUTES;
 }
 
 HBITMAP LoadBMP(const wchar_t* name) {
 
-    // ??????? ????????? ?????????? ?? ????? ???? ? ???????  
+     
     if (!FindFiles(name)) { 
         
-        MessageBoxW(NULL, L"???? ? ??????? ?? ??????", L"??????", MB_ICONERROR);
+        MessageBoxW(NULL, L"No find files", L"sosi", MB_ICONERROR);
         return NULL;
     }
 
-    // ???? ?? ????, ?? ??????? ????????? ????
+    
     HBITMAP hBmp = (HBITMAP)LoadImageW(NULL, name, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 
-    // ????????? ?????????? ?? ????
-    if (!hBmp) MessageBox(NULL, L"?????? ???????? ?????", L"??????", MB_ICONERROR);
-    return hBmp; // ???? ??, ?? ??????????
+    
+    if (!hBmp) MessageBox(NULL, L"No find bmp", L"sosi", MB_ICONERROR);
+    return hBmp; 
 
 }
 
-void ShowText(const std::wstring& text, int x, int y) {
+void ShowText(const wstring& text, int x, int y, int base_font_size = 24) {
 
-    HFONT hFont = CreateFontW(46, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+    int scaled_size = GetScaledSize(base_font_size);
+    scaled_size = max(12, scaled_size); // Min 12px
+
+    HFONT hFont = CreateFontW(scaled_size, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
     HFONT hOldFont = (HFONT)SelectObject(window.mem_dc, hFont);
 
     SetTextColor(window.mem_dc, RGB(0, 0, 0));
@@ -109,13 +118,18 @@ void InitGame() {
 
 }
 
-void ShowBMP(int x, int y, int w, int h, HBITMAP hBitmap, bool transparent) {
+void ShowBMP(int base_x, int base_y, int base_w, int base_h, HBITMAP hBitmap, bool transparent = false) {
 
     BITMAP bm;
     HDC memDC = CreateCompatibleDC(window.mem_dc);
     HBITMAP hOldBitmap = (HBITMAP)SelectObject(memDC, hBitmap);
 
     if (hBitmap) {
+
+        int x = GetScaledX(base_x);
+        int y = GetScaledY(base_y);
+        int w = GetScaledSize(base_w);
+        int h = GetScaledSize(base_h);
 
         GetObject(hBitmap, sizeof(BITMAP), &bm);
 
@@ -131,26 +145,28 @@ void ShowBMP(int x, int y, int w, int h, HBITMAP hBitmap, bool transparent) {
 
 void ShowObject() {
 
-    // ?????? ???????
-    ShowBMP(0, 0, window.width, window.height, window.hBack, false);
-    ShowBMP(GetPercentX(0.0090f), GetPercentY(0.63f), 600, 500, window.BackScales, true);
-    ShowBMP(GetPercentX(0.28f), GetPercentY(0.63f), 1800, 500, window.BackReplace, true);
-    ShowBMP(GetPercentX(0.28f), GetPercentY(0.01f), 1100, 800, window.BackMainText, true);
-    ShowBMP(GetPercentX(0.0075f), GetPercentY(0.01f), 600, 800, window.BackHero, true);
-    ShowBMP(GetPercentX(0.748f), GetPercentY(0.01f), 600, 800, window.BackCharacter, true);
+    // background
+    ShowBMP(0, 0, 1920, 1080, window.hBack, false);
 
-    // ?????? ?????? 
-    for (int i = 0; i < COUNT_Emotions; i++) { 
-        
-        wstring colon = L": ";
-        wstring text = Emotion_Names[i] + colon;
-        wstring value_text = to_wstring(Hero.emotions[i]);
-        int h = 50;
-        h++;
-        int height = (i * h); 
+    // Back icon hero
+    ShowBMP(20, 20, 400, 600, window.BackHero, true);
 
-        ShowText(text, GetPercentX(0.01f), GetPercentY(0.7f) + height);
-        ShowText(value_text, GetPercentX(0.1f), GetPercentY(0.7f) + height);
+    //Back scales
+    ShowBMP(20, 650, 400, 400, window.BackScales, true);
+
+    //Back main text
+    ShowBMP(450, 20, 1000, 600, window.BackMainText, true);
+
+    //Back replaces
+    ShowBMP(450, 650, 1450, 400, window.BackReplace, true);
+
+    //Back icon character
+    ShowBMP(1500, 20, 400, 600, window.BackCharacter, true);
+
+    // scales:
+    for (int i = 0; i < COUNT_Emotions; i++) {
+        ShowText(Emotion_Names[i], 50, 900 + i * 60, 28);
+        ShowText(to_wstring(Hero.emotions[i]), 200, 900 + i * 60, 28);
     }
 }
 
@@ -183,7 +199,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     wc.lpszClassName = CLASS_NAME;  
 
     if (!RegisterClassEx(&wc)) { 
-        MessageBox(NULL, L"?????? ??????????? ?????? ????!", L"??????", MB_ICONERROR);
+        MessageBox(NULL, L"Error class registr!", L"sosi", MB_ICONERROR);
         return 0;
     }
 
@@ -193,7 +209,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
     window.hwnd = CreateWindowEx(0, CLASS_NAME, L"The Immature", WS_POPUP | WS_MAXIMIZE, 0, 0, window.width, window.height, NULL, NULL, hInstance, NULL);
 
     if (!window.hwnd) {  
-        MessageBox(NULL, L"?????? ???????? ????!", L"??????", MB_ICONERROR);
+        MessageBox(NULL, L"NULL hwnd", L"sosi", MB_ICONERROR);
         return 0; 
 
     }
@@ -234,7 +250,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     }
 
     case WM_KEYDOWN:
-        if (wParam == VK_ESCAPE) DestroyWindow(window.hwnd); // ?????????? ????
+        if (wParam == VK_ESCAPE) DestroyWindow(window.hwnd); 
 
         break;
 
