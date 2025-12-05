@@ -90,21 +90,35 @@ HBITMAP LoadBMP(const wchar_t* name) {
 
 }
 
-void ShowText(const wstring& text, int x, int y, int base_font_size = 24) {
+void ShowText(const wstring& text, int base_x, int base_y, int base_font_size = 24) {
 
-    int scaled_size = GetScaledSize(base_font_size);
-    scaled_size = max(12, scaled_size); // Min 12px
+    int x = GetScaledX(base_x);
+    int y = GetScaledY(base_y);
+    int font_size = GetScaledSize(base_font_size);
 
-    HFONT hFont = CreateFontW(scaled_size, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+    // Ограничиваем минимальный размер шрифта
+    font_size = max(12, font_size);
+
+    // ВАЖНО: Используем window.mem_dc вместо window.hdc!
+    HFONT hFont = CreateFontW(
+        font_size, 0, 0, 0,
+        FW_NORMAL, FALSE, FALSE, FALSE,
+        DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+        CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+        DEFAULT_PITCH | FF_SWISS, L"Arial"
+    );
+
     HFONT hOldFont = (HFONT)SelectObject(window.mem_dc, hFont);
 
     SetTextColor(window.mem_dc, RGB(0, 0, 0));
     SetBkMode(window.mem_dc, TRANSPARENT);
-    TextOutW(window.mem_dc, x, y, text.c_str(), text.length());
 
+    // Рисуем текст
+    TextOutW(window.mem_dc, x, y, text.c_str(), (int)text.length());
+
+    // Восстанавливаем старый шрифт и удаляем наш
     SelectObject(window.mem_dc, hOldFont);
     DeleteObject(hFont);
-
 }
 
 void InitGame() {
@@ -165,8 +179,8 @@ void ShowObject() {
 
     // scales:
     for (int i = 0; i < COUNT_Emotions; i++) {
-        ShowText(Emotion_Names[i], 50, 900 + i * 60, 28);
-        ShowText(to_wstring(Hero.emotions[i]), 200, 900 + i * 60, 28);
+        ShowText(Emotion_Names[i], 50, 700 + i * 60, 28);
+        ShowText(to_wstring(Hero.emotions[i]), 200, 700 + i * 60, 28);
     }
 }
 
