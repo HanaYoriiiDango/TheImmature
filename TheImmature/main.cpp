@@ -1,4 +1,4 @@
-﻿// ?????????: 
+﻿// options: 
 //linker::system::subsystem  - Windows(/ SUBSYSTEM:WINDOWS) 
 //configuration::advanced::character set - use unicode character set 
 //linker::input::additional dependensies Msimg32.lib; Winmm.lib
@@ -7,65 +7,32 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "Global.h"
+#include "Systems.h"
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
-
-enum Emotion_ { JOY, SADNESS, POWER, FEAR, CALM, ANGER, COUNT_Emotions };
-vector<Emotion_> Emotion{ JOY, SADNESS, POWER, FEAR, CALM, ANGER };
-
-wstring Emotion_Names[COUNT_Emotions] = { L"JOY", L"SADNESS", L"POWER", L"FEAR", L"CALM", L"ANGER" };
-
-
-struct {
-	int width, height;
-    float scale_x, scale_y;
-    float ui_scale; // Единый масштаб для всего
-
-    HWND hwnd;
-	HBITMAP hBack;
-    HDC hdc, mem_dc;
-
-    HBITMAP BackScales;
-    HBITMAP BackReplace;
-    HBITMAP BackHero;
-    HBITMAP BackCharacter;
-    HBITMAP BackMainText;
-
-}window;
-
-struct Player {
-    int current_loc = SADNESS;
-    int emotions[COUNT_Emotions] = { 50, 50, 50, 50, 50, 50 };
-    bool life = true;
-};
-
-Player Hero;
-
-void InitWindow() {
-
-    RECT r;
-    GetClientRect(window.hwnd, &r);
-
-    window.width = r.right - r.left;
-    window.height = r.bottom - r.top;
-
-    const int BASE_WIDTH = 1920;
-    const int BASE_HEIGHT = 1080;
-
-    window.scale_x = (float)window.width / BASE_WIDTH;
-    window.scale_y = (float)window.height / BASE_HEIGHT;
-
-    window.ui_scale = min(window.scale_x, window.scale_y);
-
-}
 
 wstring IntToWString(int value) {
     return to_wstring(value);
 }
 
-int GetScaledX(int x) { return (int)(x * window.scale_x); }
-int GetScaledY(int y) { return (int)(y * window.scale_y); }
-int GetScaledSize(int size) { return (int)(size * window.ui_scale); }
+int GetScaledX(int x) { 
+
+    return (int)(x * window.scale_x); 
+
+}
+int GetScaledY(int y) { 
+
+    return (int)(y * window.scale_y); 
+
+}
+int GetScaledSize(int size) {
+
+    return (int)(size * window.ui_scale); 
+
+}
 
 bool FindFiles(const wchar_t* filename) { 
     
@@ -95,11 +62,8 @@ void ShowText(const wstring& text, int base_x, int base_y, int base_font_size = 
     int x = GetScaledX(base_x);
     int y = GetScaledY(base_y);
     int font_size = GetScaledSize(base_font_size);
-
-    // Ограничиваем минимальный размер шрифта
     font_size = max(12, font_size);
 
-    // ВАЖНО: Используем window.mem_dc вместо window.hdc!
     HFONT hFont = CreateFontW(
         font_size, 0, 0, 0,
         FW_NORMAL, FALSE, FALSE, FALSE,
@@ -113,10 +77,10 @@ void ShowText(const wstring& text, int base_x, int base_y, int base_font_size = 
     SetTextColor(window.mem_dc, RGB(0, 0, 0));
     SetBkMode(window.mem_dc, TRANSPARENT);
 
-    // Рисуем текст
+    // drawing
     TextOutW(window.mem_dc, x, y, text.c_str(), (int)text.length());
 
-    // Восстанавливаем старый шрифт и удаляем наш
+    // clear
     SelectObject(window.mem_dc, hOldFont);
     DeleteObject(hFont);
 }
@@ -182,6 +146,7 @@ void ShowObject() {
         ShowText(Emotion_Names[i], 50, 700 + i * 60, 28);
         ShowText(to_wstring(Hero.emotions[i]), 200, 700 + i * 60, 28);
     }
+
 }
 
 void ShowGame() {
@@ -199,60 +164,25 @@ void ShowGame() {
     DeleteDC(window.mem_dc);
 }
 
-LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
+int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ PWSTR pCmdLine, _In_ int nCmdShow) {
 
-int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ PWSTR pCmdLine, _In_ int nCmdShow ) {
+    GameCore Core;
 
-    const wchar_t* CLASS_NAME = L"Main";  
-    WNDCLASSEX wc = {}; 
-
-    wc.cbSize = sizeof(WNDCLASSEX);
-    wc.lpfnWndProc = WndProc; 
-    wc.hInstance = hInstance; 
-    wc.hCursor = NULL; 
-    wc.lpszClassName = CLASS_NAME;  
-
-    if (!RegisterClassEx(&wc)) { 
-        MessageBox(NULL, L"Error class registr!", L"sosi", MB_ICONERROR);
-        return 0;
-    }
-
-    window.width = GetSystemMetrics(SM_CXSCREEN); 
-    window.height = GetSystemMetrics(SM_CYSCREEN);
-
-    window.hwnd = CreateWindowEx(0, CLASS_NAME, L"The Immature", WS_POPUP | WS_MAXIMIZE, 0, 0, window.width, window.height, NULL, NULL, hInstance, NULL);
-
-    if (!window.hwnd) {  
-        MessageBox(NULL, L"NULL hwnd", L"sosi", MB_ICONERROR);
-        return 0; 
-
-    }
-
-    InitWindow();
-
-    ShowWindow(window.hwnd, SW_SHOW);
-    UpdateWindow(window.hwnd);
-
-    MSG msg = {};
-
-    while (GetMessage(&msg, NULL, 0, 0)) {
-
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-
-    }
+    if (!Core.InitGame(hInstance)) return 0;
+    Core.Update();
+    Core.Run();
+  
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-
     switch (msg) {
 
     case WM_CREATE:
         InitGame();
 
         break;
-    
-    case WM_PAINT: 
+
+    case WM_PAINT:
     {
         PAINTSTRUCT ps;
         window.hdc = BeginPaint(hwnd, &ps);
@@ -264,18 +194,22 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     }
 
     case WM_KEYDOWN:
-        if (wParam == VK_ESCAPE) DestroyWindow(window.hwnd); 
+    {
+
+        if (wParam == VK_ESCAPE) DestroyWindow(window.hwnd);
 
         break;
 
-    case WM_DESTROY:
+    }
+
+    case WM_DESTROY: {
 
         PostQuitMessage(0);
         break;
+
+    }
 
     default: return DefWindowProc(hwnd, msg, wParam, lParam);
 
     }
 }
-
-

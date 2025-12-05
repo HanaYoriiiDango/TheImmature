@@ -124,7 +124,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="Global.cpp" />
+    <ClCompile Include="Init.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WinManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Global.h" />
+    <ClInclude Include="Systems.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
