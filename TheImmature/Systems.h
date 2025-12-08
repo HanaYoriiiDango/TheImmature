@@ -27,46 +27,130 @@ private:
 };
 
 class ResourceManager {
+private:
+    // === Битмапы ===
+    HBITMAP hBack = nullptr;          // Фоновый битмап
+    HBITMAP backScales = nullptr;     // Битмап для шкал
+    HBITMAP backReplace = nullptr;    // Битмап для замен
+    HBITMAP backHero = nullptr;       // Битмап для героя
+    HBITMAP backCharacter = nullptr;  // Битмап для персонажа
+    HBITMAP backMainText = nullptr;   // Битмап для основного текста
+
 public: 
-    
+    ResourceManager() = default;
+    ~ResourceManager() {
+        Cleanup();  // Автоматическая очистка при уничтожении объекта
+    }
 
+    bool FindFiles(const wchar_t* filename);
+    HBITMAP LoadBMP(const wchar_t* name);
+    bool LoadAllBMP();
+    void Cleanup();
 
+    // Getters
 
-
-
-
+    HBITMAP GethBack();
+    HBITMAP GetBackScales();
+    HBITMAP GetBackReplace();
+    HBITMAP GetBackHero();
+    HBITMAP GetBackCharacter();
+    HBITMAP GetbackMainText();
 
 };
 
 class RenderSystem {
+private: 
+    ResourceManager& resManager;
 
+    //Вспомогательные методы 
+    wstring IntToWString(int value);
+    int GetScaledX(int x, float scaleX);
+    int GetScaledY(int y, float scaleY);
+    int GetScaledSize(int size, float uiScale);
 
+public:
+    RenderSystem(ResourceManager& rm) : resManager(rm) {}
 
+    void ShowText(
+        const HDC& hdc, const wstring& text, 
+        int base_x, float windowScaleX, 
+        int base_y, float windowScaleY, 
+        int base_font_size, float windowUiscale
+    );
 
+    void ShowBMP(
+        const HDC& hdc,
+        int base_x, float windowScaleX,
+        int base_y, float windowScaleY,
+        float windowUiscale , int base_w, int base_h,
+        HBITMAP hBitmap, bool transparent = false
+    );
+
+    void ShowObject(const HDC& hdc, float windowScaleX, float windowScaleY, float windowScaleUI);
 
 };
 
 class WindowManager {
+private:
+
+    struct {
+
+        // === Основные поля окна ===
+        HWND hwnd = nullptr;
+        HINSTANCE hInstance = nullptr;
+        const wchar_t* className = L"Main";
+
+        // === Размеры и масштабирование ===
+        int width = 0;
+        int height = 0;
+        float scaleX = 1.0f;
+        float scaleY = 1.0f;
+        float uiScale = 1.0f;
+
+        // === Контексты устройств ===
+        HDC hdc = nullptr, memDC = nullptr;   // Основной HDC и буфер 
+
+        
+
+    }window;
+
+    RenderSystem& render;
+    ResourceManager& resManager;
+    
+    // === Обработка сообщений ===
+    static LRESULT CALLBACK StaticWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+    LRESULT HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+    
+
 public: 
+
+    WindowManager(RenderSystem& rs, ResourceManager& rm) : render(rs), resManager(rm) {}
+    
+    // Настройка и создание окна
     bool WindowCreate();
     bool InitWindow();
     bool RegistrClass(HINSTANCE hInstance);
     void WinUpdate();
     void WhileMessage();
 
+    // Остальное
+    void Render();
+
 };
 
 class InitSystem { // инициализация 
 private: 
     WindowManager& winManager;
+    ResourceManager& resManager;
 
 public:
-    InitSystem(WindowManager& wm) : winManager(wm) {}
+    InitSystem(WindowManager& wm, ResourceManager& rm) : winManager(wm), resManager(rm) {}
 
     void Info();
     void CreateWorlds();
     void CreatePortals(Emotion_ WorldEmotion);
     bool WindowInitialize(HINSTANCE hInstance);
+    bool BMPInitialize();
 
 };
 
@@ -136,23 +220,24 @@ public:
 class GameCore { // игровое ядро, все системы разделены по модулям 
 private:
     // Игровое ядро должно именно ВЛАДЕТЬ своими модулями - композиция 
-    StatisticsCollector Collector;
-    InitSystem Init;
-    TextManager Manager;
-    GameLogicSystem Logic;
-    DialogSystem Dialog;
+    //StatisticsCollector Collector;
+    ResourceManager ResManager;
+    RenderSystem Render;
     WindowManager WinManager;
+    InitSystem Init;
+    //TextManager Manager;
+    //GameLogicSystem Logic;
+    //DialogSystem Dialog;
 
     string temp;
 
 public:
 
     GameCore()
-        : Logic(Collector),
-        Dialog(Manager, Logic, Collector),
-        Init(WinManager)
-    {
-    }
+        : Render(ResManager),  // ResourceManager уже создан
+          WinManager(Render, ResManager),  // Оба созданы
+          Init(WinManager, ResManager)    // Все созданы
+    {}
 
     bool InitGame(HINSTANCE hInstance);
     void Update();
@@ -163,4 +248,5 @@ public:
     void ProcessCommand();
 
 };
+
 

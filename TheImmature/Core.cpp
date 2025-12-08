@@ -7,6 +7,8 @@ using namespace std;
 bool GameCore::InitGame(HINSTANCE hInstance) {
 
     if(!Init.WindowInitialize(hInstance)) return false;
+    if (!Init.BMPInitialize()) return false;
+
     //Init.CreateWorlds();
     //Manager.LoadAllNPCs();
 

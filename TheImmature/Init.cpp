@@ -26,3 +26,14 @@ bool InitSystem::WindowInitialize(HINSTANCE hInstance) {
 
     return true;
 }
+
+bool InitSystem::BMPInitialize() {
+
+    if (!resManager.LoadAllBMP()) { 
+        MessageBox(NULL, L"Init Error", L"Load BMP", MB_ICONERROR);
+        return false;
+    } 
+
+    return true;
+
+};

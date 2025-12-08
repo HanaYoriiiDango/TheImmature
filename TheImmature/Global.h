@@ -1,7 +1,7 @@
 ﻿#pragma once
+#include "Windows.h"
 #include <vector>
 #include <string>
-#include "Windows.h"
 #include <ctime> 
 
 using namespace std;
@@ -15,25 +15,6 @@ extern wstring Emotion_Names[COUNT_Emotions];
 extern wstring Worlds_Names[COUNT_Emotions];
 
 // Структуры
-
-struct Window{
-    int width, height;
-    float scale_x, scale_y;
-    float ui_scale; // Единый масштаб для всего
-
-    HWND hwnd;
-    HBITMAP hBack;
-    HDC hdc, mem_dc;
-    const wchar_t* className;
-    HINSTANCE hInstance;
-
-    HBITMAP BackScales;
-    HBITMAP BackReplace;
-    HBITMAP BackHero;
-    HBITMAP BackCharacter;
-    HBITMAP BackMainText;
-
-};
 
 struct Portal_ {
     string name;
@@ -103,9 +84,5 @@ struct GameSession {
 
 // Глобальные переменные
 extern Player Hero;
-extern Window window;
 extern Location Worlds[COUNT_Emotions];
 extern vector<NPC> Characters; // Все NPC игры
-
-LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-
