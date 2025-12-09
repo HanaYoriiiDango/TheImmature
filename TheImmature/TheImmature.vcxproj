@@ -102,6 +102,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,17 +125,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Core.cpp" />
+    <ClCompile Include="ManifestManager.cpp" />
+    <ClCompile Include="GameCore.cpp" />
     <ClCompile Include="Global.cpp" />
-    <ClCompile Include="Init.cpp" />
+    <ClCompile Include="InitSystem.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="RenderSystem.cpp" />
-    <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Render.cpp" />
+    <ClCompile Include="ResManager.cpp" />
+    <ClCompile Include="StringUtils.cpp" />
+    <ClCompile Include="TextManager.cpp" />
     <ClCompile Include="WinManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ManifestManager.h" />
+    <ClInclude Include="Core.h" />
     <ClInclude Include="Global.h" />
+    <ClInclude Include="Init.h" />
+    <ClInclude Include="Render.h" />
+    <ClInclude Include="ResManager.h" />
+    <ClInclude Include="StringUtils.h" />
     <ClInclude Include="Systems.h" />
+    <ClInclude Include="TextManager.h" />
+    <ClInclude Include="WinManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

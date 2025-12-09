@@ -1,7 +1,5 @@
-﻿#include "systems.h"
-#include <iostream>
-
-using namespace std;
+﻿// src/core/InitSystem.cpp
+#include "Init.h"
 
 // Реализации методов InitSystem 
 
@@ -37,3 +35,9 @@ bool InitSystem::BMPInitialize() {
     return true;
 
 };
+
+bool InitSystem::ManifestInitialize() {
+
+    if (!i_Manifest.LoadManifest()) return false;
+    return true;
+}

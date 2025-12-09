@@ -7,8 +7,11 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "Global.h"
-#include "Systems.h"
+#include <filesystem>
+#include <fstream>
+#include "json.hpp"
+#include "Global.h" 
+#include "Core.h"
 #include <cstdlib>
 #include <ctime>
 
@@ -23,7 +26,6 @@ int APIENTRY wWinMain(
     GameCore Core;
 
     if (!Core.InitGame(hInstance)) return 0;
-    Core.Update();
     Core.Run();
   
 }

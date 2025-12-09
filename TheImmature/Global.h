@@ -16,6 +16,28 @@ extern wstring Worlds_Names[COUNT_Emotions];
 
 // Структуры
 
+struct EmotionData {
+    wstring ID;
+    wstring Display_Name;
+    int DefaultValue;
+
+};
+
+struct LocationData {
+    wstring name;
+    wstring link; 
+    bool is_locked;
+
+};
+
+struct ManifestData {
+
+    double Current_Ver;
+    vector<EmotionData> Emotion; // массив ВСЕХ эмоций что добавлены через json manifest
+    vector<LocationData> Worlds; // массив всех миров описанных в json 
+
+};
+
 struct Portal_ {
     string name;
     int target;

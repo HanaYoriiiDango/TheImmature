@@ -1,7 +1,5 @@
-﻿#include "systems.h"
-#include <iostream>
-
-using namespace std;
+﻿#include "WinManager.h" 
+#include "Render.h" 
 
 // Реализации методов WindowManager 
 
@@ -90,13 +88,13 @@ void WindowManager::Render() {
         MessageBox(NULL, L"Render Error", L"Failed to CreateCompatibleBitmap", MB_ICONERROR);
         DeleteDC(memDC);
         return;
-    }
+    } 
 
     // Выбираем битмап в контекст 
     HBITMAP hOldBmp = (HBITMAP)SelectObject(memDC, hMemBmp);
 
     // Вызываем RenderSystem и передаем ВСЕ необходимые данные
-    render.ShowObject(
+   w_render.ShowObject(
         memDC,              // Буфер для рисования
         window.scaleX,      // Масштаб по X
         window.scaleY,      // Масштаб по Y

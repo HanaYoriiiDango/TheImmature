@@ -13,36 +13,108 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{3d3a1287-9802-46bc-aa83-cbcde95e32d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core">
+      <UniqueIdentifier>{5f14531c-d633-46bd-88a4-508a40b38037}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\game">
+      <UniqueIdentifier>{6e3680f7-0d6b-432b-8511-9c259c5c5901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\window">
+      <UniqueIdentifier>{dcdfd960-9082-46d8-ae42-682fed5a845b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render">
+      <UniqueIdentifier>{33d41913-e58d-4e49-9ceb-ca5b583d2208}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\Headers">
+      <UniqueIdentifier>{c59561c7-0fd2-462b-8086-70702793f5c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\game\Headers">
+      <UniqueIdentifier>{67e32f53-bb69-403d-9bfe-1e672ab58abf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render\Headers">
+      <UniqueIdentifier>{527ee2ab-2b17-43ec-9615-79567b0576fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\game\Sources">
+      <UniqueIdentifier>{9be6eb62-5058-47dc-aa12-e9c54e00e956}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\core\Sources">
+      <UniqueIdentifier>{dc14851c-82c2-40e5-85a1-46e9d84643ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\render\Sources">
+      <UniqueIdentifier>{8b6794c4-2ebe-4053-9af1-d26f6d771e34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\window\Headers">
+      <UniqueIdentifier>{36f7c408-5fa7-4475-b955-b2b4f0593143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\window\Sources">
+      <UniqueIdentifier>{fbcafc18-b502-4d35-a3c6-20307f8e8186}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="GameCore.cpp">
+      <Filter>src\core\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Global.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="InitSystem.cpp">
+      <Filter>src\core\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Core.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ManifestManager.cpp">
+      <Filter>src\game\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Init.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="TextManager.cpp">
+      <Filter>src\game\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Render.cpp">
+      <Filter>src\render\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResManager.cpp">
+      <Filter>src\render\Sources</Filter>
     </ClCompile>
     <ClCompile Include="WinManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\window\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Global.cpp">
+      <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="StringUtils.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Global.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Systems.h">
-      <Filter>Header Files</Filter>
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Core.h">
+      <Filter>src\core\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Init.h">
+      <Filter>src\core\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ManifestManager.h">
+      <Filter>src\game\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextManager.h">
+      <Filter>src\game\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Render.h">
+      <Filter>src\render\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResManager.h">
+      <Filter>src\render\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="WinManager.h">
+      <Filter>src\window\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Global.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="StringUtils.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

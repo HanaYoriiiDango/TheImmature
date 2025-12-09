@@ -1,7 +1,4 @@
-﻿#include "systems.h"
-#include <iostream>
-
-using namespace std;
+﻿#include "ResManager.h" 
 
 bool ResourceManager::FindFiles(const wchar_t* filename) {
 

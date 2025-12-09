@@ -1,7 +1,5 @@
-﻿#include "systems.h"
-#include <iostream>
-
-using namespace std; 
+﻿#include "Render.h" 
+#include "Global.h"
 
 wstring RenderSystem::IntToWString(int value) {
     return to_wstring(value);
@@ -97,27 +95,48 @@ void RenderSystem::ShowObject(const HDC& hdc, float windowScaleX, float windowSc
     if (!hdc) return;
 
     // background
-    ShowBMP(hdc, 0, windowScaleX,  0, windowScaleY, windowScaleUI, 1920, 1080, resManager.GethBack(), false);
+    ShowBMP(hdc, 0, windowScaleX,  0, windowScaleY, windowScaleUI, 1920, 1080, r_resManager.GethBack(), false);
 
     // Back icon hero
-    ShowBMP(hdc, 20, windowScaleX, 20, windowScaleY, windowScaleUI, 400, 600, resManager.GetBackCharacter(), true);
+    ShowBMP(hdc, 20, windowScaleX, 20, windowScaleY, windowScaleUI, 400, 600, r_resManager.GetBackCharacter(), true);
 
     //Back scales
-    ShowBMP(hdc, 20, windowScaleX, 650, windowScaleY, windowScaleUI, 400, 400, resManager.GetBackScales(), true);
+    ShowBMP(hdc, 20, windowScaleX, 650, windowScaleY, windowScaleUI, 400, 400, r_resManager.GetBackScales(), true);
 
     //Back main text
-    ShowBMP(hdc, 450, windowScaleX, 20, windowScaleY, windowScaleUI, 1000, 600, resManager.GetbackMainText(), true);
+    ShowBMP(hdc, 450, windowScaleX, 20, windowScaleY, windowScaleUI, 1000, 600, r_resManager.GetbackMainText(), true);
 
     //Back replaces
-    ShowBMP(hdc, 450, windowScaleX, 650, windowScaleY, windowScaleUI, 1450, 400, resManager.GetBackReplace(), true);
+    ShowBMP(hdc, 450, windowScaleX, 650, windowScaleY, windowScaleUI, 1450, 400, r_resManager.GetBackReplace(), true);
 
     //Back icon character
-    ShowBMP(hdc, 1500, windowScaleX, 20, windowScaleY, windowScaleUI, 400, 600, resManager.GetBackCharacter(), true);
+    ShowBMP(hdc, 1500, windowScaleX, 20, windowScaleY, windowScaleUI, 400, 600, r_resManager.GetBackCharacter(), true);
 
     // scales:
     for (int i = 0; i < COUNT_Emotions; i++) {
         ShowText(hdc, Emotion_Names[i], 50, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
         ShowText(hdc, to_wstring(Hero.emotions[i]), 200, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
     }
+
+    //if (data.Emotion.empty()) MessageBox(NULL, L"Render Error", L"Emotion empty", MB_ICONERROR);
+    //if (data.Worlds.empty()) MessageBox(NULL, L"Render Error", L"Worlds empty", MB_ICONERROR);
+    //if (data.Current_Ver = NULL) MessageBox(NULL, L"Render Error", L"Version NULL", MB_ICONERROR);
+
+    //for (int i = 0; i < data.Emotion.size(); i++) {
+
+    //    ShowText(hdc, data.Emotion[i].Display_Name, 460, windowScaleX, 40 + i * 60, windowScaleY, 28, windowScaleUI);
+    //    ShowText(hdc, data.Emotion[i].ID, 500, windowScaleX, 40 + i * 60, windowScaleY, 28, windowScaleUI);
+    //    ShowText(hdc, to_wstring(data.Emotion[i].DefaultValue), 520, windowScaleX, 40 + i * 60, windowScaleY, 28, windowScaleUI);
+
+    //}
+
+    //for (int i = 0; i < data.Worlds.size(); i++) {
+
+    //    ShowText(hdc, data.Worlds[i].name, 760, windowScaleX, 40 + i * 60, windowScaleY, 28, windowScaleUI);
+    //    ShowText(hdc, data.Worlds[i].link, 800, windowScaleX, 40 + i * 60, windowScaleY, 28, windowScaleUI);
+
+    //}
+
+    //ShowText(hdc, to_wstring(data.Current_Ver), 480, windowScaleX, 660, windowScaleY, 28, windowScaleUI);
 
 }

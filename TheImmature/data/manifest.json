@@ -1,0 +1,27 @@
+﻿{
+  "version": "1.0",
+  "emotions": [
+    {
+      "id": "JOY",
+      "display_name": "Радость",
+      "default_value": 50
+    },
+    {
+      "id": "SADNESS",
+      "display_name": "Грусть",
+      "default_value": 50
+    }
+  ],
+  "worlds": [
+    {
+      "name": "Мир Радости",
+      "linked_emotion": "JOY",
+      "locked_by_default": false
+    },
+    {
+      "name": "Мир Грусти",
+      "linked_emotion": "SADNESS",
+      "locked_by_default": false
+    }
+  ]
+}
