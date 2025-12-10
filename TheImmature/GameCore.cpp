@@ -15,6 +15,15 @@ bool GameCore::InitGame(HINSTANCE hInstance) {
 
     //Init.CreateWorlds();
     //Manager.LoadAllNPCs();
+    // 
+    // ЗАГРУЗИТЬ МАНИФЕСТ
+    if (!c_Init.ManifestInitialize()) {
+        MessageBox(NULL, L"Ошибка загрузки манифеста", L"Ошибка", MB_OK);
+        return false;
+    }
+
+    // ПЕРЕДАТЬ ManifestManager в RenderSystem (передаём АДРЕС)
+    c_Render.SetManifestManager(&c_Manifest); // & - получаем адрес объекта
 
     return true;
 }

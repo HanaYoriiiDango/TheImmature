@@ -1,5 +1,6 @@
-﻿#include "Render.h" 
-#include "Global.h"
+﻿#include "Global.h"
+#include "Render.h"
+#include "ManifestManager.h" 
 
 std::wstring RenderSystem::IntToWString(int value) {
     return std::to_wstring(value);
@@ -112,10 +113,47 @@ void RenderSystem::ShowObject(const HDC& hdc, float windowScaleX, float windowSc
     //Back icon character
     ShowBMP(hdc, 1500, windowScaleX, 20, windowScaleY, windowScaleUI, 400, 600, r_resManager.GetBackCharacter(), true);
 
-    // scales:
+
+    // === ВАЖНО: Используем -> для указателя ===
+    if (r_manifestManager && r_manifestManager->IsLoaded()) {  // <- ТОЧКА меняется на СТРЕЛКУ
+        const auto& data = r_manifestManager->GetData();  // <- СТРЕЛКА
+
+        // Отрисовываем эмоции
+        for (size_t i = 0; i < data.Emotion.size(); i++) {
+            int yPos = 700 + static_cast<int>(i) * 60;
+
+            // Имя эмоции
+            ShowText(hdc, data.Emotion[i].Display_Name,
+                50, windowScaleX,
+                yPos, windowScaleY,
+                28, windowScaleUI);
+
+            // Значение (заглушка)
+            ShowText(hdc, L"50",
+                200, windowScaleX,
+                yPos, windowScaleY,
+                28, windowScaleUI);
+        }
+
+        // === ДЕБАГ: отрисовка загруженных данных ===
+        int debugY = 200;
+        ShowText(hdc, L"Версия: " + std::to_wstring(data.Current_Ver),
+            460, windowScaleX, debugY, windowScaleY, 24, windowScaleUI);
+
+    }
+    else {
+        // Сообщение о загрузке
+        ShowText(hdc, L"Загрузка эмоций...",
+            50, windowScaleX, 700, windowScaleY,
+            28, windowScaleUI);
+    }
+
+
+
+     //scales:
     //for (int i = 0; i < COUNT_Emotions; i++) {
-        //ShowText(hdc, Emotion_Names[i], 50, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
-        //ShowText(hdc, std::to_wstring(Hero.emotions[i]), 200, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
+    //    //ShowText(hdc, Emotion_Names[i], 50, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
+    //    ShowText(hdc, std::to_wstring(g_Hero.emotions[i]), 200, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
     //}
 
     //if (data.Emotion.empty()) MessageBox(NULL, L"Render Error", L"Emotion empty", MB_ICONERROR);

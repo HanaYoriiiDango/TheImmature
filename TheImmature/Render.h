@@ -1,13 +1,16 @@
 ﻿#pragma once
 #include "ResManager.h"
-#include "ManifestManager.h"
 #include "Global.h"
+
+class ManifestManager;
 
 // src/render/RenderSystem.h
 
 class RenderSystem {
 private:
     ResourceManager& r_resManager;
+    const ManifestManager* r_manifestManager = nullptr;
+
 
     //Вспомогательные методы 
     std::wstring IntToWString(int value);
@@ -18,6 +21,12 @@ private:
 public:
 
     RenderSystem(ResourceManager& rm) : r_resManager(rm) {}
+
+    // Установить указатель на ManifestManager
+    void SetManifestManager(const ManifestManager* mm) {
+        r_manifestManager = mm;
+    }
+
 
      void ShowText(
         const HDC& hdc, const std::wstring& text,

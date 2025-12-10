@@ -96,3 +96,10 @@ struct GameSession {
     int counterChoices;                  // Всего принятых диалоговых решений
 
 };
+
+// В конце Global.h
+namespace Temporary {
+    // Временные переменные, которые позже уберем
+    inline Player g_Hero;  // inline чтобы избежать multiple definition
+
+}
