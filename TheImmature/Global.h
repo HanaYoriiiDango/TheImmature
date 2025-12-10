@@ -1,31 +1,29 @@
 ﻿#pragma once
-#include "Windows.h"
 #include <vector>
 #include <string>
 #include <ctime> 
 
-using namespace std;
-
 // Перечисления
-enum Emotion_ { JOY, SADNESS, POWER, FEAR, CALM, ANGER, COUNT_Emotions };
-
-// Внешние объявления глобальных переменных
-extern vector<Emotion_> Emotion;
-extern wstring Emotion_Names[COUNT_Emotions];
-extern wstring Worlds_Names[COUNT_Emotions];
+enum Emotion_ { JOY, SADNESS, POWER, FEAR, CALM, ANGER, COUNT_Emotions }; // Список БАЗОВЫХ эмоций для удобства работы 
 
 // Структуры
 
 struct EmotionData {
-    wstring ID;
-    wstring Display_Name;
+    std::wstring ID;
+    std::wstring Display_Name;
     int DefaultValue;
+     
+};
 
+struct Portal_ {
+    std::wstring name;
+    int target;
+    bool open = true;
 };
 
 struct LocationData {
-    wstring name;
-    wstring link; 
+    std::wstring name;
+    std::wstring link; 
     bool is_locked;
 
 };
@@ -33,20 +31,15 @@ struct LocationData {
 struct ManifestData {
 
     double Current_Ver;
-    vector<EmotionData> Emotion; // массив ВСЕХ эмоций что добавлены через json manifest
-    vector<LocationData> Worlds; // массив всех миров описанных в json 
+    std::vector<EmotionData> Emotion; // массив ВСЕХ эмоций что добавлены через json manifest
+    std::vector<LocationData> Worlds; // массив всех миров описанных в json 
 
 };
 
-struct Portal_ {
-    string name;
-    int target;
-    bool open = true;
-};
 
 // Структура для ответов
 struct DialogAnswer {
-    string text;
+    std::wstring text;
     Emotion_ emotion;
     bool sign; // true = увеличить, false = уменьшить
     int next_text_id;
@@ -55,18 +48,18 @@ struct DialogAnswer {
 // Структура для текста NPC
 struct DialogText {
     int id;
-    string text;
+    std::wstring text;
     Emotion_ emotion;
     bool sign; // true = увеличить, false = уменьшить
-    vector<DialogAnswer> answers;
+    std::vector<DialogAnswer> answers;
 };
 
 // Структура для NPC
 struct NPC {
-    string id;
-    string name;
+    std::wstring id;
+    std::wstring name;
     Emotion_ world_link; // Линк персонажа с миром 
-    vector<DialogText> texts;
+    std::vector<DialogText> texts;
 };
 
 struct Player {
@@ -76,10 +69,10 @@ struct Player {
 };
 
 struct Location {
-    string name;
+    std::wstring name;
     Emotion_ linked_emotion;
     bool is_locked = false;
-    vector<Portal_> portal;
+    std::vector<Portal_> portal;
 
 };
 
@@ -103,8 +96,3 @@ struct GameSession {
     int counterChoices;                  // Всего принятых диалоговых решений
 
 };
-
-// Глобальные переменные
-extern Player Hero;
-extern Location Worlds[COUNT_Emotions];
-extern vector<NPC> Characters; // Все NPC игры

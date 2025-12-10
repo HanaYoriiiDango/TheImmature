@@ -127,7 +127,6 @@
   <ItemGroup>
     <ClCompile Include="ManifestManager.cpp" />
     <ClCompile Include="GameCore.cpp" />
-    <ClCompile Include="Global.cpp" />
     <ClCompile Include="InitSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Render.cpp" />

@@ -21,8 +21,8 @@ public:
 
     EmotionData ParseEmotion(const json& emotionjson);
     LocationData ParseLocation(const json& locationjson);
-    ManifestData ParseManifest(const wstring& filepath);
-    vector <wstring> FindManifest();
+    ManifestData ParseManifest(const std::wstring& filepath);
+    std::vector <std::wstring> FindManifest();
     bool LoadManifest();
 
     // здесь пока нет методов, значит и в cpp нечего писать 

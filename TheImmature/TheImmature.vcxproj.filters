@@ -75,9 +75,6 @@
     <ClCompile Include="WinManager.cpp">
       <Filter>src\window\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Global.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>src</Filter>
     </ClCompile>

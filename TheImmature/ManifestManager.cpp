@@ -61,9 +61,9 @@ ManifestData ManifestManager::ParseManifest(const std::wstring& filepath) {
     return data;
 }
 
-vector<wstring> ManifestManager::FindManifest() {
-    vector<wstring> manifests;
-    wstring basePath = L"Data/";
+std::vector<std::wstring> ManifestManager::FindManifest() {
+    std::vector<std::wstring> manifests;
+    std::wstring basePath = L"Data/";
 
     if (!fs::exists(basePath)) {
         // Можно создать папку автоматически

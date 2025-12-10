@@ -1,8 +1,8 @@
 ﻿#include "Render.h" 
 #include "Global.h"
 
-wstring RenderSystem::IntToWString(int value) {
-    return to_wstring(value);
+std::wstring RenderSystem::IntToWString(int value) {
+    return std::to_wstring(value);
 }
 
 int RenderSystem::GetScaledX(int x, float scaleX) {
@@ -23,7 +23,7 @@ int RenderSystem::GetScaledSize(int size, float uiScale) {
 
 void RenderSystem::ShowText(
     const HDC& hdc, 
-    const wstring& text, 
+    const std::wstring& text, 
     int base_x, 
     float windowScaleX,
     int base_y, 
@@ -113,10 +113,10 @@ void RenderSystem::ShowObject(const HDC& hdc, float windowScaleX, float windowSc
     ShowBMP(hdc, 1500, windowScaleX, 20, windowScaleY, windowScaleUI, 400, 600, r_resManager.GetBackCharacter(), true);
 
     // scales:
-    for (int i = 0; i < COUNT_Emotions; i++) {
-        ShowText(hdc, Emotion_Names[i], 50, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
-        ShowText(hdc, to_wstring(Hero.emotions[i]), 200, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
-    }
+    //for (int i = 0; i < COUNT_Emotions; i++) {
+        //ShowText(hdc, Emotion_Names[i], 50, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
+        //ShowText(hdc, std::to_wstring(Hero.emotions[i]), 200, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
+    //}
 
     //if (data.Emotion.empty()) MessageBox(NULL, L"Render Error", L"Emotion empty", MB_ICONERROR);
     //if (data.Worlds.empty()) MessageBox(NULL, L"Render Error", L"Worlds empty", MB_ICONERROR);
