@@ -113,10 +113,8 @@ void RenderSystem::ShowObject(const HDC& hdc, float windowScaleX, float windowSc
     //Back icon character
     ShowBMP(hdc, 1500, windowScaleX, 20, windowScaleY, windowScaleUI, 400, 600, r_resManager.GetBackCharacter(), true);
 
-
-    // === ВАЖНО: Используем -> для указателя ===
-    if (r_manifestManager && r_manifestManager->IsLoaded()) {  // <- ТОЧКА меняется на СТРЕЛКУ
-        const auto& data = r_manifestManager->GetData();  // <- СТРЕЛКА
+    if (r_manifestManager && r_manifestManager->IsLoaded()) {  
+        const auto& data = r_manifestManager->GetData();  
 
         // Отрисовываем эмоции
         for (size_t i = 0; i < data.Emotion.size(); i++) {
@@ -156,25 +154,5 @@ void RenderSystem::ShowObject(const HDC& hdc, float windowScaleX, float windowSc
     //    ShowText(hdc, std::to_wstring(g_Hero.emotions[i]), 200, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
     //}
 
-    //if (data.Emotion.empty()) MessageBox(NULL, L"Render Error", L"Emotion empty", MB_ICONERROR);
-    //if (data.Worlds.empty()) MessageBox(NULL, L"Render Error", L"Worlds empty", MB_ICONERROR);
-    //if (data.Current_Ver = NULL) MessageBox(NULL, L"Render Error", L"Version NULL", MB_ICONERROR);
-
-    //for (int i = 0; i < data.Emotion.size(); i++) {
-
-    //    ShowText(hdc, data.Emotion[i].Display_Name, 460, windowScaleX, 40 + i * 60, windowScaleY, 28, windowScaleUI);
-    //    ShowText(hdc, data.Emotion[i].ID, 500, windowScaleX, 40 + i * 60, windowScaleY, 28, windowScaleUI);
-    //    ShowText(hdc, to_wstring(data.Emotion[i].DefaultValue), 520, windowScaleX, 40 + i * 60, windowScaleY, 28, windowScaleUI);
-
-    //}
-
-    //for (int i = 0; i < data.Worlds.size(); i++) {
-
-    //    ShowText(hdc, data.Worlds[i].name, 760, windowScaleX, 40 + i * 60, windowScaleY, 28, windowScaleUI);
-    //    ShowText(hdc, data.Worlds[i].link, 800, windowScaleX, 40 + i * 60, windowScaleY, 28, windowScaleUI);
-
-    //}
-
-    //ShowText(hdc, to_wstring(data.Current_Ver), 480, windowScaleX, 660, windowScaleY, 28, windowScaleUI);
 
 }

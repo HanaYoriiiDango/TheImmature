@@ -1,6 +1,6 @@
 ﻿{
   "version": "1.0",
-  "emotions": [
+  "emotions": [ 
     {
       "id": "JOY",
       "display_name": "Радость",
@@ -10,9 +10,29 @@
       "id": "SADNESS",
       "display_name": "Грусть",
       "default_value": 50
+    },
+    {
+      "id": "POWER",
+      "display_name": "Сила",
+      "default_value": 50
+    },
+    {
+      "id": "FEAR",
+      "display_name": "Страх",
+      "default_value": 50
+    },
+    {
+      "id": "CALM",
+      "display_name": "Спокойствие",
+      "default_value": 50
+    },
+    {
+      "id": "ANGER",
+      "display_name": "Гнев",
+      "default_value": 50
     }
   ],
-  "worlds": [
+  "worlds": [ 
     {
       "name": "Мир Радости",
       "linked_emotion": "JOY",
@@ -22,6 +42,27 @@
       "name": "Мир Грусти",
       "linked_emotion": "SADNESS",
       "locked_by_default": false
+    },
+    {
+      "name": "Мир Силы",
+      "linked_emotion": "POWER",
+      "locked_by_default": false
+    },
+    {
+      "name": "Мир Страха",
+      "linked_emotion": "FEAR",
+      "locked_by_default": false
+    },
+    {
+      "name": "Мир Спокойствия",
+      "linked_emotion": "CALM",
+      "locked_by_default": false
+    },
+    {
+      "name": "Мир Гнева",
+      "linked_emotion": "ANGER",
+      "locked_by_default": false
     }
   ]
 }
+
