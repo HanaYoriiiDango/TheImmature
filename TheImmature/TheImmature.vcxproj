@@ -125,18 +125,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ManifestManager.cpp" />
+    <ClCompile Include="JsonValidator.cpp" />
     <ClCompile Include="GameCore.cpp" />
     <ClCompile Include="InitSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="ResManager.cpp" />
     <ClCompile Include="StringUtils.cpp" />
-    <ClCompile Include="TextManager.cpp" />
+    <ClCompile Include="JsonManager.cpp" />
     <ClCompile Include="WinManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ManifestManager.h" />
+    <ClInclude Include="JsonValidator.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Init.h" />
@@ -144,7 +144,7 @@
     <ClInclude Include="ResManager.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="Systems.h" />
-    <ClInclude Include="TextManager.h" />
+    <ClInclude Include="JsonManager.h" />
     <ClInclude Include="WinManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

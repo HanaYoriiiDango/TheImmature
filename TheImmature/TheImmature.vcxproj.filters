@@ -60,10 +60,10 @@
     <ClCompile Include="InitSystem.cpp">
       <Filter>src\core\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ManifestManager.cpp">
+    <ClCompile Include="JsonValidator.cpp">
       <Filter>src\game\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="TextManager.cpp">
+    <ClCompile Include="JsonManager.cpp">
       <Filter>src\game\Sources</Filter>
     </ClCompile>
     <ClCompile Include="Render.cpp">
@@ -89,13 +89,10 @@
     <ClInclude Include="Core.h">
       <Filter>src\core\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Init.h">
-      <Filter>src\core\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="ManifestManager.h">
+    <ClInclude Include="JsonValidator.h">
       <Filter>src\game\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="TextManager.h">
+    <ClInclude Include="JsonManager.h">
       <Filter>src\game\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Render.h">
@@ -112,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="StringUtils.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="Init.h">
+      <Filter>src\core\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

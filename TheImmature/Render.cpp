@@ -1,6 +1,6 @@
 ﻿#include "Global.h"
 #include "Render.h"
-#include "ManifestManager.h" 
+#include "JsonManager.h" 
 
 std::wstring RenderSystem::IntToWString(int value) {
     return std::to_wstring(value);

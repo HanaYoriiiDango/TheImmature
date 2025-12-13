@@ -1,11 +1,14 @@
 ﻿#pragma once
 #include "Systems.h"
+#include "JsonValidator.h"
 
 // src/game/TextManager.h
-// Пока здесь НИЧЕГО не подключаем и не пишем.
 
-class TextManager {
+class JsonManager {
 private:
+
+    ManifestData j_Data; // шаблон для хранения вводных данных manifest.json
+    bool j_ManifestLoaded = false; // флаг загрузки, меняется если произошли проблемы и нужно загрузить данные по умолчанию 
 
     // Внутренние методы
     /*vector<string> FindWorldFolders();
@@ -17,7 +20,13 @@ private:
 
 public:
 
-    TextManager() = default;
+    JsonManager() = default;
+
+    bool LoadManifest();
+    EmotionData ParseEmotion(const json& emotionJson);
+    LocationData ParseLocation(const json& locationJson);
+    bool ParseManifest(const std::wstring& filepath);
+    void ProcessLoaded();
 
     // Общие методы
     /*void LoadAllNPCs();

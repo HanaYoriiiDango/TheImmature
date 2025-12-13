@@ -4,8 +4,8 @@
 GameCore::GameCore()
     : c_Render(c_ResManager)           // RenderSystem получает ResourceManager
     , c_WinManager(c_Render, c_ResManager)  // WindowManager получает оба
-    , c_Init(c_WinManager, c_ResManager, c_Manifest)    // InitSystem получает оба
-    , c_Manager()                      // TextManager без параметров
+    , c_Init(c_WinManager, c_ResManager, c_Validator)    // InitSystem получает оба
+    , c_Validator()                      // JsonManager без параметров
 {}
 
 bool GameCore::InitGame(HINSTANCE hInstance) {
