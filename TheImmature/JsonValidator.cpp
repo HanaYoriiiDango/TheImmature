@@ -43,6 +43,21 @@ std::wstring JsonValidator::FindFileInFolder(const std::wstring& folder, const s
     if (FindJson(manifestPath) == L"") return L"";
 
     return manifestPath; // если все хорошо, то возвращаем путь до файла 
+
+}
+
+std::vector<std::string> JsonValidator::FindJSONFiles(const std::string& folderPath) {
+    std::vector<std::string> files;
+
+    if (!fs::exists(folderPath)) return files;
+
+    for (const auto& entry : fs::directory_iterator(folderPath)) {
+        if (entry.is_regular_file() && entry.path().extension() == ".json") {
+            files.push_back(entry.path().filename().string());
+        }
+    }
+
+    return files;
 }
 
 // Проверка ключей в файле

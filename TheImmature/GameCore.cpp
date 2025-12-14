@@ -4,7 +4,8 @@
 GameCore::GameCore()
     : c_Render(c_ResManager)
     , c_WinManager(c_Render, c_ResManager)
-    , c_Init(c_WinManager, c_ResManager, c_JsonManager)  // ← Передаем JsonManager
+    , c_Init(c_WinManager, c_ResManager, c_JsonManager) 
+    , c_Logic()  
 {
 }
 
@@ -23,6 +24,28 @@ bool GameCore::InitGame(HINSTANCE hInstance) {
     }
 
     c_Render.SetJsonManager(&c_JsonManager);
+
+    // ЗАГРУЗИТЬ NPC (НЕ критично для MVP)
+    if (!c_JsonManager.LoadAllNPCs()) {
+        // Только предупреждение
+        JsonValidator::LogInfo("Core", "No NPCs loaded, continuing anyway");
+    }
+    else {
+        // Проверяем что загрузилось
+        auto& npcs = c_JsonManager.GetNPCs();  // ← Теперь работает!
+        JsonValidator::LogInfo("Core",
+            "Successfully loaded " +
+            std::to_string(npcs.size()) + " NPCs");
+
+        // Можно проверить первого NPC для отладки
+        if (!npcs.empty()) {
+            const NPC& firstNPC = npcs[0];
+            std::wstring debugMsg = L"First NPC: " + firstNPC.name +
+                L" in world: " +
+                c_JsonManager.GetEmotionDisplayName(firstNPC.world_link);
+            OutputDebugStringW((debugMsg + L"\n").c_str());
+        }
+    }
 
     return true;
 }

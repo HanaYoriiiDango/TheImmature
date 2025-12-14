@@ -11,7 +11,8 @@ class InitSystem;
 class WindowManager;
 class RenderSystem;
 class ResourceManager;
-class EmotionManager;
-class TextManager;
+class JsonValidator;
+class JsonManager;
+class GameLogicSystem;
 
 // using declarations УБИРАЕМ совсем

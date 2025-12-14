@@ -128,6 +128,7 @@
     <ClCompile Include="JsonValidator.cpp" />
     <ClCompile Include="GameCore.cpp" />
     <ClCompile Include="InitSystem.cpp" />
+    <ClCompile Include="Logic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Render.cpp" />
     <ClCompile Include="ResManager.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="Core.h" />
     <ClInclude Include="Global.h" />
     <ClInclude Include="Init.h" />
+    <ClInclude Include="Logic.h" />
     <ClInclude Include="Render.h" />
     <ClInclude Include="ResManager.h" />
     <ClInclude Include="StringUtils.h" />

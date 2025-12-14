@@ -81,6 +81,9 @@
     <ClCompile Include="StringUtils.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="Logic.cpp">
+      <Filter>src\game\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems.h">
@@ -112,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="Init.h">
       <Filter>src\core\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Logic.h">
+      <Filter>src\game\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
