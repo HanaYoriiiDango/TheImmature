@@ -6,12 +6,12 @@
 
 // Логирование
 void JsonValidator::LogError(const std::string& context, const std::string& details) { // вывод информации об ошибке 
-    std::wstring message = StringUtils::UTF8ToWide("[" + context + "] " + details);
+    std::wstring message = StringUtils::UTF8ToWide("[" + context + "] " + details + "\n");
     OutputDebugStringW(message.c_str());
 }
 
 void JsonValidator::LogInfo(const std::string& context, const std::string& details) { // вывод информации о результате
-    std::wstring message = StringUtils::UTF8ToWide("[INFO][" + context + "] " + details);
+    std::wstring message = StringUtils::UTF8ToWide("[INFO][" + context + "] " + details + "\n");
     OutputDebugStringW(message.c_str());
 
 }

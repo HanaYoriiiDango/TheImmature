@@ -89,8 +89,18 @@ bool JsonManager::LoadManifest(const std::wstring& customPath) {
         return true;
 
     }
+    catch (const nlohmann::json::parse_error& e) {
+        // Специфичная обработка ошибок парсинга JSON
+        std::string error = "JSON parse error at line " +
+            std::to_string(e.byte) + ": " + e.what();
+        JsonValidator::LogError("JsonManager::LoadManifest", error);
+        return false;
+
+    }
     catch (const std::exception& e) {
-        JsonValidator::LogError("JsonManager::LoadManifest", "Exception: " + std::string(e.what()));
+        // Общая обработка
+        JsonValidator::LogError("JsonManager::LoadManifest",
+            "Exception: " + std::string(e.what()));
         return false;
     }
 }
