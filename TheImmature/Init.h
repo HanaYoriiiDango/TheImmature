@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "WinManager.h"    
 #include "ResManager.h"
-#include "JsonValidator.h"
+#include "JsonManager.h"
 
 // src/core/InitSystem.h
 
@@ -9,13 +9,13 @@ class InitSystem {
 private:
     WindowManager& winManager;
     ResourceManager& resManager;
-    JsonValidator& i_Validator;
+    JsonManager& i_jsonManager;
 
 
 public:
 
-    InitSystem(WindowManager& wm, ResourceManager& rm, JsonValidator& jv)
-        : winManager(wm), resManager(rm), i_Validator(jv) {}
+    InitSystem(WindowManager& wm, ResourceManager& rm, JsonManager& jm)
+        : winManager(wm), resManager(rm), i_jsonManager(jm){}
 
     //void Info();
     //void CreateWorlds();

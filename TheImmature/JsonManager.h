@@ -8,7 +8,8 @@ class JsonManager {
 private:
 
     ManifestData j_Data; // шаблон для хранения вводных данных manifest.json
-    bool j_ManifestLoaded = false; // флаг загрузки, меняется если произошли проблемы и нужно загрузить данные по умолчанию 
+    bool j_ManifestLoaded = false; // флаг загрузки, меняется если все данные успешно загружены, инача загрузка по умолчанию 
+    
 
     // Внутренние методы
     /*vector<string> FindWorldFolders();
@@ -22,11 +23,17 @@ public:
 
     JsonManager() = default;
 
-    bool LoadManifest();
+    bool LoadManifest(const std::wstring& customPath = L"data/manifest.json");
     EmotionData ParseEmotion(const json& emotionJson);
     LocationData ParseLocation(const json& locationJson);
-    bool ParseManifest(const std::wstring& filepath);
-    void ProcessLoaded();
+    bool ParseManifest(const nlohmann::json& jsonData);
+    bool LoadCheckManifest();
+
+    void ClearManifestData();
+
+    const EmotionData* GetEmotionByID(const std::wstring& id) const;
+    const EmotionData* GetEmotionByIndex(size_t index) const;
+    std::wstring GetEmotionDisplayName(Emotion_ emotion) const;
 
     // Общие методы
     /*void LoadAllNPCs();

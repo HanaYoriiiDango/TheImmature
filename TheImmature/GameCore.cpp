@@ -2,11 +2,11 @@
 #include "Core.h"
 
 GameCore::GameCore()
-    : c_Render(c_ResManager)           // RenderSystem получает ResourceManager
-    , c_WinManager(c_Render, c_ResManager)  // WindowManager получает оба
-    , c_Init(c_WinManager, c_ResManager, c_Validator)    // InitSystem получает оба
-    , c_Validator()                      // JsonManager без параметров
-{}
+    : c_Render(c_ResManager)
+    , c_WinManager(c_Render, c_ResManager)
+    , c_Init(c_WinManager, c_ResManager, c_JsonManager)  // ← Передаем JsonManager
+{
+}
 
 bool GameCore::InitGame(HINSTANCE hInstance) {
 
@@ -15,15 +15,14 @@ bool GameCore::InitGame(HINSTANCE hInstance) {
 
     //Init.CreateWorlds();
     //Manager.LoadAllNPCs();
-    // 
+
     // ЗАГРУЗИТЬ МАНИФЕСТ
     if (!c_Init.ManifestInitialize()) {
         MessageBox(NULL, L"Ошибка загрузки манифеста", L"Ошибка", MB_OK);
         return false;
     }
 
-    // ПЕРЕДАТЬ ManifestManager в RenderSystem (передаём АДРЕС)
-    c_Render.SetManifestManager(&c_Manifest); // & - получаем адрес объекта
+    c_Render.SetJsonManager(&c_JsonManager);
 
     return true;
 }

@@ -1,15 +1,18 @@
 ﻿#pragma once
-#include "ResManager.h"
 #include "Global.h"
-
-class ManifestManager;
+#include "JsonValidator.h"
+#include "ResManager.h"
+#include <vector>
+#include <string>
 
 // src/render/RenderSystem.h
+
+class JsonManager;  
 
 class RenderSystem {
 private:
     ResourceManager& r_resManager;
-    const ManifestManager* r_manifestManager = nullptr;
+    const JsonManager* r_jsonManager = nullptr; // Заменили ManifestManager
 
 
     //Вспомогательные методы 
@@ -22,10 +25,8 @@ public:
 
     RenderSystem(ResourceManager& rm) : r_resManager(rm) {}
 
-    // Установить указатель на ManifestManager
-    void SetManifestManager(const ManifestManager* mm) {
-        r_manifestManager = mm;
-    }
+
+    void SetJsonManager(const JsonManager* jm) { r_jsonManager = jm; }
 
 
      void ShowText(

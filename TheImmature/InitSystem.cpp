@@ -38,6 +38,6 @@ bool InitSystem::BMPInitialize() {
 
 bool InitSystem::ManifestInitialize() {
 
-    if (!i_Manifest.LoadManifest()) return false;
+    if (!i_jsonManager.LoadManifest()) return false;
     return true;
 }

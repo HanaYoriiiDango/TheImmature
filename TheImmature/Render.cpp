@@ -113,46 +113,18 @@ void RenderSystem::ShowObject(const HDC& hdc, float windowScaleX, float windowSc
     //Back icon character
     ShowBMP(hdc, 1500, windowScaleX, 20, windowScaleY, windowScaleUI, 400, 600, r_resManager.GetBackCharacter(), true);
 
-    if (r_manifestManager && r_manifestManager->IsLoaded()) {  
-        const auto& data = r_manifestManager->GetData();  
-
-        // Отрисовываем эмоции
-        for (size_t i = 0; i < data.Emotion.size(); i++) {
-            int yPos = 700 + static_cast<int>(i) * 60;
-
-            // Имя эмоции
-            ShowText(hdc, data.Emotion[i].Display_Name,
-                50, windowScaleX,
-                yPos, windowScaleY,
-                28, windowScaleUI);
-
-            // Значение (заглушка)
-            ShowText(hdc, L"50",
-                200, windowScaleX,
-                yPos, windowScaleY,
-                28, windowScaleUI);
-        }
-
-        // === ДЕБАГ: отрисовка загруженных данных ===
-        int debugY = 200;
-        ShowText(hdc, L"Версия: " + std::to_wstring(data.Current_Ver),
-            460, windowScaleX, debugY, windowScaleY, 24, windowScaleUI);
-
-    }
-    else {
-        // Сообщение о загрузке
-        ShowText(hdc, L"Загрузка эмоций...",
-            50, windowScaleX, 700, windowScaleY,
-            28, windowScaleUI);
+    if (!r_jsonManager) {
+        ShowText(hdc, L"JsonManager not set", 150, windowScaleX, 150, windowScaleY, 28, windowScaleUI);
+        return;
     }
 
-
-
-     //scales:
-    //for (int i = 0; i < COUNT_Emotions; i++) {
-    //    //ShowText(hdc, Emotion_Names[i], 50, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
-    //    ShowText(hdc, std::to_wstring(g_Hero.emotions[i]), 200, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
-    //}
-
-
+    // Используем данные из JsonManager
+    for (int i = 0; i < COUNT_Emotions; i++) {
+        Emotion_ emotion = static_cast<Emotion_>(i);
+        std::wstring name = r_jsonManager->GetEmotionDisplayName(emotion);
+        int value = 50;
+        
+        ShowText(hdc, name, 50, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
+        ShowText(hdc, IntToWString(value), 200, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
+    }
 }

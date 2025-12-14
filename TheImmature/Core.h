@@ -2,10 +2,10 @@
 #pragma once
 #include "Systems.h"
 #include "ResManager.h"
+#include "JsonManager.h"
 #include "JsonValidator.h"
 #include "Render.h"
 #include "WinManager.h"
-#include "JsonManager.h"
 #include "Init.h"
 
 class GameCore { // игровое ядро, все системы разделены по модулям 
@@ -13,11 +13,11 @@ private:
     // Игровое ядро должно именно ВЛАДЕТЬ своими модулями - композиция 
     //StatisticsCollector Collector;
     ResourceManager c_ResManager;
-    JsonValidator c_Validator;
+    JsonManager c_JsonManager;
     RenderSystem c_Render;
     WindowManager c_WinManager;
     InitSystem c_Init;
-    JsonManager c_Manager;
+    JsonValidator c_Validator;
     //GameLogicSystem Logic;
     //DialogSystem Dialog;
 
