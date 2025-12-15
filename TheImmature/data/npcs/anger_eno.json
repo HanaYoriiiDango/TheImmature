@@ -1,0 +1,47 @@
+﻿{
+  "id": "anger_eno",
+  "name": "Эно",
+  "world_link": "ANGER",
+  "texts": [
+    {
+      "id": 0,
+      "text": "Ты не там ищешь. Она ушла… сквозь.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Сквозь что?",
+          "emotion": "FEAR",
+          "sign": true,
+          "next_text_id": 1
+        },
+        {
+          "text": "Что ты имеешь в виду?",
+          "emotion": "ANGER",
+          "sign": true,
+          "next_text_id": 1
+        },
+        {
+          "text": "Спасибо за совет.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Древо Перехода... Там, где листья горят, но не сгорают. Ищи расщелину.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Понятно. Спасибо.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    }
+  ]
+}
