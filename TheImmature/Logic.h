@@ -2,34 +2,35 @@
 #include "Global.h"
 #include "JsonManager.h"
 
+class RenderSystem;
+
 class GameLogicSystem {
 private:
-    Player l_Hero;
     JsonManager* l_JsonManager = nullptr;
+    RenderSystem* l_Render = nullptr; // Добавить ссылку на RenderSystem
 
-    // вспом. переменные и массивы
+    // Вспомогательные переменные
     Emotion_ ArrayNum;
     int dominationRate = 5;
     int passiveRate = 2;
-    vector<Emotion_> Positive;
-    vector<Emotion_> Negative;
+    std::vector<Emotion_> Positive;
+    std::vector<Emotion_> Negative;
 
-    vector<Emotion_> Emotion = { JOY, SADNESS, POWER, FEAR, CALM, ANGER };
+    // Для выбора мира
+    std::map<Emotion_, int> dialogsCompletedByWorld;
+    bool isSelectingWorld = false;
+    int selectedPortal = 0;
 
 public:
-    GameLogicSystem() {
-        // Инициализация стандартными значениями
-        l_Hero = Player();
-    }
+    GameLogicSystem() : l_JsonManager(nullptr), l_Render(nullptr) {}
 
     void SetJsonManager(JsonManager* jm) { l_JsonManager = jm; }
+    void SetRenderSystem(RenderSystem* render) { l_Render = render; } 
 
     Emotion_ GetOpposite(Emotion_ feels);
     bool LimitCheck(int value);
     bool HeroLocCheck();
     Emotion_ DetectedEmotion(int feels);
-    void LockedWorlds();
-    void UnlockedWorlds();
     void LockedValue(Emotion_ feels);
     void MovingPlayer();
     void ChangeGamerule();
@@ -37,8 +38,20 @@ public:
     void Addition(Emotion_ feels, std::vector<Emotion_> Array);
     void Subtraction(Emotion_ feels, std::vector<Emotion_> Array);
     void ChangeEmotions(Emotion_ DominationEmotion, bool sign);
-    void ProcessGo();
-    void StatusInfo();
 
+    // Новые методы для выбора мира
+    int CountNPCsInWorld(Emotion_ world);
+    void OnDialogCompleted(Emotion_ world);
+    void OnDialogCompleted(); // Перегрузка
+
+    void StartWorldSelection();
+    void ProcessWorldSelection(int keyCode);
+    void SelectWorld();
+    void RenderWorldSelection(HDC hdc);
+
+    void ResetDialogCounterForWorld(Emotion_ world);
+
+    // Геттеры
+    bool IsSelectingWorld() const { return isSelectingWorld; }
 
 };

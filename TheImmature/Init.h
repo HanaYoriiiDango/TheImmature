@@ -18,10 +18,11 @@ public:
         : winManager(wm), resManager(rm), i_jsonManager(jm){}
 
     //void Info();
-    //void CreateWorlds();
-    //void CreatePortals(Emotion_ WorldEmotion);
+    void CreateWorlds();
+    void CreatePortals(Emotion_ WorldEmotion);
     bool WindowInitialize(HINSTANCE hInstance);
     bool BMPInitialize();
-    bool ManifestInitialize();
+    //bool ManifestInitialize();
+    bool DialogInitialize();
 
 };

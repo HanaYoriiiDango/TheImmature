@@ -14,6 +14,8 @@
 #include "Core.h"
 #include <cstdlib>
 #include <ctime>
+#include <algorithm>
+#include <wingdi.h> 
 
 int APIENTRY wWinMain(
     _In_ HINSTANCE hInstance, 

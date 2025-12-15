@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Systems.h"
+#include "Global.h"
 
 // src/render/ResourceManager.h
 // Пока здесь НИЧЕГО не подключаем и не пишем.
@@ -13,6 +13,9 @@ private:
     HBITMAP backHero = nullptr;       // Битмап для героя
     HBITMAP backCharacter = nullptr;  // Битмап для персонажа
     HBITMAP backMainText = nullptr;   // Битмап для основного текста
+    HBITMAP ButtonStart = nullptr;
+
+    HBITMAP worldBackgrounds[COUNT_Emotions]; 
 
 public:
     ResourceManager() = default;
@@ -20,8 +23,17 @@ public:
         Cleanup();  // Автоматическая очистка при уничтожении объекта
     }
 
+    bool LoadWorldBackgrounds(); // Новый метод
+    HBITMAP GetWorldBackground(Emotion_ emotion) {
+        if (emotion >= 0 && emotion < COUNT_Emotions)
+            return worldBackgrounds[emotion];
+        return hBack; // fallback
+    }
+
     bool FindFiles(const wchar_t* filename);
     HBITMAP LoadBMP(const wchar_t* name);
+    HBITMAP LoadBmpNpcs(const std::wstring& npcName);
+
     bool LoadAllBMP();
     void Cleanup();
 
@@ -33,5 +45,6 @@ public:
     HBITMAP GetBackHero();
     HBITMAP GetBackCharacter();
     HBITMAP GetbackMainText();
-
+    HBITMAP GetGG();
+    HBITMAP GetButtonStart();
 };

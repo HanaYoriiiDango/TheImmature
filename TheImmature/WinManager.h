@@ -1,45 +1,37 @@
 ﻿// src/window/WindowManager.h
 #pragma once
 #include "Windows.h"
+#include "Global.h"
 
 class RenderSystem;
 class ResourceManager;
+class DialogSystem; 
+class GameLogicSystem; 
 
 class WindowManager {
 private:
 
-    struct {
-
-        // === Основные поля окна ===
-        HWND hwnd = nullptr;
-        HINSTANCE hInstance = nullptr;
-        const wchar_t* className = L"Main";
-
-        // === Размеры и масштабирование ===
-        int width = 0;
-        int height = 0;
-        float scaleX = 1.0f;
-        float scaleY = 1.0f;
-        float uiScale = 1.0f;
-
-        // === Контексты устройств ===
-        HDC hdc = nullptr, memDC = nullptr;   // Основной HDC и буфер 
-
-
-
-    }window;
-
     RenderSystem& w_render;
     ResourceManager& w_resManager;
+    DialogSystem* w_dialog; 
+    GameLogicSystem* w_logic;
 
     // === Обработка сообщений ===
     static LRESULT CALLBACK StaticWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
     LRESULT HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+    bool start = false; // флаг для начала отрисовки игры 
 
 public:
 
-    WindowManager(RenderSystem& rs, ResourceManager& rm) : w_render(rs), w_resManager(rm) {}
+    WindowManager(RenderSystem& render, ResourceManager& resManager,
+        DialogSystem* dialog = nullptr, GameLogicSystem* logic = nullptr)
+        : w_render(render), w_resManager(resManager),
+        w_dialog(dialog), w_logic(logic) {
+    }
+
+    void SetDialogSystem(DialogSystem* dialog) { w_dialog = dialog; }
+    void SetGameLogicSystem(GameLogicSystem* logic) { w_logic = logic; } // Сеттер
 
     // Настройка и создание окна
     bool WindowCreate();

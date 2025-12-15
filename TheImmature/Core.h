@@ -6,6 +6,7 @@
 #include "JsonValidator.h"
 #include "Logic.h"
 #include "Render.h"
+#include "Dialog.h"
 #include "WinManager.h"
 #include "Init.h"
 
@@ -20,7 +21,7 @@ private:
     InitSystem c_Init;
     JsonValidator c_Validator;
     GameLogicSystem c_Logic;
-    //DialogSystem Dialog;
+    DialogSystem c_Dialog;
 
 public:
 

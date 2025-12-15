@@ -3,10 +3,14 @@
 
 GameCore::GameCore()
     : c_Render(c_ResManager)
-    , c_WinManager(c_Render, c_ResManager)
-    , c_Init(c_WinManager, c_ResManager, c_JsonManager) 
-    , c_Logic()  
+    , c_WinManager(c_Render, c_ResManager, &c_Dialog, &c_Logic) // Передаем c_Logic
+    , c_Init(c_WinManager, c_ResManager, c_JsonManager)
+    , c_Logic()
+    , c_JsonManager(c_ResManager)
+    , c_Dialog(c_JsonManager, c_Logic, c_Render)
 {
+    // Уже связали через конструктор, но можно и явно:
+    c_WinManager.SetGameLogicSystem(&c_Logic);
 }
 
 bool GameCore::InitGame(HINSTANCE hInstance) {
@@ -14,37 +18,20 @@ bool GameCore::InitGame(HINSTANCE hInstance) {
     if(!c_Init.WindowInitialize(hInstance)) return false;
     if (!c_Init.BMPInitialize()) return false;
 
-    //Init.CreateWorlds();
+    c_Init.CreateWorlds();
     //Manager.LoadAllNPCs();
 
-    // ЗАГРУЗИТЬ МАНИФЕСТ
-    if (!c_Init.ManifestInitialize()) {
-        MessageBox(NULL, L"Ошибка загрузки манифеста", L"Ошибка", MB_OK);
-        return false;
-    }
+    //c_Render.SetJsonManager(&c_JsonManager);
 
-    c_Render.SetJsonManager(&c_JsonManager);
+    // Устанавливаем связь между Render и Dialog
+    c_Render.SetDialogSystem(&c_Dialog);
+    
+    c_Logic.SetRenderSystem(&c_Render);
 
     // ЗАГРУЗИТЬ NPC (НЕ критично для MVP)
     if (!c_JsonManager.LoadAllNPCs()) {
         // Только предупреждение
         JsonValidator::LogInfo("Core", "No NPCs loaded, continuing anyway");
-    }
-    else {
-        // Проверяем что загрузилось
-        auto& npcs = c_JsonManager.GetNPCs();  // ← Теперь работает!
-        JsonValidator::LogInfo("Core",
-            "Successfully loaded " +
-            std::to_string(npcs.size()) + " NPCs");
-
-        // Можно проверить первого NPC для отладки
-        if (!npcs.empty()) {
-            const NPC& firstNPC = npcs[0];
-            std::wstring debugMsg = L"First NPC: " + firstNPC.name +
-                L" in world: " +
-                c_JsonManager.GetEmotionDisplayName(firstNPC.world_link);
-            OutputDebugStringW((debugMsg + L"\n").c_str());
-        }
     }
 
     return true;

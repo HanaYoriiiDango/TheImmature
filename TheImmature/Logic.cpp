@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <cstdlib>
 #include "Logic.h"
+#include "Render.h"
 
 using namespace std;
 
@@ -26,51 +27,48 @@ bool GameLogicSystem::LimitCheck(int value) {
 }
 
 bool GameLogicSystem::HeroLocCheck() {
-
-    ManifestData data = l_JsonManager->GetData();
-    return data.Worlds[l_Hero.current_loc].is_locked;
+    return Worlds[Hero.current_loc].is_locked;
 
 }
 
 Emotion_ GameLogicSystem::DetectedEmotion(int feels) {
 
-    if (LimitCheck(l_Hero.emotions[feels])) return (Emotion_)feels;
+    if (LimitCheck(Hero.emotions[feels])) return (Emotion_)feels;
     return COUNT_Emotions;
 
 }
 
 void GameLogicSystem::LockedValue(Emotion_ feels) {
 
-    int value = l_Hero.emotions[feels];
+    int value = Hero.emotions[feels];
 
     if (value < 0) value = 0;
     if (value > 100) value = 100;
 
-    l_Hero.emotions[feels] = value;
+    Hero.emotions[feels] = value;
 
 }
 
 void GameLogicSystem::MovingPlayer() {
     vector<int> available_worlds;
-    ManifestData data = l_JsonManager->GetData();
 
     // Собираем все открытые миры
-    for (int j = 0; j < COUNT_Emotions; j++) {
-        if (!data.Worlds[j].is_locked) {
+    for (int j = 0; j < Emotion.size(); j++) {
+        if (!Worlds[j].is_locked) {
             available_worlds.push_back(j);
         }
     }
 
     if (!available_worlds.empty()) {
         int random_index = rand() % available_worlds.size();
-        l_Hero.current_loc = available_worlds[random_index];
+        Hero.current_loc = available_worlds[random_index];
        /* cout << ">> Переход в " << Worlds_Names[Hero.current_loc] << endl;*/
 
         vector<int>().swap(available_worlds);
 
     }
     else {
-        l_Hero.life = false;
+        Hero.life = false;
         vector<int>().swap(available_worlds);
 
         cout << ">> Все миры закрыты! Игра завершена.\n";
@@ -79,8 +77,6 @@ void GameLogicSystem::MovingPlayer() {
 
 void GameLogicSystem::ChangeGamerule() {
 
-    ManifestData data = l_JsonManager->GetData();
-
     // ПРОПУСКАЕМ УЖЕ ОБРАБОТАННЫЕ ПАРЫ МИРОВ
     bool processedPairs[COUNT_Emotions] = { false };
 
@@ -88,7 +84,7 @@ void GameLogicSystem::ChangeGamerule() {
     for (int i = 0; i < COUNT_Emotions; i++) {
         if (processedPairs[i]) continue; // уже обработали эту пару
 
-        if (LimitCheck(l_Hero.emotions[i])) {
+        if (LimitCheck(Hero.emotions[i])) {
             Emotion_ feels = (Emotion_)i;
             Emotion_ OppositeWorld = GetOpposite(feels);
 
@@ -96,9 +92,9 @@ void GameLogicSystem::ChangeGamerule() {
                 OppositeWorld >= 0 && OppositeWorld < COUNT_Emotions) {
 
                 // Закрываем оба мира и помечаем пару как обработанную
-                if (!data.Worlds[feels].is_locked || !data.Worlds[OppositeWorld].is_locked) {
-                    data.Worlds[feels].is_locked = true;
-                    data.Worlds[OppositeWorld].is_locked = true;
+                if (!Worlds[feels].is_locked || !Worlds[OppositeWorld].is_locked) {
+                    Worlds[feels].is_locked = true;
+                    Worlds[OppositeWorld].is_locked = true;
                     processedPairs[feels] = true;
                     processedPairs[OppositeWorld] = true;
                     //cout << "Закрыты: " << data.Worlds[feels].name << " и " << data.Worlds[OppositeWorld].name << endl;
@@ -112,18 +108,18 @@ void GameLogicSystem::ChangeGamerule() {
 
     // Затем проверяем какие миры нужно ОТКРЫТЬ
     for (int i = 0; i < COUNT_Emotions; i++) {
-        if (processedPairsOpen[i]) continue; // ✅ уже обработали эту пару
+        if (processedPairsOpen[i]) continue; // 
 
-        if (l_Hero.emotions[i] > 10 && l_Hero.emotions[i] < 90) {
+        if (Hero.emotions[i] > 10 && Hero.emotions[i] < 90) {
             Emotion_ OppositeWorld = GetOpposite((Emotion_)i);
 
             if (i >= 0 && i < COUNT_Emotions &&
                 OppositeWorld >= 0 && OppositeWorld < COUNT_Emotions) {
 
                 // Открываем оба мира и помечаем пару как обработанную
-                if (data.Worlds[i].is_locked || data.Worlds[OppositeWorld].is_locked) {
-                    data.Worlds[i].is_locked = false;
-                    data.Worlds[OppositeWorld].is_locked = false;
+                if (Worlds[i].is_locked || Worlds[OppositeWorld].is_locked) {
+                    Worlds[i].is_locked = false;
+                    Worlds[OppositeWorld].is_locked = false;
                     processedPairsOpen[i] = true;
                     processedPairsOpen[OppositeWorld] = true;
                     //cout << "Открыты: " << Worlds[i].name << " и " << Worlds[OppositeWorld].name << endl;
@@ -133,7 +129,7 @@ void GameLogicSystem::ChangeGamerule() {
     }
 
     // Проверка игрока
-    if (data.Worlds[l_Hero.current_loc].is_locked) {
+    if (Worlds[Hero.current_loc].is_locked) {
         //cout << "Игрок был в закрытом мире: " << Worlds_Names[Hero.current_loc] << endl;
         MovingPlayer();
     }
@@ -143,8 +139,8 @@ void GameLogicSystem::ChangeGamerule() {
 void GameLogicSystem::Transfuse(Emotion_ feels) {
 
     Emotion_ opposite_emotion = GetOpposite(feels);
-    int new_value = 100 - l_Hero.emotions[feels];
-    l_Hero.emotions[opposite_emotion] = new_value;
+    int new_value = 100 - Hero.emotions[feels];
+    Hero.emotions[opposite_emotion] = new_value;
     LockedValue(feels);
     LockedValue(opposite_emotion);
 
@@ -152,7 +148,7 @@ void GameLogicSystem::Transfuse(Emotion_ feels) {
 
 void GameLogicSystem::Addition(Emotion_ feels, vector<Emotion_> Array) {
 
-    l_Hero.emotions[feels] += dominationRate;
+    Hero.emotions[feels] += dominationRate;
     Transfuse(feels);
 
     for (int i = 0; i < Array.size(); i++) {
@@ -161,7 +157,7 @@ void GameLogicSystem::Addition(Emotion_ feels, vector<Emotion_> Array) {
 
         if (ArrayNum != feels) {
 
-            l_Hero.emotions[ArrayNum] -= passiveRate;
+            Hero.emotions[ArrayNum] -= passiveRate;
             Transfuse(ArrayNum);
 
         }
@@ -170,7 +166,7 @@ void GameLogicSystem::Addition(Emotion_ feels, vector<Emotion_> Array) {
 
 void GameLogicSystem::Subtraction(Emotion_ feels, vector<Emotion_> Array) {
 
-    l_Hero.emotions[feels] -= dominationRate;
+    Hero.emotions[feels] -= dominationRate;
     Transfuse(feels);
 
     for (int j = 0; j < Array.size(); j++) {
@@ -179,7 +175,7 @@ void GameLogicSystem::Subtraction(Emotion_ feels, vector<Emotion_> Array) {
 
         if (ArrayNum != feels) {
 
-            l_Hero.emotions[ArrayNum] += passiveRate;
+            Hero.emotions[ArrayNum] += passiveRate;
             Transfuse(ArrayNum);
 
         }
@@ -222,49 +218,180 @@ void GameLogicSystem::ChangeEmotions(Emotion_ DominationEmotion, bool sign) {
 
 }
 
-void GameLogicSystem::ProcessGo() {
+// 1. Метод подсчета NPC в мире
+int GameLogicSystem::CountNPCsInWorld(Emotion_ world) {
+    int count = 0;
+    for (const NPC& npc : Characters) {
+        if (npc.world_link == world) {
+            count++;
+        }
+    }
+    return count;
+}
 
-    ManifestData data = l_JsonManager->GetData();
+// Добавим отладочный вывод:
+void GameLogicSystem::OnDialogCompleted(Emotion_ world) {
+    dialogsCompletedByWorld[world]++;
 
-    for (int i = 0; i < data.Worlds[l_Hero.current_loc].portal.size(); i++) {
+    int totalNPCs = CountNPCsInWorld(world);
+    int completed = dialogsCompletedByWorld[world];
 
-        cout << i + 1 << ")" << left << setw(20) << Worlds[Hero.current_loc].portal[i].name << "\t"
-            << (!Worlds[i].is_locked ? "Мир открыт \n" : "Мир закрыт \n") << endl;
+    // Отладка
+    wchar_t msg[256];
+    swprintf(msg, 256, L"[DEBUG] Мир: %s, NPC всего: %d, Завершено: %d",
+        Worlds_Names[world].c_str(), totalNPCs, completed);
+    OutputDebugStringW(msg);
 
+    if (totalNPCs > 0 && completed >= totalNPCs) {
+        OutputDebugStringW(L"[DEBUG] Все диалоги завершены! Запускаем выбор мира.");
+        StartWorldSelection();
+    }
+}
+
+void GameLogicSystem::OnDialogCompleted() {
+    OnDialogCompleted(Worlds[Hero.current_loc].linked_emotion);
+}
+
+void GameLogicSystem::StartWorldSelection() {
+    isSelectingWorld = true;
+    selectedPortal = 0;
+    game.Current_State = WORLD_SELECTION;
+
+    OutputDebugStringW(L"[LOGIC] StartWorldSelection() - выбор миров");
+}
+
+// 4. Обработка ввода при выборе мира
+void GameLogicSystem::ProcessWorldSelection(int keyCode) {
+    if (!isSelectingWorld) return;
+
+    std::vector<int> availablePortals;
+    for (int i = 0; i < Worlds[Hero.current_loc].portal.size(); i++) {
+        Portal_& portal = Worlds[Hero.current_loc].portal[i];
+        if (portal.open && Worlds[portal.target].is_available && !Worlds[portal.target].is_locked) {
+            availablePortals.push_back(i);
+        }
     }
 
-    cout << "В какой мир желаешь переместиться? \n";
-    int choice;
+    if (availablePortals.empty()) return;
 
-    cin >> choice;
+    switch (keyCode) {
+    case VK_UP:
+        selectedPortal = (selectedPortal - 1 + availablePortals.size()) % availablePortals.size();
+        break;
+    case VK_DOWN:
+        selectedPortal = (selectedPortal + 1) % availablePortals.size();
+        break;
+    case VK_RETURN:
+    case VK_SPACE:
+        if (selectedPortal >= 0 && selectedPortal < availablePortals.size()) {
+            int realPortalIndex = availablePortals[selectedPortal];
+            Portal_& portal = Worlds[Hero.current_loc].portal[realPortalIndex];
 
-    if (choice > 0 || choice <= Worlds[Hero.current_loc].portal.size()) {
+            if (portal.open && Worlds[portal.target].is_available && !Worlds[portal.target].is_locked) {
+                // Запоминаем старый мир для сброса счетчика
+                Emotion_ oldWorld = Worlds[Hero.current_loc].linked_emotion;
 
-        int target_index = choice - 1;
-        Portal_& portal = Worlds[Hero.current_loc].portal[target_index];
+                // Меняем мир
+                Hero.current_loc = portal.target;
+                Emotion_ newWorld = Worlds[Hero.current_loc].linked_emotion;
 
-        if (portal.open && !Worlds[portal.target].is_locked) {
+                wchar_t msg[256];
+                swprintf(msg, 256, L"[LOGIC] Переход из %s в %s",
+                    Worlds_Names[oldWorld].c_str(),
+                    Worlds_Names[newWorld].c_str());
+                OutputDebugStringW(msg);
 
-            Hero.current_loc = portal.target;
-            Collector.session.AllVisitCount++;
-            Collector.RecordVisit();
+                // Сбрасываем счетчики
+                ResetDialogCounterForWorld(oldWorld);
+                ResetDialogCounterForWorld(newWorld);
 
+                // Возвращаем состояние
+                isSelectingWorld = false;
+                game.Current_State = DIALOG;
 
+                // ⭐⭐⭐ УСТАНАВЛИВАЕМ ФЛАГ ДЛЯ АВТОЗАПУСКА ДИАЛОГА ⭐⭐⭐
+                g_NeedAutoStartDialog = true;
+                wchar_t debug[256];
 
-            cout << "Ты переместился в " << Worlds_Names[Hero.current_loc] << endl;
+                OutputDebugStringW(L"[LOGIC] ===== ФЛАГ УСТАНОВЛЕН! =====");
+                swprintf(debug, 256, L"[LOGIC] Новый мир: %s, Hero.current_loc теперь: %d",
+                    Worlds_Names[newWorld].c_str(), Hero.current_loc);
+                OutputDebugStringW(debug);
 
+                return;
+            }
+        }
+        break;
+    case VK_ESCAPE:
+        isSelectingWorld = false;
+        game.Current_State = DIALOG;
+        break;
+    }
+}
+
+// 3. SelectWorld() - упрощаем, т.к. логика перенесена в ProcessWorldSelection
+void GameLogicSystem::SelectWorld() {
+    // Теперь логика в ProcessWorldSelection
+}
+
+void GameLogicSystem::RenderWorldSelection(HDC hdc) {
+    if (!isSelectingWorld || !l_Render) return;
+
+    // Собираем доступные порталы
+    std::vector<Portal_> availablePortals;
+    for (const Portal_& portal : Worlds[Hero.current_loc].portal) {
+        if (portal.open && Worlds[portal.target].is_available && !Worlds[portal.target].is_locked) {
+            availablePortals.push_back(portal);
+        }
+    }
+
+    // Заголовок
+    l_Render->ShowText(hdc, L"Древо Перехода", 800, 100, 36);
+    l_Render->ShowText(hdc, Worlds[Hero.current_loc].name + L":", 800, 150, 28);
+    l_Render->ShowText(hdc, L"Куда отправишься дальше?", 800, 180, 24);
+
+    if (availablePortals.empty()) {
+        l_Render->ShowText(hdc, L"Нет доступных миров для перехода", 800, 250, 24);
+        return;
+    }
+
+    // Список ДОСТУПНЫХ миров
+    for (int i = 0; i < availablePortals.size(); i++) {
+        const Portal_& portal = availablePortals[i];
+        std::wstring worldText = Worlds[portal.target].name;
+
+        // Показываем сколько NPC в целевом мире
+        int npcCount = CountNPCsInWorld(portal.target);
+        std::wstring status = L" [" + std::to_wstring(npcCount) + L" NPC]";
+        worldText += status;
+
+        // Подсветка выбранного
+        if (i == selectedPortal) {
+            worldText = L">> " + worldText + L" <<";
         }
         else {
-            cout << "Этот мир закрыт!\n";
+            worldText = std::to_wstring(i + 1) + L") " + worldText;
         }
+
+        l_Render->ShowText(hdc, worldText, 800, 250 + i * 50, 24);
     }
+
+    // Подсказка
+    l_Render->ShowText(hdc, L"↑↓: Выбор мира   Enter: Перейти   ESC: Отмена",
+        800, 550, 20);
+
+    // Отладочная информация
+    wchar_t debug[256];
+    swprintf(debug, 256, L"Доступно миров: %d", availablePortals.size());
+    l_Render->ShowText(hdc, debug, 800, 600, 18);
 }
 
-void GameLogicSystem::StatusInfo() {
-    for (int i = 0; i < Emotion.size(); i++) {
-
-        cout << left << setw(40) << Emotion_Names[i] << "\t" <<
-            ((Hero.emotions[i] > 98 || Hero.emotions[i] < 2) ? "Disabled" : to_string(Hero.emotions[i])) << endl;
-
-    }
+// 7. Сброс счетчика
+void GameLogicSystem::ResetDialogCounterForWorld(Emotion_ world) {
+    dialogsCompletedByWorld[world] = 0;
+    wchar_t debug[256];
+    swprintf(debug, 256, L"[LOGIC] Сброс счетчика для мира: %s",
+        Worlds_Names[world].c_str());
+    OutputDebugStringW(debug);
 }
+

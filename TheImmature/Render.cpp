@@ -1,41 +1,48 @@
 ﻿#include "Global.h"
 #include "Render.h"
 #include "JsonManager.h" 
+#include "Dialog.h" 
 
 std::wstring RenderSystem::IntToWString(int value) {
     return std::to_wstring(value);
 }
 
-int RenderSystem::GetScaledX(int x, float scaleX) {
+int RenderSystem::GetScaledX(int x) {
 
-    return (int)(x * scaleX);
-
-}
-int RenderSystem::GetScaledY(int y, float scaleY) {
-
-    return (int)(y * scaleY);
+    return (int)(x * window.scaleX);
 
 }
-int RenderSystem::GetScaledSize(int size, float uiScale) {
+int RenderSystem::GetScaledY(int y) {
 
-    return (int)(size * uiScale);
+    return (int)(y * window.scaleY);
 
 }
+int RenderSystem::GetScaledSize(int size) {
+
+    return (int)(size * window.uiScale);
+
+}
+void RenderSystem::SetBuffer(const HDC& memDC) {
+
+    buffer = memDC;
+    
+
+
+}
+
 
 void RenderSystem::ShowText(
     const HDC& hdc, 
     const std::wstring& text, 
     int base_x, 
-    float windowScaleX,
     int base_y, 
-    float windowScaleY,
-    int base_font_size,
-    float windowUiscale ) 
+    int base_font_size 
+) 
 {
 
-    int x = GetScaledX(base_x, windowScaleX);
-    int y = GetScaledY(base_y, windowScaleY);
-    int font_size = GetScaledSize(base_font_size, windowUiscale);
+    int x = GetScaledX(base_x);
+    int y = GetScaledY(base_y);
+    int font_size = GetScaledSize(base_font_size);
     font_size = max(12, font_size);
 
     HFONT hFont = CreateFontW(
@@ -62,10 +69,9 @@ void RenderSystem::ShowText(
 
 void RenderSystem::ShowBMP(
     const HDC& hdc,
-    int base_x, float windowScaleX,
-    int base_y, float windowScaleY,
-    float windowUiscale, int base_w, int base_h, 
-    HBITMAP hBitmap, bool transparent) 
+    int base_x, int base_y, 
+    int base_w, int base_h, 
+    HBITMAP hBitmap, bool transparent, bool bitblt) 
 {
 
     BITMAP bm;
@@ -74,14 +80,15 @@ void RenderSystem::ShowBMP(
 
     if (hBitmap) {
 
-        int x = GetScaledX(base_x, windowScaleX);
-        int y = GetScaledY(base_y, windowScaleY);
-        int w = GetScaledSize(base_w, windowUiscale);
-        int h = GetScaledSize(base_h, windowUiscale);
+        int x = GetScaledX(base_x);
+        int y = GetScaledY(base_y);
+        int w = GetScaledSize(base_w);
+        int h = GetScaledSize(base_h);
 
         GetObject(hBitmap, sizeof(BITMAP), &bm);
 
         if (transparent) TransparentBlt(hdc, x, y, w, h, memDC, 0, 0, w, h, RGB(0, 0, 0));
+        if (bitblt) BitBlt(hdc, x, y, w, h, memDC, 0, 0, SRCCOPY);
         else StretchBlt(hdc, x, y, w, h, memDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
 
     }
@@ -91,40 +98,81 @@ void RenderSystem::ShowBMP(
 
 }
 
-void RenderSystem::ShowObject(const HDC& hdc, float windowScaleX, float windowScaleY, float windowScaleUI) {
+void RenderSystem::ShowObjectBeforeStart(float centrX, float centrY) {
 
-    if (!hdc) return;
+    if (!buffer) return;
 
     // background
-    ShowBMP(hdc, 0, windowScaleX,  0, windowScaleY, windowScaleUI, 1920, 1080, r_resManager.GethBack(), false);
+    ShowBMP(buffer, 0, 0, 1920, 1080, r_resManager.GetbackMainText());
+
+    ShowText(buffer, L"Press SPACE to start", centrX, centrY, 56);
+
+}
+
+void RenderSystem::ShowProcessGame() {
+
+    if (!buffer) return;
+
+    // 1. Фон в зависимости от текущего мира
+    HBITMAP currentBg = Worlds[Hero.current_loc].background;
+    if (!currentBg) currentBg = r_resManager.GethBack(); // fallback
+
+    ShowBMP(buffer, 0, 0, 1920, 1080, currentBg, false);
 
     // Back icon hero
-    ShowBMP(hdc, 20, windowScaleX, 20, windowScaleY, windowScaleUI, 400, 600, r_resManager.GetBackCharacter(), true);
+    ShowBMP(buffer, 20, 20, 400, 600, r_resManager.GetBackCharacter(), false, true);
 
     //Back scales
-    ShowBMP(hdc, 20, windowScaleX, 650, windowScaleY, windowScaleUI, 400, 400, r_resManager.GetBackScales(), true);
+    ShowBMP(buffer, 20, 650, 400, 400, r_resManager.GetBackScales(), false, true);
 
     //Back main text
-    ShowBMP(hdc, 450, windowScaleX, 20, windowScaleY, windowScaleUI, 1000, 600, r_resManager.GetbackMainText(), true);
+    ShowBMP(buffer, 450, 20, 1020, 600, r_resManager.GetbackMainText(), false, true);
 
     //Back replaces
-    ShowBMP(hdc, 450, windowScaleX, 650, windowScaleY, windowScaleUI, 1450, 400, r_resManager.GetBackReplace(), true);
+    ShowBMP(buffer, 450, 650, 1440, 400, r_resManager.GetBackReplace(), false, true);
 
     //Back icon character
-    ShowBMP(hdc, 1500, windowScaleX, 20, windowScaleY, windowScaleUI, 400, 600, r_resManager.GetBackCharacter(), true);
+    ShowBMP(buffer, 1500, 20, 390, 600, r_resManager.GetBackCharacter(), false, true);
 
-    if (!r_jsonManager) {
-        ShowText(hdc, L"JsonManager not set", 150, windowScaleX, 150, windowScaleY, 28, windowScaleUI);
-        return;
+    // Выводим эмоции
+    for (int i = 0; i < Emotion.size(); i++) {
+
+        ShowText(buffer, Emotion_Names[i], 30, 700 + i * 60, 28);
+        ShowText(buffer, std::to_wstring(Hero.emotions[i]), 200, 700 + i * 60, 28);
+
     }
 
-    // Используем данные из JsonManager
-    for (int i = 0; i < COUNT_Emotions; i++) {
-        Emotion_ emotion = static_cast<Emotion_>(i);
-        std::wstring name = r_jsonManager->GetEmotionDisplayName(emotion);
-        int value = 50;
-        
-        ShowText(hdc, name, 50, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
-        ShowText(hdc, IntToWString(value), 200, windowScaleX, 700 + i * 60, windowScaleY, 28, windowScaleUI);
+    // Выводи текущий мир 
+    ShowText(buffer, Worlds[Hero.current_loc].name, 30, 660, 28);
+
+    Hero.icon_show = true;
+
+    if (Hero.Icon) {
+        if (Hero.icon_show) {
+
+            ShowBMP(buffer, 40, 40, 370, 560, Hero.Icon, false, true);
+
+        }
     }
+
+    // Если диалог активен - рендерим его
+    if (game.Current_State == DIALOG && dialogSystem) {
+        dialogSystem->Render(buffer);
+    }
+
+    
+
+
+}
+
+void RenderSystem::ShowTextNPC(int value, std::wstring text) {
+
+    ShowText(buffer, text, 470, 40 + value, 28);
+
+}
+
+void RenderSystem::ShowAnswersNPC(int value, std::wstring text) {
+
+    ShowText(buffer, text, 470, 660 + value, 28);
+
 }

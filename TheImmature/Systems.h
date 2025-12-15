@@ -14,5 +14,6 @@ class ResourceManager;
 class JsonValidator;
 class JsonManager;
 class GameLogicSystem;
+class DialogSystem;
 
 // using declarations УБИРАЕМ совсем

@@ -1,5 +1,6 @@
 ﻿#include "WinManager.h" 
 #include "Render.h" 
+#include "Dialog.h" 
 
 // Реализации методов WindowManager 
 
@@ -18,7 +19,7 @@ LRESULT CALLBACK WindowManager::StaticWndProc(HWND hwnd, UINT msg, WPARAM wParam
             SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)pThis);
 
             // 4. Также сохраняем HWND в нашу структуру window
-            pThis->window.hwnd = hwnd;
+            window.hwnd = hwnd;
         }
     }
 
@@ -36,24 +37,90 @@ LRESULT CALLBACK WindowManager::StaticWndProc(HWND hwnd, UINT msg, WPARAM wParam
 
 LRESULT WindowManager::HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
+    case WM_CREATE: 
+        SetTimer(hwnd, 1, 16, NULL);
+
+        break;
+
     case WM_PAINT: {
         PAINTSTRUCT ps;
         window.hdc = BeginPaint(hwnd, &ps);
-        
+
         Render();
 
         EndPaint(hwnd, &ps);
-        return 0;
+        
+    }
+        break;
+
+    case WM_TIMER:
+    {
+        
+        if (g_NeedAutoStartDialog && w_dialog) {
+            OutputDebugStringW(L"[WM TIMER] Обнаружен флаг g_NeedAutoStartDialog!");
+            w_dialog->StartDialogInWorld();
+            g_NeedAutoStartDialog = false;
+        }
+
+        InvalidateRect(hwnd, NULL, FALSE);
+
     }
 
+    break;
+
+    
     case WM_KEYDOWN:
+        if (wParam == VK_SPACE && !start) {
+            start = true;
+            game.Current_State = DIALOG;
+            if (w_dialog) {
+                w_dialog->StartDialogInWorld(); // Запускаем диалог
+            }
+            return 0;
+        }
+
+        if (start) {
+            // Обрабатываем в зависимости от состояния игры
+            if (game.Current_State == DIALOG && w_dialog) {
+                w_dialog->ProcessInput((int)wParam);
+            }
+            else if (game.Current_State == WORLD_SELECTION && w_logic) {
+                // ⭐⭐⭐ НОВЫЙ КОД: обработка выбора мира ⭐⭐⭐
+                w_logic->ProcessWorldSelection((int)wParam);
+            }
+
+            if (g_NeedAutoStartDialog && w_dialog) {
+                OutputDebugStringW(L"[WM] ===== Обнаружен флаг g_NeedAutoStartDialog! =====");
+
+                wchar_t debug[256];
+                swprintf(debug, 256, L"[WM] Текущее состояние: %d, start: %d",
+                    game.Current_State, start);
+                OutputDebugStringW(debug);
+
+                swprintf(debug, 256, L"[WM] w_dialog указатель: %p", w_dialog);
+                OutputDebugStringW(debug);
+
+                OutputDebugStringW(L"[WM] Вызываю w_dialog->StartDialogInWorld()");
+                w_dialog->StartDialogInWorld();
+
+                g_NeedAutoStartDialog = false;
+                OutputDebugStringW(L"[WM] Флаг g_NeedAutoStartDialog сброшен");
+
+                OutputDebugStringW(L"[WM] ===== Обработка флага завершена =====");
+            }
+
+
+            InvalidateRect(hwnd, NULL, TRUE);
+        }
+
         if (wParam == VK_ESCAPE) {
             DestroyWindow(hwnd);
             return 0;
         }
         break;
-
     case WM_DESTROY:
+        g_NeedAutoStartDialog = false;
+        KillTimer(hwnd, 1);
         PostQuitMessage(0);
         return 0;
 
@@ -93,13 +160,35 @@ void WindowManager::Render() {
     // Выбираем битмап в контекст 
     HBITMAP hOldBmp = (HBITMAP)SelectObject(memDC, hMemBmp);
 
+    w_render.SetBuffer(memDC);
+
     // Вызываем RenderSystem и передаем ВСЕ необходимые данные
-   w_render.ShowObject(
-        memDC,              // Буфер для рисования
-        window.scaleX,      // Масштаб по X
-        window.scaleY,      // Масштаб по Y
-        window.uiScale      // UI масштаб
-    );
+    w_render.ShowObjectBeforeStart();
+
+    w_render.SetBuffer(memDC);
+
+    // Вызываем RenderSystem
+    if (!start) {
+        w_render.ShowObjectBeforeStart();
+    }
+    else {
+        w_render.ShowProcessGame(); // Это рисует фон, UI и т.д.
+
+        if (g_NeedAutoStartDialog && w_dialog) {
+            OutputDebugStringW(L"[WM RENDER] Автозапуск диалога!");
+            w_dialog->StartDialogInWorld();
+            g_NeedAutoStartDialog = false;
+        }
+
+        // ⭐⭐⭐ НОВЫЙ КОД: рендерим поверх в зависимости от состояния ⭐⭐⭐
+        if (game.Current_State == DIALOG && w_dialog) {
+            w_dialog->Render(memDC);
+        }
+        else if (game.Current_State == WORLD_SELECTION && w_logic) {
+            // Рендерим выбор мира через GameLogicSystem
+            w_logic->RenderWorldSelection(memDC);
+        }
+    }
 
     // Копируем буфер на экран
     BitBlt(window.hdc, 0, 0, window.width, window.height, memDC, 0, 0, SRCCOPY);
@@ -148,6 +237,10 @@ bool WindowManager::WindowCreate() {
         NULL, NULL, window.hInstance, this);
 
     if (!window.hwnd) return false;
+
+    SetCursor(NULL); // Скрыть курсор
+    ShowCursor(FALSE); 
+
     return true;
 
 }

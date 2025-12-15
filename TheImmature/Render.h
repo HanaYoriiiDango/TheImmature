@@ -4,46 +4,55 @@
 #include "ResManager.h"
 #include <vector>
 #include <string>
+#include <algorithm>
+#include <wingdi.h> 
 
 // src/render/RenderSystem.h
 
 class JsonManager;  
+class DialogSystem; 
 
 class RenderSystem {
 private:
     ResourceManager& r_resManager;
     const JsonManager* r_jsonManager = nullptr; // Заменили ManifestManager
-
+    DialogSystem* dialogSystem; // Ссылка на систему диалогов
 
     //Вспомогательные методы 
     std::wstring IntToWString(int value);
-    int GetScaledX(int x, float scaleX);
-    int GetScaledY(int y, float scaleY);
-    int GetScaledSize(int size, float uiScale);
+    int GetScaledX(int x);
+    int GetScaledY(int y);
+    int GetScaledSize(int size);
+
+    HDC buffer;
 
 public:
 
-    RenderSystem(ResourceManager& rm) : r_resManager(rm) {}
+    RenderSystem(ResourceManager& resManager)
+        : r_resManager(resManager), buffer(nullptr), dialogSystem(nullptr) {
+    }
 
-
-    void SetJsonManager(const JsonManager* jm) { r_jsonManager = jm; }
-
+    void SetBuffer(const HDC& memDC);
+    void SetDialogSystem(DialogSystem* dialog) { dialogSystem = dialog; }
 
      void ShowText(
         const HDC& hdc, const std::wstring& text,
-        int base_x, float windowScaleX,
-        int base_y, float windowScaleY,
-        int base_font_size, float windowUiscale
+        int base_x, int base_y,
+        int base_font_size
     );
 
     void ShowBMP(
         const HDC& hdc,
-        int base_x, float windowScaleX,
-        int base_y, float windowScaleY,
-        float windowUiscale, int base_w, int base_h,
-        HBITMAP hBitmap, bool transparent = false
+        int base_x, int base_y, 
+        int base_w, int base_h,
+        HBITMAP hBitmap, bool transparent = false, bool bitblt = false
     );
 
-    void ShowObject(const HDC& hdc, float windowScaleX, float windowScaleY, float windowScaleUI);
+    void ShowObjectBeforeStart(float centrX = 1920.0f / 2.0f, float centrY = 1080.0f / 2.0f);
+    void ShowProcessGame();
+    void ShowDialog();
+    void ShowTextNPC(int value, std::wstring text);
+    void ShowAnswersNPC(int value, std::wstring text);
+
 
 };

@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "Windows.h"
 #include <vector>
 #include <string>
 #include <ctime> 
@@ -6,36 +7,40 @@
 // Перечисления
 enum Emotion_ { JOY, SADNESS, POWER, FEAR, CALM, ANGER, COUNT_Emotions }; // Список БАЗОВЫХ эмоций для удобства работы 
 
+enum GameState {
+    MAIN_MENU,
+    DIALOG,
+    WORLD_SELECTION
+};
+
 // Структуры
 
-struct EmotionData {
-    std::wstring ID;
-    std::wstring Display_Name;
-    int DefaultValue;
-     
+struct Window_ {
+
+    // Основные поля окна 
+    HWND hwnd = nullptr;
+    HINSTANCE hInstance = nullptr;
+    const wchar_t* className = L"Main";
+
+    // Размеры и масштабирование 
+    int width = 0;
+    int height = 0;
+    float scaleX = 1.0f;
+    float scaleY = 1.0f;
+    float uiScale = 1.0f;
+
+    // Контексты устройств
+    HDC hdc = nullptr, memDC = nullptr;   // Основной HDC и буфер 
+
+
+
 };
 
 struct Portal_ {
     std::wstring name;
-    int target;
+    Emotion_ target;
     bool open = true;
 };
-
-struct LocationData {
-    std::wstring name;
-    std::wstring link; 
-    bool is_locked;
-
-};
-
-struct ManifestData {
-
-    double Current_Ver;
-    std::vector<EmotionData> Emotion; // массив ВСЕХ эмоций что добавлены через json manifest
-    std::vector<LocationData> Worlds; // массив всех миров описанных в json 
-
-};
-
 
 // Структура для ответов
 struct DialogAnswer {
@@ -43,6 +48,8 @@ struct DialogAnswer {
     Emotion_ emotion;
     bool sign; // true = увеличить, false = уменьшить
     int next_text_id;
+    bool show = false;
+    HBITMAP back;
 };
 
 // Структура для текста NPC
@@ -52,6 +59,8 @@ struct DialogText {
     Emotion_ emotion;
     bool sign; // true = увеличить, false = уменьшить
     std::vector<DialogAnswer> answers;
+    bool show = false;
+
 };
 
 // Структура для NPC
@@ -60,11 +69,16 @@ struct NPC {
     std::wstring name;
     Emotion_ world_link; // Линк персонажа с миром 
     std::vector<DialogText> texts;
+    HBITMAP icon = nullptr;
+    bool show = false;
+
 };
 
 struct Player {
-    int current_loc = SADNESS;
+    int current_loc = ANGER;
     int emotions[COUNT_Emotions] = { 50, 50, 50, 50, 50, 50 };
+    HBITMAP Icon = nullptr;
+    bool icon_show = false;
     bool life = true;
 };
 
@@ -73,11 +87,15 @@ struct Location {
     Emotion_ linked_emotion;
     bool is_locked = false;
     std::vector<Portal_> portal;
+    bool is_available = true; // Добавить
+    HBITMAP background = nullptr; // Добавить
 
 };
 
 
 struct GameSession {
+    GameState Current_State = MAIN_MENU;
+
     // Основная информация о сессии
     int ID; // номер сессии
     time_t startTime, endTime; // Начало сессии / конец сессии
@@ -97,9 +115,19 @@ struct GameSession {
 
 };
 
-// В конце Global.h
-namespace Temporary {
-    // Временные переменные, которые позже уберем
-    inline Player g_Hero;  // inline чтобы избежать multiple definition
+extern Player Hero;
+extern Location Worlds[COUNT_Emotions]; 
+// Внешние объявления глобальных переменных
+extern std::vector<Emotion_> Emotion;
+extern std::wstring Emotion_Names[COUNT_Emotions];
+extern std::wstring Worlds_Names[COUNT_Emotions];
+extern std::vector<NPC> Characters; // Все NPC игры
+extern GameSession game;
+extern Window_ window;
 
-}
+extern NPC* currentDialogNPC;      // Текущий NPC в диалоге
+extern DialogText* currentDialogText; // Текущая реплика в диалоге
+extern int selectedAnswerIndex;    // Выбранный ответ (0-based)
+extern bool inDialog;              // Флаг, что мы в диалоге
+extern int currentDialogTextID;    // ID текущего текста диалога
+extern bool g_NeedAutoStartDialog; // флаг для автозапуска 

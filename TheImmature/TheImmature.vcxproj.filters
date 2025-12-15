@@ -84,6 +84,12 @@
     <ClCompile Include="Logic.cpp">
       <Filter>src\game\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Global.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog.cpp">
+      <Filter>src\game\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems.h">
@@ -117,6 +123,9 @@
       <Filter>src\core\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Logic.h">
+      <Filter>src\game\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Dialog.h">
       <Filter>src\game\Headers</Filter>
     </ClInclude>
   </ItemGroup>
