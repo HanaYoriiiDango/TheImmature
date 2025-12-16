@@ -1,0 +1,143 @@
+﻿{
+  "id": "fear_elior_nivra",
+  "name": "Элиор и Нивра",
+  "world_link": "FEAR",
+  "texts": [
+    {
+      "id": 0,
+      "text": "Он ударил первым. Открытой ладонью. По щеке. Резко.\nКак будто хотел не столько ранить, сколько остановить.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 1
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Потом второй удар. Уже кулаком.\nЧелюсть пошла вбок. Её тело согнулось.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Она не кричала. Даже когда поняла, что никто не вмешается.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 3
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Потом — нож. Не заранее. Спрятанный, как последний шанс.\nОн вошёл между рёбер, в грудь. Не сразу глубоко.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "Его это не остановило. Только разозлило.\nОн продолжил. Сломал ей ногу.\nПотом — удар в грудь, несколько в живот.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 5
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "И только потом заметил, что не может вдохнуть.\nЧто сердце бьётся, но кровь не слушается.\nОн прошёл три шага, будто пытаясь уйти.\nПотом — упал.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 6
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "text": "Она умерла первой. Прискорбно, что никто не помог ей.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 7
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "text": "А ты — умер раньше неё.\nВ тот момент, когда испугался сделать хоть что-то.",
+      "emotion": "FEAR",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я боялся. Я... не смог вмешаться.",
+          "emotion": "FEAR",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "Я не думал, что он пойдёт так далеко...",
+          "emotion": "FEAR",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "Ними... прости меня.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "Он же... Он был просто зол. Я думал, это пройдёт.",
+          "emotion": "FEAR",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "(Промолчать)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    }
+  ]
+}

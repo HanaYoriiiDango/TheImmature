@@ -1,5 +1,4 @@
-﻿// Dialog.cpp
-#include "Dialog.h"
+﻿#include "Dialog.h"
 
 DialogSystem::DialogSystem(JsonManager& jsonManager, GameLogicSystem& logic, RenderSystem& render)
     : d_JsonManager(jsonManager)
@@ -11,51 +10,40 @@ DialogSystem::DialogSystem(JsonManager& jsonManager, GameLogicSystem& logic, Ren
     , isActive(false)
     , currentTextID(0)
     , isChoosingNPC(false)
+    , dialogStepCounter(0)
 {
 }
 
 void DialogSystem::StartDialogInWorld() {
-    // ⭐⭐⭐ ДОБАВЬ ЭТОТ ОТЛАДОЧНЫЙ ВЫВОД ⭐⭐⭐
+    if (isActive) {
+        OutputDebugStringW(L"[DIALOG] Предупреждение: диалог уже активен!");
+        return;
+    }
+
+    dialogStepCounter = 0;
+
     OutputDebugStringW(L"[DIALOG] ===== StartDialogInWorld() ВЫЗВАН =====");
 
     wchar_t debug[256];
 
-    // 1. Какая текущая локация?
     swprintf(debug, 256, L"[DIALOG] Hero.current_loc = %d", Hero.current_loc);
     OutputDebugStringW(debug);
 
-    // 2. Какой мир (эмоция) связан с локацией?
     Emotion_ currentWorld = Worlds[Hero.current_loc].linked_emotion;
     swprintf(debug, 256, L"[DIALOG] Текущий мир: %s (эмоция: %d)",
         Worlds_Names[currentWorld].c_str(), currentWorld);
     OutputDebugStringW(debug);
 
-    // 3. Сколько всего NPC в игре?
-    swprintf(debug, 256, L"[DIALOG] Всего Characters в игре: %zu", Characters.size());
-    OutputDebugStringW(debug);
-
-    // 4. Какие NPC есть в текущем мире?
+    // Находим ВСЕХ NPC в текущем мире
     availableNPCs.clear();
-    int npcCountInWorld = 0;
-
     for (size_t i = 0; i < Characters.size(); i++) {
         const NPC& npc = Characters[i];
         if (npc.world_link == currentWorld) {
             availableNPCs.push_back(&Characters[i]);
-            npcCountInWorld++;
-
-            swprintf(debug, 256, L"[DIALOG] NPC в мире: %s (world_link: %d)",
-                npc.name.c_str(), npc.world_link);
-            OutputDebugStringW(debug);
-
-            // 5. Проверим есть ли у NPC тексты?
-            swprintf(debug, 256, L"[DIALOG]   У NPC %s текстов: %zu",
-                npc.name.c_str(), npc.texts.size());
-            OutputDebugStringW(debug);
         }
     }
 
-    swprintf(debug, 256, L"[DIALOG] Всего NPC в этом мире: %d", npcCountInWorld);
+    swprintf(debug, 256, L"[DIALOG] Всего NPC в этом мире: %zu", availableNPCs.size());
     OutputDebugStringW(debug);
 
     if (availableNPCs.empty()) {
@@ -64,51 +52,59 @@ void DialogSystem::StartDialogInWorld() {
         return;
     }
 
-    // 6. Если NPC один - сразу начинаем диалог
-    if (availableNPCs.size() == 1) {
-        currentNPC = availableNPCs[0];
-        currentTextID = 0;
-        isChoosingNPC = false;
-        isActive = true;
+    // === ПРОСТОЕ РЕШЕНИЕ: используем счетчик из GameLogicSystem ===
 
-        swprintf(debug, 256, L"[DIALOG] Начинаем диалог с NPC: %s", currentNPC->name.c_str());
-        OutputDebugStringW(debug);
+    // Получаем сколько диалогов уже завершено в этом мире
+    int completedDialogs = 0;
 
-        // Находим первую реплику
-        currentText = nullptr;
-        for (DialogText& text : currentNPC->texts) {
-            if (text.id == currentTextID) {
-                currentText = &text;
-                break;
-            }
-        }
-
-        if (currentText) {
-            swprintf(debug, 256, L"[DIALOG] Найден текст с ID %d: %.20s...",
-                currentTextID, currentText->text.substr(0, 20).c_str());
-            OutputDebugStringW(debug);
-        }
-        else {
-            OutputDebugStringW(L"[DIALOG] ОШИБКА: не найден текст с ID 0");
-            isActive = false;
-        }
-    }
-    else {
-        // Если несколько - показываем выбор NPC
-        isChoosingNPC = true;
-        selectedAnswer = 0;
-        isActive = true;
-        OutputDebugStringW(L"[DIALOG] Показываем выбор из нескольких NPC");
+    // Способ 1: если сделали поле публичным
+    auto it = d_Logic.dialogsCompletedByWorld.find(currentWorld);
+    if (it != d_Logic.dialogsCompletedByWorld.end()) {
+        completedDialogs = it->second;
     }
 
-    OutputDebugStringW(L"[DIALOG] ===== StartDialogInWorld() ЗАВЕРШЕН =====");
+    // Или способ 2: если добавили геттер
+    // int completedDialogs = d_Logic.GetCompletedDialogsForWorld(currentWorld);
+
+    swprintf(debug, 256, L"[DIALOG] Завершено диалогов в мире: %d", completedDialogs);
+    OutputDebugStringW(debug);
+
+    // Берем NPC по порядку: 0, 1, 2...
+    int npcIndex = completedDialogs;
+
+    // Если индекс выходит за пределы - начинаем сначала
+    if (npcIndex >= availableNPCs.size()) {
+        npcIndex = 0;
+    }
+
+    currentNPC = availableNPCs[npcIndex];
+    currentTextID = 0;
+    isChoosingNPC = false;
+    isActive = true;
+
+    swprintf(debug, 256, L"[DIALOG] Начинаем диалог с NPC[%d]: %s",
+        npcIndex, currentNPC->name.c_str());
+    OutputDebugStringW(debug);
+
+    // Находим первую реплику
+    currentText = nullptr;
+    for (DialogText& text : currentNPC->texts) {
+        if (text.id == currentTextID) {
+            currentText = &text;
+            break;
+        }
+    }
+
+    if (!currentText) {
+        OutputDebugStringW(L"[DIALOG] ОШИБКА: не найден текст с ID 0");
+        isActive = false;
+    }
 }
 
 void DialogSystem::ProcessInput(int keyCode) {
     if (!isActive) return;
 
     if (isChoosingNPC) {
-        // Выбор NPC из нескольких
         switch (keyCode) {
         case VK_UP:
             selectedAnswer = (selectedAnswer - 1 + availableNPCs.size()) % availableNPCs.size();
@@ -118,12 +114,10 @@ void DialogSystem::ProcessInput(int keyCode) {
             break;
         case VK_RETURN:
         case VK_SPACE:
-            // Выбираем NPC
             currentNPC = availableNPCs[selectedAnswer];
             currentTextID = 0;
             isChoosingNPC = false;
 
-            // Находим первую реплику
             currentText = nullptr;
             for (DialogText& text : currentNPC->texts) {
                 if (text.id == currentTextID) {
@@ -138,7 +132,6 @@ void DialogSystem::ProcessInput(int keyCode) {
         }
     }
     else {
-        // Обычный диалог
         if (!currentText) return;
 
         switch (keyCode) {
@@ -158,33 +151,49 @@ void DialogSystem::ProcessInput(int keyCode) {
                 selectedAnswer >= 0 &&
                 selectedAnswer < currentText->answers.size()) {
 
-                // Применяем эффект от ответа
+                dialogStepCounter++;
+
+                if (dialogStepCounter > 100) {
+                    wchar_t debug[256];
+                    swprintf(debug, 256, L"[DIALOG] ПРЕДЕЛ: Диалог слишком длинный (100+ шагов) NPC: %s, Текст ID: %d",
+                        currentNPC ? currentNPC->name.c_str() : L"null",
+                        currentText ? currentText->id : -1);
+                    OutputDebugStringW(debug);
+
+                    if (currentNPC) {
+                        d_Logic.OnDialogCompleted(currentNPC->world_link);
+                    }
+                    isActive = false;
+                    currentNPC = nullptr;
+                    currentText = nullptr;
+                    dialogStepCounter = 0;
+                    return;
+                }
+
                 DialogAnswer& answer = currentText->answers[selectedAnswer];
                 d_Logic.ChangeEmotions(answer.emotion, answer.sign);
 
-            
                 currentTextID = answer.next_text_id;
 
-                if (currentTextID == -1) { // Диалог завершен
-                    OutputDebugStringW(L"[DIALOG] Диалог завершен, уведомляем GameLogicSystem");
+                if (currentTextID == -1) {
+                    wchar_t debugMsg[256];
+                    swprintf(debugMsg, 256, L"[DIALOG] Диалог завершен нормально, шагов: %d", dialogStepCounter);
+                    OutputDebugStringW(debugMsg);
 
                     if (currentNPC) {
-                        // Передаем мир NPC
                         d_Logic.OnDialogCompleted(currentNPC->world_link);
                     }
                     else {
-                        // Или текущий мир
                         d_Logic.OnDialogCompleted();
                     }
 
                     isActive = false;
                     currentNPC = nullptr;
                     currentText = nullptr;
-                    return; // Выходим сразу, не ищем следующий текст
+                    dialogStepCounter = 0;
+                    return;
                 }
-                
 
-                // Ищем следующий текст (только если диалог не завершен)
                 currentText = nullptr;
                 for (DialogText& text : currentNPC->texts) {
                     if (text.id == currentTextID) {
@@ -193,7 +202,6 @@ void DialogSystem::ProcessInput(int keyCode) {
                     }
                 }
 
-                // Если текста нет - завершаем диалог
                 if (!currentText) {
                     OutputDebugStringW(L"[DIALOG] Не найден следующий текст, завершаем диалог");
 
@@ -206,9 +214,9 @@ void DialogSystem::ProcessInput(int keyCode) {
 
                     isActive = false;
                     currentNPC = nullptr;
+                    dialogStepCounter = 0;
                 }
 
-                // Сбрасываем выбор
                 selectedAnswer = 0;
                 game.counterChoices++;
             }
@@ -216,6 +224,7 @@ void DialogSystem::ProcessInput(int keyCode) {
         case VK_ESCAPE:
             isActive = false;
             currentNPC = nullptr;
+            dialogStepCounter = 0;
             break;
         }
     }
@@ -225,9 +234,6 @@ void DialogSystem::Render(HDC hdc) {
     if (!isActive) return;
 
     if (isChoosingNPC) {
-        // Рендерим выбор NPC
-        d_Render.ShowText(hdc, L"Вы можете поговорить с:", 470, 40, 28);
-
         for (int i = 0; i < availableNPCs.size(); i++) {
             std::wstring npcText = availableNPCs[i]->name;
             if (i == selectedAnswer) {
@@ -239,43 +245,29 @@ void DialogSystem::Render(HDC hdc) {
             d_Render.ShowText(hdc, npcText, 470, 100 + i * 40, 24);
         }
 
-        // Показываем иконку выбранного NPC в режиме выбора
         if (selectedAnswer >= 0 && selectedAnswer < availableNPCs.size()) {
             NPC* previewNPC = availableNPCs[selectedAnswer];
             if (previewNPC && previewNPC->icon) {
                 d_Render.ShowBMP(hdc,
-                    1520,    // X координата (правая панель)
-                    40,      // Y координата
-                    370,     // Ширина
-                    560,     // Высота
+                    1520, 40, 370, 560,
                     previewNPC->icon,
-                    true);   // transparent = true
+                    true);
             }
         }
 
         d_Render.ShowText(hdc, L"↑↓: Выбор   Enter: Подтвердить   ESC: Выход", 470, 590, 20);
     }
     else if (currentNPC && currentText) {
-        // Рендерим обычный диалог
-
-        // 1. Иконка NPC (справа)
         if (currentNPC->icon) {
             d_Render.ShowBMP(hdc,
-                1520,    // X координата (правая панель)
-                40,      // Y координата
-                370,     // Ширина
-                560,     // Высота
+                1520, 40, 370, 560,
                 currentNPC->icon,
-                true);   // transparent = true (убираем черный фон)
+                 false, true);
         }
 
-        // 2. Имя NPC
         d_Render.ShowText(hdc, currentNPC->name + L":", 470, 40, 28);
-
-        // 3. Текст NPC
         d_Render.ShowText(hdc, currentText->text, 470, 80, 24);
 
-        // 4. Варианты ответов
         for (int i = 0; i < currentText->answers.size(); i++) {
             std::wstring answerText = currentText->answers[i].text;
             if (i == selectedAnswer) {

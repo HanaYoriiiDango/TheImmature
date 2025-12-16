@@ -56,8 +56,9 @@ LRESULT WindowManager::HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
     case WM_TIMER:
     {
         
-        if (g_NeedAutoStartDialog && w_dialog) {
-            OutputDebugStringW(L"[WM TIMER] Обнаружен флаг g_NeedAutoStartDialog!");
+        // ЕДИНСТВЕННОЕ место для автозапуска
+        if (g_NeedAutoStartDialog && w_dialog && game.Current_State == DIALOG) {
+            OutputDebugStringW(L"[WM TIMER] Запуск диалога...");
             w_dialog->StartDialogInWorld();
             g_NeedAutoStartDialog = false;
         }
@@ -73,9 +74,7 @@ LRESULT WindowManager::HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
         if (wParam == VK_SPACE && !start) {
             start = true;
             game.Current_State = DIALOG;
-            if (w_dialog) {
-                w_dialog->StartDialogInWorld(); // Запускаем диалог
-            }
+            g_NeedAutoStartDialog = true; // ТОЛЬКО ФЛАГ, таймер сам запустит
             return 0;
         }
 
@@ -85,30 +84,14 @@ LRESULT WindowManager::HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
                 w_dialog->ProcessInput((int)wParam);
             }
             else if (game.Current_State == WORLD_SELECTION && w_logic) {
-                // ⭐⭐⭐ НОВЫЙ КОД: обработка выбора мира ⭐⭐⭐
                 w_logic->ProcessWorldSelection((int)wParam);
             }
 
-            if (g_NeedAutoStartDialog && w_dialog) {
-                OutputDebugStringW(L"[WM] ===== Обнаружен флаг g_NeedAutoStartDialog! =====");
-
-                wchar_t debug[256];
-                swprintf(debug, 256, L"[WM] Текущее состояние: %d, start: %d",
-                    game.Current_State, start);
-                OutputDebugStringW(debug);
-
-                swprintf(debug, 256, L"[WM] w_dialog указатель: %p", w_dialog);
-                OutputDebugStringW(debug);
-
-                OutputDebugStringW(L"[WM] Вызываю w_dialog->StartDialogInWorld()");
-                w_dialog->StartDialogInWorld();
-
-                g_NeedAutoStartDialog = false;
-                OutputDebugStringW(L"[WM] Флаг g_NeedAutoStartDialog сброшен");
-
-                OutputDebugStringW(L"[WM] ===== Обработка флага завершена =====");
-            }
-
+            // Уже закомментировано - отлично!
+            // if (g_NeedAutoStartDialog && w_dialog) {
+            //     w_dialog->StartDialogInWorld();
+            //     g_NeedAutoStartDialog = false;
+            // }
 
             InvalidateRect(hwnd, NULL, TRUE);
         }
@@ -176,8 +159,8 @@ void WindowManager::Render() {
 
         if (g_NeedAutoStartDialog && w_dialog) {
             OutputDebugStringW(L"[WM RENDER] Автозапуск диалога!");
-            w_dialog->StartDialogInWorld();
-            g_NeedAutoStartDialog = false;
+            //w_dialog->StartDialogInWorld();
+            //g_NeedAutoStartDialog = false;
         }
 
         // ⭐⭐⭐ НОВЫЙ КОД: рендерим поверх в зависимости от состояния ⭐⭐⭐

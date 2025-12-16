@@ -1,0 +1,87 @@
+﻿{
+  "id": "power_laurent",
+  "name": "Лоран",
+  "world_link": "POWER",
+  "texts": [
+    {
+      "id": 0,
+      "text": "Ты был у неё.\nНу?.. Что она сказала?",
+      "emotion": "ANGER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Она сказала, что ты её ломал. И не хочет возвращаться.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 1
+        },
+        {
+          "text": "Ты потерял её. Она больше не верит в то, что ты любил.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 1
+        },
+        {
+          "text": "Нигде её нет. Никто её не видел.",
+          "emotion": "POWER",
+          "sign": false,
+          "next_text_id": 2
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Вот значит как.\nЯ отдал тебе задание. А ты притащил мне свою жалость.\nТы провалил сделку. Не жди благодарности.",
+      "emotion": "ANGER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я просто сказал правду.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "Ты сам виноват.",
+          "emotion": "ANGER",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Никто?.. Ха.\nВидимо, ушла дальше, чем я думал.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Да, похоже так.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 3
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Забери. Обещал — выполняю.\nВ следующий раз будешь говорить мне то, что я хочу услышать — и заработаешь больше.",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Спасибо.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "Я понял.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    }
+  ]
+}

@@ -32,14 +32,13 @@ void RenderSystem::SetBuffer(const HDC& memDC) {
 
 
 void RenderSystem::ShowText(
-    const HDC& hdc, 
-    const std::wstring& text, 
-    int base_x, 
-    int base_y, 
-    int base_font_size 
-) 
+    const HDC& hdc,
+    const std::wstring& text,
+    int base_x,
+    int base_y,
+    int base_font_size
+)
 {
-
     int x = GetScaledX(base_x);
     int y = GetScaledY(base_y);
     int font_size = GetScaledSize(base_font_size);
@@ -58,13 +57,32 @@ void RenderSystem::ShowText(
     SetTextColor(hdc, RGB(0, 0, 0));
     SetBkMode(hdc, TRANSPARENT);
 
-    // drawing
-    TextOutW(hdc, x, y, text.c_str(), (int)text.length());
+    // === ИЗМЕНЕНИЕ НАЧИНАЕТСЯ ЗДЕСЬ ===
+
+    // Разделяем текст по \n
+    std::vector<std::wstring> lines;
+    size_t start = 0;
+    size_t end = text.find(L'\n');
+
+    while (end != std::wstring::npos) {
+        lines.push_back(text.substr(start, end - start));
+        start = end + 1;
+        end = text.find(L'\n', start);
+    }
+    lines.push_back(text.substr(start));
+
+    // Рисуем каждую строку
+    int lineHeight = font_size + 4; // Межстрочный интервал
+    for (size_t i = 0; i < lines.size(); i++) {
+        TextOutW(hdc, x, y + (i * lineHeight),
+            lines[i].c_str(), (int)lines[i].length());
+    }
+
+    // === ИЗМЕНЕНИЕ ЗАКОНЧИЛОСЬ ===
 
     // clear
     SelectObject(hdc, hOldFont);
     DeleteObject(hFont);
-
 }
 
 void RenderSystem::ShowBMP(

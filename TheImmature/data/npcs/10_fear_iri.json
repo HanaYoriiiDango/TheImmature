@@ -1,0 +1,197 @@
+﻿{
+  "id": "fear_iri",
+  "name": "Ири",
+  "world_link": "FEAR",
+  "texts": [
+    {
+      "id": 0,
+      "text": "Не все доходят до конца лестницы.\nБольшинство слышит — и сворачивает обратно.\nСпасибо, что не испугался высоты.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Ищу девушку. Ними. Говорят, ты был ей близок.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 1
+        },
+        {
+          "text": "Ты Ири? Мне сказали, ты знаешь, где она.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 2
+        },
+        {
+          "text": "Музыка твоя... будто её голос звучит в ней.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 3
+        },
+        {
+          "text": "Я просто хотел поговорить. С кем-то живым.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "(промолчать)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 5
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Был. Когда позволяла.\nС ней трудно, если не знаешь, когда говорить, а когда — просто молчать рядом.\nОна… она тебе зачем?",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я просто хочу ей помочь.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        },
+        {
+          "text": "Я ищу её ради другого человека.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        },
+        {
+          "text": "Не знаю. Но чувствую, что должен.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        },
+        {
+          "text": "Чтобы понять, что с ней случилось.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Я о себе не всё знаю… А вот про неё, значит, знают, что я знаю?\nЗвучит почти как упрёк.\nПочему ты её ищешь?",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я дал обещание — помочь ей.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        },
+        {
+          "text": "Хочу разобраться, что с ней произошло.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        },
+        {
+          "text": "Я боюсь, что с ней случилось нечто плохое.",
+          "emotion": "FEAR",
+          "sign": true,
+          "next_text_id": 6
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Иногда мне кажется, что я слышу её голос среди аккордов.\nНо, может, это просто моя вина играет вместо нот.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Ты чувствуешь себя виноватым?",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        },
+        {
+          "text": "Ты хочешь её вернуть?",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        },
+        {
+          "text": "Ты её любил?",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "Тогда ты не по адресу.\nЯ, кажется, больше разговариваю с собой.\nНо если ты дошёл сюда — значит, что-то ищешь.\nНе по названию. По ощущениям.\nНими — одна из таких.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я ищу не её. Я ищу себя, наверное.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        },
+        {
+          "text": "Мне просто важно понять, почему она ушла.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        },
+        {
+          "text": "Я хочу помочь ей. Или себе через неё.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "Ты не первый, кто молчит, стоя за спиной.\nНо, может, ты — единственный, кто ещё готов слушать.\nОна раньше умела молчать так, что это было честнее слов.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я готов слушать.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 6
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "text": "Она раньше уходила — но возвращалась.\nА теперь будто растворилась.\nИ я не знаю... не знаю, осталась ли в ней та, кого я знал.\nЕсли увидишь её — скажи, что здесь… здесь её ждут.\nХоть кто-то.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Где её искать?",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 7
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "text": "Тогда иди в амфитеатр.\nТам она могла прятаться, когда ей было страшно.\nЯ пытался пойти за ней… но иногда страх сильнее любви.\nИли, может, я просто придумал, что это была любовь.",
+      "emotion": "FEAR",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Спасибо.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    }
+  ]
+}

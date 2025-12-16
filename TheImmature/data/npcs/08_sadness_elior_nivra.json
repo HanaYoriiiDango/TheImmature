@@ -1,0 +1,249 @@
+﻿{
+  "id": "sadness_elior_nivra",
+  "name": "Элиор и Нивра",
+  "world_link": "SADNESS",
+  "texts": [
+    {
+      "id": 0,
+      "text": "Это не страх.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 1
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Это не узнавание.",
+      "emotion": "ANGER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "ANGER",
+          "sign": true,
+          "next_text_id": 2
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Это изумление…",
+      "emotion": "FEAR",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "FEAR",
+          "sign": true,
+          "next_text_id": 3
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "…отравленное завистью и гневом!",
+      "emotion": "ANGER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "ANGER",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "Он даже не дал тебе ответить…",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "Потому что он спросил не для того, чтобы слушать.",
+      "emotion": "ANGER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "ANGER",
+          "sign": true,
+          "next_text_id": 6
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "text": "Он спросил, чтобы понять…",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 7
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "text": "…стоит ли тебя бояться.",
+      "emotion": "FEAR",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "FEAR",
+          "sign": true,
+          "next_text_id": 8
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "text": "Может, если бы ты заговорил первым, он бы был более благосклонен.\nИногда люди просто ждут, чтобы их не пугались.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 9
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "text": "Он не боится тебя. Он боится потерять внимание.\nТы — угроза. И он это понял раньше тебя.\nНе дай ему взять контроль!",
+      "emotion": "ANGER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я понял.",
+          "emotion": "FEAR",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "text": "Вот у тебя: Ними, Лоран, Ири, Виксия.\nЧетыре истории. Четыре правды.\nОдин из них врёт. Один говорит правду.\nОдин прячет боль. Один вообще не говорит.\nНо кто есть кто?",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 11
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "text": "А может, все они врут.\nПросто кто-то лучше. Кто-то — с благими намерениями.\nА кто-то — потому что иначе не умеет.\nУгадай, кто?",
+      "emotion": "ANGER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "ANGER",
+          "sign": true,
+          "next_text_id": 12
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "text": "Иногда правда — это то, что человек не может сказать.\nИногда ложь — это то, что он говорит слишком легко.\nВопрос не в том, кто честен.\nА в том, чьей честности ты можешь вынести цену.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 13
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "text": "А если ты ошибёшься?\nЕсли встанешь рядом не с тем?\nПотеряешь лицо. Или хуже — самого себя.",
+      "emotion": "FEAR",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "FEAR",
+          "sign": true,
+          "next_text_id": 14
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "text": "Тогда остаётся один выбор:\nДовериться не словам, а чувствам. Тем, что внутри.\nИли…",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "(Слушать дальше)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 15
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "text": "…Закрыть чувства. И слушать только логику.",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Ними молчит… но в этом молчании нет вины.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "Слишком много противоречий. Доверять нельзя никому.",
+          "emotion": "FEAR",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "Лоран, Ири, Виксия… все говорят о ней. А она — молчит. Это тоже ответ.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "Мне не важна правда. Мне важно, как я себя чувствую от того выбора, который я сделаю.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    }
+  ]
+}

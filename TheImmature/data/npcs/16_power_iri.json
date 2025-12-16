@@ -1,0 +1,139 @@
+﻿{
+  "id": "power_iri",
+  "name": "Ири",
+  "world_link": "POWER",
+  "texts": [
+    {
+      "id": 0,
+      "text": "Большинство разворачивается ещё на лестнице.\nСлишком высоко, слишком тяжело.\nСпасибо, что дошёл.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я ищу девушку. Ними. Говорят, ты знал её.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 1
+        },
+        {
+          "text": "Ты Ири? Мне сказали, ты можешь помочь.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 2
+        },
+        {
+          "text": "Музыка… она как её голос.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 3
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Знал. Когда она этого хотела.\nС ней... не угадаешь. Лучше слушать, чем говорить.\nА ты её зачем ищешь?",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я просто хочу ей помочь.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "Я ищу её ради другого человека.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Я о себе не всё знаю…\nА вот про неё, значит, знают, что я знаю.\nЗвучит почти как упрёк.\nПочему ты её ищешь?",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я дал обещание — помочь ей.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "Хочу разобраться, что с ней произошло.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Иногда мне кажется, что я слышу её голос среди аккордов.\nНо, может, это просто моя вина играет вместо нот.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Ты чувствуешь себя виноватым?",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "Ты хочешь её вернуть?",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "Если к этому как-то причастен Лоран — сразу нет.\nОна не будет рада его видеть.",
+      "emotion": "ANGER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Он кажется искренним…",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "Значит, ты против, чтобы я ей от него что-то передал?",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "Ты говоришь это потому, что сам был рядом?",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 5
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "Я не против. Я просто не слепой.\nПередай, если сможешь.\nТолько будь готов услышать отказ.",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я попробую.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "Спасибо за предупреждение.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    }
+  ]
+}

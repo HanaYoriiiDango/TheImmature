@@ -20,6 +20,8 @@ private:
     bool isChoosingNPC; // Флаг выбора NPC
     std::vector<NPC*> availableNPCs; // Доступные NPC
 
+    int dialogStepCounter; // Новое поле
+
 public:
     DialogSystem(JsonManager& jsonManager, GameLogicSystem& logic, RenderSystem& render);
 

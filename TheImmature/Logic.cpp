@@ -231,20 +231,38 @@ int GameLogicSystem::CountNPCsInWorld(Emotion_ world) {
 
 // Добавим отладочный вывод:
 void GameLogicSystem::OnDialogCompleted(Emotion_ world) {
+    // Увеличиваем счетчик завершенных диалогов в этом мире
     dialogsCompletedByWorld[world]++;
 
     int totalNPCs = CountNPCsInWorld(world);
     int completed = dialogsCompletedByWorld[world];
 
-    // Отладка
-    wchar_t msg[256];
-    swprintf(msg, 256, L"[DEBUG] Мир: %s, NPC всего: %d, Завершено: %d",
+    wchar_t debug[256];
+    swprintf(debug, 256, L"[LOGIC] OnDialogCompleted: мир=%s, NPC всего=%d, завершено=%d",
         Worlds_Names[world].c_str(), totalNPCs, completed);
-    OutputDebugStringW(msg);
+    OutputDebugStringW(debug);
+
+    // Выводим всех NPC в этом мире для отладки
+    for (size_t i = 0; i < Characters.size(); i++) {
+        const NPC& npc = Characters[i];
+        if (npc.world_link == world) {
+            swprintf(debug, 256, L"[LOGIC]   NPC[%zu]: %s (id: %s)",
+                i, npc.name.c_str(), npc.id.c_str());
+            OutputDebugStringW(debug);
+        }
+    }
 
     if (totalNPCs > 0 && completed >= totalNPCs) {
-        OutputDebugStringW(L"[DEBUG] Все диалоги завершены! Запускаем выбор мира.");
+        // ВСЕ NPC в этом мире пройдены
+        OutputDebugStringW(L"[LOGIC] >>> Все NPC пройдены! Запускаем выбор мира.");
         StartWorldSelection();
+
+        // Сбрасываем счетчик для этого мира
+        dialogsCompletedByWorld[world] = 0;
+    }
+    else {
+        OutputDebugStringW(L"[LOGIC] >>> Еще есть NPC. Запускаем следующий диалог.");
+        g_NeedAutoStartDialog = true;
     }
 }
 
@@ -395,3 +413,44 @@ void GameLogicSystem::ResetDialogCounterForWorld(Emotion_ world) {
     OutputDebugStringW(debug);
 }
 
+int GameLogicSystem::GetFirstNpcIndexInWorld(Emotion_ world) {
+    for (int i = 0; i < Characters.size(); i++) {
+        if (Characters[i].world_link == world) {
+            return i; // Возвращаем ПЕРВОГО найденного NPC
+        }
+    }
+    return 0; // fallback
+}
+
+void GameLogicSystem::StartNextDialogInWorld(Emotion_ world) {
+    static std::map<Emotion_, int> currentNPCIndex;
+
+    // Ищем NPC в этом мире
+    std::vector<int> npcIndices;
+    for (int i = 0; i < Characters.size(); i++) {
+        if (Characters[i].world_link == world) {
+            npcIndices.push_back(i);
+        }
+    }
+
+    if (npcIndices.empty()) {
+        // Нет NPC - предлагаем выбор мира
+        StartWorldSelection();
+        return;
+    }
+
+    // Берем следующего NPC
+    if (currentNPCIndex[world] >= npcIndices.size()) {
+        // Все NPC пройдены
+        StartWorldSelection();
+        currentNPCIndex[world] = 0; // Сброс
+        return;
+    }
+
+    // Начинаем диалог с текущим NPC
+    int npcIndex = npcIndices[currentNPCIndex[world]];
+    currentNPCIndex[world]++; // Увеличиваем для следующего раза
+
+    // Нужно как-то вызвать StartDialogWithNPC или аналогичную функцию
+    // Если нет такой функции, то нужно изменить архитектуру
+}

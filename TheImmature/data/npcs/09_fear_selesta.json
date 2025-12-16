@@ -1,0 +1,145 @@
+﻿{
+  "id": "fear_selesta",
+  "name": "Селеста",
+  "world_link": "FEAR",
+  "texts": [
+    {
+      "id": 0,
+      "text": "Не трогай то, что лежит. И не стой там, где падает.\nЕсть дело — говори. Если просто так — иди дальше, я не отвлекаюсь.",
+      "emotion": "FEAR",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Просто хотел узнать, кто тут живёт…",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 1
+        },
+        {
+          "text": "Ты случайно не знаешь девушку по имени Ними?",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 2
+        },
+        {
+          "text": "Ты Селеста? Мне сказали, ты можешь помочь.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 3
+        },
+        {
+          "text": "(промолчать)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Камень тут живёт. И тишина.\nЯ Селеста. Строю — чтоб хоть что-то не разваливалось. А ты?",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я ищу одну девушку. Ними её зовут…",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "А ты кто ей? И зачем она тебе?",
+      "emotion": "FEAR",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Просто хочу с ней поговорить. Помочь, может…",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "Она важна для другого человека. Я обещал помочь.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "Мне плевать на чувства. Мне нужно её найти.",
+          "emotion": "ANGER",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "Я не знаю. Просто чувствую, что должен.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Люди любят думать, что кто-то им что-то должен.\nА я — не справочная.\nКто тебе сказал, что я знаю больше остальных?",
+      "emotion": "ANGER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Сказали, ты знаешь, где найти Ними.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "Я не ищу помощи. Только правду.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "Ты — последняя, у кого я не спрашивал.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "Она… ушла. Давно.\nИ если честно — я не знаю, чего ты от неё хочешь.\nНо если кто и может знать, где её искать — это Ири.\nОн... бывал рядом. Не сразу. Но она его не гнала.\nТолько смотри — не дави. Он на таких, как ты, реагирует хуже, чем я.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "А где его дом?",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "Спасибо. Я пойду.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "Прямо по тропе. На развилке — не сворачивай.\nУвидишь. Там лестница на крышу. Он всё время наверху.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Спасибо.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    }
+  ]
+}

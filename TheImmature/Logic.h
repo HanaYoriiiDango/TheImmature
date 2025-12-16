@@ -3,6 +3,7 @@
 #include "JsonManager.h"
 
 class RenderSystem;
+class DialogSystem;
 
 class GameLogicSystem {
 private:
@@ -17,13 +18,14 @@ private:
     std::vector<Emotion_> Negative;
 
     // Для выбора мира
-    std::map<Emotion_, int> dialogsCompletedByWorld;
     bool isSelectingWorld = false;
     int selectedPortal = 0;
+  
 
 public:
     GameLogicSystem() : l_JsonManager(nullptr), l_Render(nullptr) {}
 
+    std::map<Emotion_, int> dialogsCompletedByWorld;
     void SetJsonManager(JsonManager* jm) { l_JsonManager = jm; }
     void SetRenderSystem(RenderSystem* render) { l_Render = render; } 
 
@@ -53,5 +55,10 @@ public:
 
     // Геттеры
     bool IsSelectingWorld() const { return isSelectingWorld; }
+
+    int GetFirstNpcIndexInWorld(Emotion_ world);
+    void StartNextDialogInWorld(Emotion_ world);
+
+
 
 };

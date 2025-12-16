@@ -1,0 +1,183 @@
+﻿{
+  "id": "sadness_nimi",
+  "name": "Ними",
+  "world_link": "SADNESS",
+  "texts": [
+    {
+      "id": 0,
+      "text": "Ты пришёл… и что? Ожидаешь, что всё изменится одним твоим словом?",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я хочу помочь, если ты позволишь.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 1
+        },
+        {
+          "text": "Ты не одна, даже если чувствуешь иначе.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 2
+        },
+        {
+          "text": "Тебе нужно перестать уходить и посмотреть правде в лицо.",
+          "emotion": "ANGER",
+          "sign": true,
+          "next_text_id": 3
+        },
+        {
+          "text": "(Молчание)",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Помощь… как слово пустое. Но если ты действительно хочешь — слушаю.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Хорошо. Но знай — это не игра. И не каждый сможет выдержать безразличие. Ты уверен?",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Иногда быть одной — легче, чем пытаться доверять.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Быть одной проще… Никто не предаст. Никто не ждёт объяснений.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Правда? Та, что ломает? Я устала от неё.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Быть сильной не значит быть слепой к боли.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 7
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "Иногда тишина говорит больше, чем слова.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Хорошо. Но знай — это не игра.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 8
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "Хорошо. Но знай — это не игра. И не каждый сможет выдержать безразличие. Ты уверен?",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я не отступлю.",
+          "emotion": "ANGER",
+          "sign": true,
+          "next_text_id": 9
+        },
+        {
+          "text": "Не знаю, но хочу попытаться.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 9
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "text": "Быть одной проще… Никто не предаст. Никто не ждёт объяснений.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Но ты заслуживаешь больше.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 9
+        },
+        {
+          "text": "Дай мне шанс доказать обратное.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 9
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "text": "Быть сильной не значит быть слепой к боли.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Но только через боль приходит исцеление.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 9
+        },
+        {
+          "text": "Твоя сила — в том, чтобы не бояться её встретить.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 9
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "text": "Хорошо. Но знай — это не игра.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я понимаю.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 9
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "text": "Тогда попробуй не сломаться.\nХочешь — значит уже лучше, чем безразличие.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я постараюсь.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    }
+  ]
+}

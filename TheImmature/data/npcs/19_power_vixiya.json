@@ -1,0 +1,87 @@
+﻿{
+  "id": "power_vixiya",
+  "name": "Виксия",
+  "world_link": "POWER",
+  "texts": [
+    {
+      "id": 0,
+      "text": "Интересно, правда?\nОн продал тебе сделку — не душу.\nА ты пришёл с правдой.\nЗачем людям правда, если они хотят лишь подтверждения?",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Может, ты права.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 1
+        },
+        {
+          "text": "Ложь всегда разрушает в итоге.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 2
+        },
+        {
+          "text": "Мне всё равно. Я сделал что должен.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 3
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Конечно права.\nЛюди ищут не истину, а утешение.\nТот, кто даёт утешение — всегда побеждает.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Печально, но факт.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Разрушает? Милый, ложь — это фундамент цивилизации.\nПравда же... правда оставляет нас голыми и одинокими.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Не согласен.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "У каждого свой путь.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Долг? Какое милое понятие.\nВ этом мире нет долга — есть только сделки и последствия.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Может быть.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        },
+        {
+          "text": "Я предпочитаю думать иначе.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    }
+  ]
+}

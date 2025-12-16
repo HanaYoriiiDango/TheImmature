@@ -49,7 +49,7 @@ NPC JsonManager::LoadNPCFromFile(const std::string& filepath) {
 
         npc.id = StringUtils::UTF8ToWide(jsonData["id"].get<std::string>());
         npc.name = StringUtils::UTF8ToWide(jsonData["name"].get<std::string>());
-        npc.icon = j_ResManager.LoadBmpNpcs(npc.id);
+        npc.icon = j_ResManager.LoadBmpNpcs(npc.name);
 
         std::wstring worldLink = StringUtils::UTF8ToWide(
             jsonData["world_link"].get<std::string>());

@@ -1,0 +1,147 @@
+﻿{
+  "id": "power_selesta",
+  "name": "Селеста",
+  "world_link": "POWER",
+  "texts": [
+    {
+      "id": 0,
+      "text": "Если просто пялиться пришёл — разворачивайся. Тут не экскурсия.\nНу? Что надо?",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Мне нужно с кем-то поговорить. Ты — Селеста?",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 1
+        },
+        {
+          "text": "Я ищу девушку. Ними. Мне сказали, ты можешь знать.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 2
+        },
+        {
+          "text": "Ты чего такая грубая сразу? Я ведь просто подошёл.",
+          "emotion": "ANGER",
+          "sign": true,
+          "next_text_id": 3
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Зависит, что за разговор. Если про погоду — мимо.\nЕсли серьёзно — говори толком.",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я ищу девушку. Ними.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "Мне нужно понять, что тут вообще происходит.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Много тут чего говорят.\nТы ей кто? Родня, друг, бегун с запиской?",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Никто. Просто хочу с ней поговорить.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "Я обещал передать ей кое-что.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Ага. Подходят все — а потом начинается.\nЯ говорю, как есть. Чтоб потом сюрпризов не было.\nЕсли ты не из таких — докажи делом.",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я понял. Не лезу, просто спрошу про Ними.",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 4
+        },
+        {
+          "text": "Доказывать? Перед тобой? Смешно.",
+          "emotion": "ANGER",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "Она ушла. Сама. Без слёз и без драм.\nПросто собрала себя и исчезла.\nЕсли ты ищешь, чтоб спасти или вернуть — поздно.",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Где его дом?",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "А ты что, её не понимала?",
+          "emotion": "POWER",
+          "sign": true,
+          "next_text_id": 6
+        },
+        {
+          "text": "Спасибо. Я пойду.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "По тропе прямо.\nТам дом с лестницей на крышу.\nОн почти всегда наверху. Думает, глядит, молчит.",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Понял.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "text": "Понимать и принимать — не одно и то же.\nЯ строю, чтоб держалось.\nА она была как вода — сквозь пальцы.\nНо это её дело.",
+      "emotion": "POWER",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Справедливо.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    }
+  ]
+}

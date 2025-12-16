@@ -1,0 +1,177 @@
+﻿{
+  "id": "sadness_iri",
+  "name": "Ири",
+  "world_link": "SADNESS",
+  "texts": [
+    {
+      "id": 0,
+      "text": "Не каждый находит сюда дорогу.\nБольшинство слышит музыку, но поворачивает обратно.\nСвоих дел много, кроме как музыку слушать.\nСпасибо, что уж ты пришёл.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Ищу девушку. Ними. Говорят, ты был ей близок.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 1
+        },
+        {
+          "text": "Ты Ири? Мне сказали, ты знаешь, где она.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 2
+        },
+        {
+          "text": "Твоя музыка… будто она про неё.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 3
+        },
+        {
+          "text": "Чем ты зарабатываешь на жизнь?",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 4
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "text": "Мы с ней, скажем так, хорошие друзья.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Я просто хочу ей помочь.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "Мне нужно поговорить с ней ради другого человека.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "Я не уверен, зачем… Просто чувствую, что должен.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "text": "Странно. Я о себе не всё знаю — а вот о ней, значит, знают, что я знаю?",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Ты её друг. Люди это видят.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "Я не ищу слухов. Только её.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "Мне просто нужна подсказка.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "text": "Музыка ни про кого. Или про всех.\nНо если ты услышал её — значит, что-то в тебе откликается.",
+      "emotion": "CALM",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Она важна. Для кого-то. Для меня.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "Я пытаюсь понять её.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "Ты любил её?",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "text": "А что, похоже, что я живу?\nТут все скорее доживают до понедельника, чем зарабатывают.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Мне просто хотелось начать с чего-то обычного.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "Не все умеют говорить о важном в лоб.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": 5
+        },
+        {
+          "text": "Иногда легче спросить глупость, чем сказать правду.",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 5
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "text": "Это уже что-то.\nОна оттолкнула меня в последний раз нашего общения.\nНо может ты узнаешь у неё, что случилось?\nОна раньше любила наш амфитеатр.\nКогда в нём ещё играла музыка.\nСходи туда, вероятно она там.\nПосле того-то, что с ней случилось.",
+      "emotion": "SADNESS",
+      "sign": true,
+      "answers": [
+        {
+          "text": "А что с ней случилось?",
+          "emotion": "SADNESS",
+          "sign": true,
+          "next_text_id": 6
+        },
+        {
+          "text": "Спасибо. Я попробую.",
+          "emotion": "CALM",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "text": "Случился Лоран…\nПозволь дам одну рекомендацию:\nНе слушай того, что он говорит.\nОн опасен. И не подпускай его к Ними.\nЭто добром не кончится.",
+      "emotion": "FEAR",
+      "sign": true,
+      "answers": [
+        {
+          "text": "Понял. Спасибо за предупреждение.",
+          "emotion": "FEAR",
+          "sign": true,
+          "next_text_id": -1
+        }
+      ]
+    }
+  ]
+}

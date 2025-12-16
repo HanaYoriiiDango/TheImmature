@@ -24,7 +24,10 @@ HBITMAP ResourceManager::LoadBMP(const wchar_t* name) {
 }
 
 HBITMAP ResourceManager::LoadBmpNpcs(const std::wstring& npcName) {
-    return LoadBMP(L"hohoi2.bmp"); // default
+    if (npcName == L"Лоран") return LoadBMP(L"Loran.bmp");
+    else if (npcName == L"Ними") return LoadBMP(L"Nimi.bmp");
+    else if (npcName == L"Элиор и Нивра") return LoadBMP(L"Elion.bmp");
+    else return LoadBMP(L"hohoi2.bmp"); // default
 }
 
 bool ResourceManager::LoadWorldBackgrounds() {
