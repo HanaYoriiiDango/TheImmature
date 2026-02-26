@@ -2,34 +2,35 @@
 #include "Core.h"
 
 GameCore::GameCore()
-    : c_Render(c_ResManager)
-    , c_WinManager(c_Render, c_ResManager, &c_Dialog, &c_Logic) 
-    , c_Init(c_WinManager, c_ResManager, c_JsonManager)
-    , c_Logic()
-    , c_JsonManager(c_ResManager)
-    , c_Dialog(c_JsonManager, c_Logic, c_Render)
+    : Render(ResManager)
+    , WinManager(Render, ResManager, &Dialog, &Logic) 
+    , Init(WinManager, ResManager, JsonManager)
+    , Logic()
+    , JsonManager(ResManager)
+    , Dialog(JsonManager, Logic, Render)
+    , JsonValidator
 {
     // Уже связали через конструктор, но можно и явно:
-    c_WinManager.SetGameLogicSystem(&c_Logic);
+    WinManager.SetGameLogicSystem(&Logic);
 }
 
 bool GameCore::InitGame(HINSTANCE hInstance) {
 
-    if(!c_Init.WindowInitialize(hInstance)) return false;
-    if (!c_Init.BMPInitialize()) return false;
+    if(!Init.WindowInitialize(hInstance)) return false;
+    if (!Init.BMPInitialize()) return false;
 
-    c_Init.CreateWorlds();
+    Init.CreateWorlds();
     //Manager.LoadAllNPCs();
 
     //c_Render.SetJsonManager(&c_JsonManager);
 
     // Устанавливаем связь между Render и Dialog
-    c_Render.SetDialogSystem(&c_Dialog);
+    Render.SetDialogSystem(&Dialog);
     
-    c_Logic.SetRenderSystem(&c_Render);
+    Logic.SetRenderSystem(&Render);
 
     // ЗАГРУЗИТЬ NPC (НЕ критично для MVP)
-    if (!c_JsonManager.LoadAllNPCs()) {
+    if (!JsonManager.LoadAllNPCs()) {
         // Только предупреждение
         JsonValidator::LogInfo("Core", "No NPCs loaded, continuing anyway");
     }
@@ -39,8 +40,8 @@ bool GameCore::InitGame(HINSTANCE hInstance) {
 
 void GameCore::Run() {
 
-    c_WinManager.WinUpdate();
-    c_WinManager.WhileMessage();
+    WinManager.WinUpdate();
+    WinManager.WhileMessage();
 
 }
 

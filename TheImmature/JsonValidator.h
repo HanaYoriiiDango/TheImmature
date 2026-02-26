@@ -7,12 +7,15 @@
 #include <vector>
 #include "Global.h"
 #include "json.hpp"  // Просто подключаем здесь
+#include "FileSystem.h"
 
 namespace fs = std::filesystem;
 using json = nlohmann::json;
 
 class JsonValidator {
 private:
+
+    FileSystem& jv_FileManager;
 
     // Статические константы (одна копия на весь класс) - это список валидных ключей по умолчанию для контейнеров 
     static inline const std::vector<std::string> EMOTION_FIELDS = { // эмоции
@@ -24,6 +27,8 @@ private:
     };
 
 public: 
+
+    JsonValidator(FileSystem& fm) : jv_FileManager(fm) {}
 
     // Проверки типов ключей 
     static bool IsStringKey(const json& j, const std::string& Key);

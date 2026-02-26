@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿// FileSystem.h
+#pragma once
 #include "Global.h"
 #include <filesystem>
 
@@ -7,8 +8,6 @@ namespace fs = std::filesystem;
 
 class FileSystem {
 public:
-
-    
 
     // Поиск файлов
     static std::wstring FindDirectory(const std::wstring& data); // поиск папки 

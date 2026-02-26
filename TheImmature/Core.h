@@ -1,6 +1,7 @@
 ﻿// src/core/GameCore.h
 #pragma once
 #include "Systems.h"
+#include "FileSystem.h"
 #include "ResManager.h"
 #include "JsonManager.h"
 #include "JsonValidator.h"
@@ -14,14 +15,15 @@ class GameCore { // игровое ядро, все системы раздел�
 private:
     // Игровое ядро должно именно ВЛАДЕТЬ своими модулями - композиция 
     //StatisticsCollector Collector;
-    ResourceManager c_ResManager;
-    JsonManager c_JsonManager;
-    RenderSystem c_Render;
-    WindowManager c_WinManager;
-    InitSystem c_Init;
-    JsonValidator c_Validator;
-    GameLogicSystem c_Logic;
-    DialogSystem c_Dialog;
+    FileSystem FileSystem;
+    ResourceManager ResManager;
+    JsonManager JsonManager;
+    RenderSystem Render;
+    WindowManager WinManager;
+    InitSystem Init;
+    JsonValidator Validator;
+    GameLogicSystem Logic;
+    DialogSystem Dialog;
 
 public:
 
