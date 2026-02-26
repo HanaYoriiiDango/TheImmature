@@ -8,7 +8,7 @@ GameCore::GameCore()
     , Logic()
     , JsonManager(ResManager)
     , Dialog(JsonManager, Logic, Render)
-    , JsonValidator
+    , Validator(FileSystem)
 {
     // Уже связали через конструктор, но можно и явно:
     WinManager.SetGameLogicSystem(&Logic);
