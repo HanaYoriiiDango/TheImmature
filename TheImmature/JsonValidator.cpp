@@ -16,7 +16,6 @@ void JsonValidator::LogInfo(const std::string& context, const std::string& detai
 
 }
 
-
 // Проверка ключей в файле
 
 bool JsonValidator::IsStringKey(const json& j, const std::string& Key) { // проверяет существование ключа типа string
