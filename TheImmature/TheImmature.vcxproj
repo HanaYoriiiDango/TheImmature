@@ -126,6 +126,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Dialog.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="Global.cpp" />
     <ClCompile Include="JsonValidator.cpp" />
     <ClCompile Include="GameCore.cpp" />
@@ -140,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dialog.h" />
+    <ClInclude Include="FileSystem.h" />
     <ClInclude Include="JsonValidator.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="Global.h" />

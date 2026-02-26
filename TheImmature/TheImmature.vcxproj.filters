@@ -90,6 +90,9 @@
     <ClCompile Include="Dialog.cpp">
       <Filter>src\game\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="FileSystem.cpp">
+      <Filter>src\core\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Systems.h">
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="Dialog.h">
       <Filter>src\game\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem.h">
+      <Filter>src\core\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

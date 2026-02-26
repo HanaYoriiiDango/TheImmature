@@ -25,13 +25,6 @@ private:
 
 public: 
 
-    // Поиск файлов
-    static std::wstring FindDirectory(const std::wstring& data);
-    static std::wstring FindJson(const std::wstring& JsonPath);
-    static std::wstring FindFileInFolder(const std::wstring& folder, const std::wstring& filepath);
-    std::vector<std::string> FindJSONFiles(const std::string& folderPath);
-
-
     // Проверки типов ключей 
     static bool IsStringKey(const json& j, const std::string& Key);
     static bool IsArrayKey(const json& j, const std::string& Key);
