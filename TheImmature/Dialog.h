@@ -3,7 +3,9 @@
 #include "Global.h"
 #include "JsonManager.h"
 #include "Logic.h"
-#include "Render.h"
+//#include "Render.h"
+
+class RenderSystem;
 
 class DialogSystem {
 private:

@@ -3,7 +3,7 @@
 
 GameCore::GameCore()
     : c_Render(c_ResManager)
-    , c_WinManager(c_Render, c_ResManager, &c_Dialog, &c_Logic) // Передаем c_Logic
+    , c_WinManager(c_Render, c_ResManager, &c_Dialog, &c_Logic) 
     , c_Init(c_WinManager, c_ResManager, c_JsonManager)
     , c_Logic()
     , c_JsonManager(c_ResManager)
@@ -44,7 +44,8 @@ void GameCore::Run() {
 
 }
 
-////void GameCore::StartGame() {
+//// вот эти функции пересмотреть на формат 2D
+// void GameCore::StartGame() {
 ////
 ////    Collector.StartSession();
 ////

@@ -1,9 +1,9 @@
-﻿#pragma once
+﻿// src/core/InitSystem.h
+#pragma once
 #include "WinManager.h"    
 #include "ResManager.h"
 #include "JsonManager.h"
 
-// src/core/InitSystem.h
 
 class InitSystem {
 private:

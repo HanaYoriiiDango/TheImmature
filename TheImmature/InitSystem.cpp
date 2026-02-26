@@ -53,7 +53,7 @@ void InitSystem::CreateWorlds() {
 
         Worlds[i].background = resManager.GetWorldBackground((Emotion_)i);
 
-        // ⭐⭐⭐ Закрываем CALM и JOY для демо ⭐⭐⭐
+        // Закрываем CALM и JOY для демо
         if (i == CALM || i == JOY) {
             Worlds[i].is_available = false;
             Worlds[i].is_locked = true;

@@ -1,5 +1,4 @@
-﻿// options: 
-//linker::system::subsystem  - Windows(/ SUBSYSTEM:WINDOWS) 
+﻿//linker::system::subsystem  - Windows(/ SUBSYSTEM:WINDOWS) 
 //configuration::advanced::character set - use unicode character set 
 //linker::input::additional dependensies Msimg32.lib; Winmm.lib
 

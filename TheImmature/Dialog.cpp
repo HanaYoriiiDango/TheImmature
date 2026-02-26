@@ -1,4 +1,5 @@
 ﻿#include "Dialog.h"
+#include "Render.h"  
 
 DialogSystem::DialogSystem(JsonManager& jsonManager, GameLogicSystem& logic, RenderSystem& render)
     : d_JsonManager(jsonManager)
@@ -52,19 +53,13 @@ void DialogSystem::StartDialogInWorld() {
         return;
     }
 
-    // === ПРОСТОЕ РЕШЕНИЕ: используем счетчик из GameLogicSystem ===
-
-    // Получаем сколько диалогов уже завершено в этом мире
+  
     int completedDialogs = 0;
 
-    // Способ 1: если сделали поле публичным
     auto it = d_Logic.dialogsCompletedByWorld.find(currentWorld);
     if (it != d_Logic.dialogsCompletedByWorld.end()) {
         completedDialogs = it->second;
     }
-
-    // Или способ 2: если добавили геттер
-    // int completedDialogs = d_Logic.GetCompletedDialogsForWorld(currentWorld);
 
     swprintf(debug, 256, L"[DIALOG] Завершено диалогов в мире: %d", completedDialogs);
     OutputDebugStringW(debug);
@@ -72,7 +67,6 @@ void DialogSystem::StartDialogInWorld() {
     // Берем NPC по порядку: 0, 1, 2...
     int npcIndex = completedDialogs;
 
-    // Если индекс выходит за пределы - начинаем сначала
     if (npcIndex >= availableNPCs.size()) {
         npcIndex = 0;
     }
