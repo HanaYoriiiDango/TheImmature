@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include "Global.h"
+#include "FileSystem.h"
+
 
 // src/render/ResourceManager.h
 // Пока здесь НИЧЕГО не подключаем и не пишем.
@@ -15,10 +17,19 @@ private:
     HBITMAP backMainText = nullptr;   // Битмап для основного текста
     HBITMAP ButtonStart = nullptr;
 
+    std::vector<std::string> name_textures;
+
+
     HBITMAP worldBackgrounds[COUNT_Emotions]; 
 
+    FileSystem& r_FileManager;
+
+
 public:
-    ResourceManager() = default;
+
+    ResourceManager(FileSystem& fm) : r_FileManager(fm) {} 
+
+
     ~ResourceManager() {
         Cleanup();  // Автоматическая очистка при уничтожении объекта
     }
@@ -36,6 +47,9 @@ public:
 
     bool LoadAllBMP();
     void Cleanup();
+
+    bool LoadTextures();
+
 
     // Getters
 

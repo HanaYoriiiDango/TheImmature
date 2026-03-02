@@ -2,6 +2,9 @@
 #include "filesystem"
 #include <commdlg.h>
 
+
+
+
 bool ResourceManager::FindFiles(const wchar_t* filename) {
 
     return GetFileAttributesW(filename) != INVALID_FILE_ATTRIBUTES;
@@ -100,4 +103,16 @@ void ResourceManager::Cleanup() {
 
     }
 
+}
+
+
+bool ResourceManager::LoadTextures() {
+
+    name_textures = r_FileManager.FindAllFiles("data", ".bmp");
+
+    if (name_textures.empty()) { 
+        MessageBoxW(NULL, L"files empty", L"sosi", MB_ICONERROR);
+        return false;
+    
+    }
 }

@@ -31,13 +31,13 @@ std::wstring FileSystem::FindFileInFolder(const std::wstring& folder, const std:
 
 }
 
-std::vector<std::string> FileSystem::FindJSONFiles(const std::string& folderPath) {
+std::vector<std::string> FileSystem::FindAllFiles(const std::string& folderPath, const std::string& expansion) { // перебирает в папке все файлы с указанным расширеним 
     std::vector<std::string> files;
 
     if (!fs::exists(folderPath)) return files;
 
     for (const auto& entry : fs::directory_iterator(folderPath)) {
-        if (entry.is_regular_file() && entry.path().extension() == ".json") {
+        if (entry.is_regular_file() && entry.path().extension() == expansion) {
             files.push_back(entry.path().filename().string());
         }
     }
