@@ -23,6 +23,11 @@ HBITMAP ResourceManager::LoadBMP(const wchar_t* name) {
     return hBmp;
 }
 
+HBITMAP ResourceManager::LoadBMP2(const std::string& path) {
+    std::wstring wpath = StringUtils::StringToWString(path);
+    return (HBITMAP)LoadImageW(NULL, wpath.c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+}
+
 HBITMAP ResourceManager::LoadBmpNpcs(const std::wstring& npcName) {
     if (npcName == L"Лоран") return LoadBMP(L"Loran.bmp");
     else if (npcName == L"Ними") return LoadBMP(L"Nimi.bmp");
@@ -159,6 +164,8 @@ bool ResourceManager::LoadTextures() {
     
     }
 
+    int loadedCount = 0;
+
     for (const auto& filename : files) {
 
         Texture::ID id = ParseTextureName(filename);
@@ -166,7 +173,7 @@ bool ResourceManager::LoadTextures() {
         if (id != Texture::ID::AllDefault || id != Texture::ID::NpcDefault) {
 
             std::string fullpath = "textures/" + filename;
-            HBITMAP hBitmap = LoadBMP();
+            HBITMAP hBitmap = LoadBMP(StringUtils::StringToWString(fullPath).c_str());
 
 
         }

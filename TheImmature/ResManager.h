@@ -46,6 +46,9 @@ public:
 
     bool FindFiles(const wchar_t* filename);
     HBITMAP LoadBMP(const wchar_t* name);
+    HBITMAP LoadBMP2(const std::string& path) {
+
+
     HBITMAP LoadBmpNpcs(const std::wstring& npcName);
 
     bool LoadAllBMP();
