@@ -2,10 +2,45 @@
 #include "Windows.h"
 #include <vector>
 #include <string>
-#include <ctime> 
+#include <ctime>
+#include <cstdint>
 
 // Перечисления
 enum Emotion_ { JOY, SADNESS, POWER, FEAR, CALM, ANGER, COUNT_Emotions }; // Список БАЗОВЫХ эмоций для удобства работы 
+
+namespace Texture {
+
+    enum class ID {
+
+        // World background
+        Background_JOY,
+        Background_SAD, 
+        Background_POWER,
+        Background_FEAR,
+        Background_CALM,
+        Background_ANGER,
+
+        // UI
+        hBack,          // Фоновый битмап
+        backScales,     // Битмап для шкал
+        backReplace,    // Битмап для замен
+        backHero,       // Битмап для героя
+        backCharacter,  // Битмап для персонажа
+        backMainText,   // Битмап для основного текста
+        ButtonStart,    // кнопка старта 
+
+        // Персонажи
+        HeroGG,
+        NpcLoran,
+        NpcNimi,
+        NpcElion,
+        NpcDefault,
+
+        AllDefault, // общая заглушка 
+
+        Count  // размер массива
+    };
+}
 
 enum GameState {
     MAIN_MENU,

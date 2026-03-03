@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Global.h"
 #include "FileSystem.h"
+#include <array>
 
 
 // src/render/ResourceManager.h
@@ -8,6 +9,9 @@
 
 class ResourceManager {
 private:
+
+    std::array<HBITMAP, static_cast<size_t>(Texture::ID::Count)> textures{};
+
     // === Битмапы ===
     HBITMAP hBack = nullptr;          // Фоновый битмап
     HBITMAP backScales = nullptr;     // Битмап для шкал
@@ -17,12 +21,11 @@ private:
     HBITMAP backMainText = nullptr;   // Битмап для основного текста
     HBITMAP ButtonStart = nullptr;
 
-    std::vector<std::string> name_textures;
-
-
     HBITMAP worldBackgrounds[COUNT_Emotions]; 
 
     FileSystem& r_FileManager;
+
+    Texture::ID ParseTextureName(const std::string& filename);
 
 
 public:
