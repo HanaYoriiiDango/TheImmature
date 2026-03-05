@@ -28,11 +28,11 @@ HBITMAP ResourceManager::LoadBMP(const wchar_t* name) {
 //    return (HBITMAP)LoadImageW(NULL, wpath.c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 //}
 
-HBITMAP ResourceManager::LoadBmpNpcs(const std::wstring& npcName) {
-    if (npcName == L"Лоран") return LoadBMP(L"Loran.bmp");
-    else if (npcName == L"Ними") return LoadBMP(L"Nimi.bmp");
-    else if (npcName == L"Элиор и Нивра") return LoadBMP(L"Elion.bmp");
-    else return LoadBMP(L"DefaultBMP.bmp"); // default
+HBITMAP ResourceManager::LoadBmpNpcs(const std::string& npcName) {
+    if (npcName == "Лоран") return LoadBMP("Loran.bmp");
+    else if (npcName == "Ними") return LoadBMP("Nimi.bmp");
+    else if (npcName == "Элиор и Нивра") return LoadBMP("Elion.bmp");
+    else return LoadBMP("DefaultBMP.bmp"); // default
 }
 
 bool ResourceManager::LoadWorldBackgrounds() {

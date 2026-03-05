@@ -28,7 +28,7 @@ public:
     DialogAnswer ParseAnswer(const json& answerJson);
     DialogText ParseDialogText(const json& textJson);
     std::vector<NPC*> GetNPCsInWorld(Emotion_ world);
-    NPC* GetNPCByID(const std::wstring& npcID);
+    NPC* GetNPCByID(const std::string& npcID);
     bool HasNPCInWorld(Emotion_ world);
 
 };

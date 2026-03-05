@@ -38,7 +38,7 @@ public:
 
     // проверки значений 
     static bool IsValueInRange(const json& j, const std::string& Key, int min = 0, int max = 100);
-    static bool IsValidEmotionID(const std::wstring& id);
+    static bool IsValidEmotionID(const std::string& id);
 
     // Комплексные проверки
     static bool ValidateRequiredFields(const json& ArrayKey, const std::vector<std::string>& requiredKeys);
@@ -47,7 +47,7 @@ public:
     static bool ValidateManifest(const json& manifestJson);
 
     // Концертация
-    static Emotion_ StringToEmotion(const std::wstring& id);
+    static Emotion_ StringToEmotion(const std::string& id);
 
     // Логирование 
     static void LogError(const std::string& context, const std::string& details = "");

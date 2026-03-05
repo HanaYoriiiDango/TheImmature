@@ -1,5 +1,4 @@
 ﻿#include "JsonManager.h" 
-#include "StringUtils.h" 
 #include <filesystem>
 #include <iostream>
 
@@ -10,9 +9,8 @@ namespace fs = std::filesystem;
 
 DialogAnswer JsonManager::ParseAnswer(const json& answerJson) {
     DialogAnswer answer;
-    answer.text = StringUtils::UTF8ToWide(answerJson["text"].get<std::string>());
-    answer.emotion = JsonValidator::StringToEmotion(
-        StringUtils::UTF8ToWide(answerJson["emotion"].get<std::string>()));
+    answer.text = answerJson["text"].get<std::string>();
+    answer.emotion = JsonValidator::StringToEmotion(answerJson["emotion"].get<std::string>());
     answer.sign = answerJson["sign"].get<bool>();
     answer.next_text_id = answerJson["next_text_id"].get<int>();
     return answer;
@@ -21,9 +19,8 @@ DialogAnswer JsonManager::ParseAnswer(const json& answerJson) {
 DialogText JsonManager::ParseDialogText(const json& textJson) {
     DialogText text;
     text.id = textJson["id"].get<int>();
-    text.text = StringUtils::UTF8ToWide(textJson["text"].get<std::string>());
-    text.emotion = JsonValidator::StringToEmotion(
-        StringUtils::UTF8ToWide(textJson["emotion"].get<std::string>()));
+    text.text = textJson["text"].get<std::string>();
+    text.emotion = JsonValidator::StringToEmotion(textJson["emotion"].get<std::string>());
     text.sign = textJson["sign"].get<bool>();
 
     for (const auto& answerJson : textJson["answers"]) {
@@ -36,7 +33,7 @@ DialogText JsonManager::ParseDialogText(const json& textJson) {
 NPC JsonManager::LoadNPCFromFile(const std::string& filepath) {
     NPC npc;
 
-    std::ifstream file(filepath);
+    std::ifstream file(filepath, std::ios::binary); // открываем в бинарном режиме
 
     if (!file.is_open()) {
         JsonValidator::LogError("JsonManager", "Cannot open NPC file: " + filepath);
@@ -47,12 +44,11 @@ NPC JsonManager::LoadNPCFromFile(const std::string& filepath) {
         json jsonData;
         file >> jsonData;
 
-        npc.id = StringUtils::UTF8ToWide(jsonData["id"].get<std::string>());
-        npc.name = StringUtils::UTF8ToWide(jsonData["name"].get<std::string>());
-        npc.icon = j_ResManager.LoadBmpNpcs(npc.name);
+        npc.id = jsonData["id"].get<std::string>();
+        npc.name = jsonData["name"].get<std::string>();
+        //npc.icon = j_ResManager.LoadBmpNpcs(npc.name);
 
-        std::wstring worldLink = StringUtils::UTF8ToWide(
-            jsonData["world_link"].get<std::string>());
+        std::string worldLink = jsonData["world_link"].get<std::string>();
         npc.world_link = JsonValidator::StringToEmotion(worldLink);
 
         for (const auto& textJson : jsonData["texts"]) {
@@ -110,7 +106,7 @@ bool JsonManager::HasNPCInWorld(Emotion_ world) {
     return !GetNPCsInWorld(world).empty();
 }
 
-NPC* JsonManager::GetNPCByID(const std::wstring& npcID) {
+NPC* JsonManager::GetNPCByID(const std::string& npcID) {
     for (NPC& npc : Characters) {
         if (npc.id == npcID) {
             return &npc;

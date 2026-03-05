@@ -1,18 +1,17 @@
 ﻿#include <windows.h>
 #include "JsonValidator.h"
-#include "StringUtils.h"
 #include <sstream>
 #include <set>
 
 // Логирование
 void JsonValidator::LogError(const std::string& context, const std::string& details) { // вывод информации об ошибке 
-    std::wstring message = StringUtils::UTF8ToWide("[" + context + "] " + details + "\n");
-    OutputDebugStringW(message.c_str());
+    std::string message = "[" + context + "] " + details + "\n";
+    OutputDebugStringA(message.c_str());
 }
 
 void JsonValidator::LogInfo(const std::string& context, const std::string& details) { // вывод информации о результате
-    std::wstring message = StringUtils::UTF8ToWide("[INFO][" + context + "] " + details + "\n");
-    OutputDebugStringW(message.c_str());
+    std::string message = "[INFO][" + context + "] " + details + "\n";
+    OutputDebugStringA(message.c_str());
 
 }
 
@@ -73,20 +72,20 @@ bool JsonValidator::IsValueInRange(const json& j, const std::string& Key, int mi
 
 // Проверки соответствия внутренним спискам 
 
-bool JsonValidator::IsValidEmotionID(const std::wstring& id) {
+bool JsonValidator::IsValidEmotionID(const std::string& id) {
     return StringToEmotion(id) < COUNT_Emotions;
     // Если конвертация вернула COUNT_Emotions - эмоция невалидна
 }
 
 // Конвертация 
-Emotion_ JsonValidator::StringToEmotion(const std::wstring& id) { // просто возвращает значение из строки 
+Emotion_ JsonValidator::StringToEmotion(const std::string& id) { // просто возвращает значение из строки 
     // Простое преобразование
-    if (id == L"JOY") return JOY;
-    if (id == L"SADNESS") return SADNESS;
-    if (id == L"POWER") return POWER;
-    if (id == L"FEAR") return FEAR;
-    if (id == L"CALM") return CALM;
-    if (id == L"ANGER") return ANGER;
+    if (id == "JOY") return JOY;
+    if (id == "SADNESS") return SADNESS;
+    if (id == "POWER") return POWER;
+    if (id == "FEAR") return FEAR;
+    if (id == "CALM") return CALM;
+    if (id == "ANGER") return ANGER;
     return COUNT_Emotions; // По умолчанию - для обработки ошибок 
 }
 
@@ -129,7 +128,7 @@ bool JsonValidator::ValidateEmotion(const json& emotionJson) {
     }
 
     // Проверяем, что ID эмоции валиден
-    std::wstring id = StringUtils::UTF8ToWide(emotionJson["id"].get<std::string>());
+    std::string id = emotionJson["id"].get<std::string>();
     if (!IsValidEmotionID(id)) {
         LogError("ValidateEmotion", "Invalid emotion ID");
         return false;
@@ -137,7 +136,7 @@ bool JsonValidator::ValidateEmotion(const json& emotionJson) {
 
     // Проверяем, что строки не пустые
     std::string emotionIdStr = emotionJson["id"].get<std::string>();
-    std::wstring emotionIdWstr = StringUtils::UTF8ToWide(emotionIdStr);
+    std::string emotionIdWstr = emotionIdStr;
 
     if (emotionIdStr.empty()) {
         LogError("ValidateEmotion", "Emotion ID cannot be empty");
@@ -166,8 +165,7 @@ bool JsonValidator::ValidateWorld(const json& worldJson) {
     }
 
     // 3. Проверяем linked_emotion
-    std::wstring emotionID = StringUtils::UTF8ToWide(
-        worldJson["linked_emotion"].get<std::string>());
+    std::string emotionID = worldJson["linked_emotion"].get<std::string>();
 
     if (!IsValidEmotionID(emotionID)) {
         LogError("ValidateWorld", "Invalid linked_emotion ID");
