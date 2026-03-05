@@ -72,14 +72,14 @@ struct Window_ {
 };
 
 struct Portal_ {
-    std::wstring name;
+    std::string name;
     Emotion_ target;
     bool open = true;
 };
 
 // Структура для ответов
 struct DialogAnswer {
-    std::wstring text;
+    std::string text;
     Emotion_ emotion;
     bool sign; // true = увеличить, false = уменьшить
     int next_text_id;
@@ -90,7 +90,7 @@ struct DialogAnswer {
 // Структура для текста NPC
 struct DialogText {
     int id;
-    std::wstring text;
+    std::string text;
     Emotion_ emotion;
     bool sign; // true = увеличить, false = уменьшить
     std::vector<DialogAnswer> answers;
@@ -100,8 +100,8 @@ struct DialogText {
 
 // Структура для NPC
 struct NPC {
-    std::wstring id;
-    std::wstring name;
+    std::string id;
+    std::string name;
     Emotion_ world_link; // Линк персонажа с миром 
     std::vector<DialogText> texts;
     HBITMAP icon = nullptr;
@@ -118,7 +118,7 @@ struct Player {
 };
 
 struct Location {
-    std::wstring name;
+    std::string name;
     Emotion_ linked_emotion;
     bool is_locked = false;
     std::vector<Portal_> portal;
@@ -154,8 +154,8 @@ extern Player Hero;
 extern Location Worlds[COUNT_Emotions]; 
 // Внешние объявления глобальных переменных
 extern std::vector<Emotion_> Emotion;
-extern std::wstring Emotion_Names[COUNT_Emotions];
-extern std::wstring Worlds_Names[COUNT_Emotions];
+extern std::string Emotion_Names[COUNT_Emotions];
+extern std::string Worlds_Names[COUNT_Emotions];
 extern std::vector<NPC> Characters; // Все NPC игры
 extern GameSession game;
 extern Window_ window;
