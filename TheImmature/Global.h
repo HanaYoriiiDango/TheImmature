@@ -55,7 +55,7 @@ struct Window_ {
     // Основные поля окна 
     HWND hwnd = nullptr;
     HINSTANCE hInstance = nullptr;
-    const wchar_t* className = L"Main";
+    const char* className = "Main";
 
     // Размеры и масштабирование 
     int width = 0;

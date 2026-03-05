@@ -6,19 +6,19 @@
 bool InitSystem::WindowInitialize(HINSTANCE hInstance) {
 
     if (!winManager.RegistrClass(hInstance)) {
-        MessageBox(NULL, L"Init Error", L"RegistrClass: hInstance | CLASS_NAME | RegisterClassEx - false", MB_ICONERROR);
+        MessageBoxA(NULL, "Init Error", "RegistrClass: hInstance | CLASS_NAME | RegisterClassEx - false", MB_ICONERROR);
         return false;
 
     }
 
     if (!winManager.WindowCreate()) {
-        MessageBox(NULL, L"Init Error", L"WindowCreate: NULL HWND", MB_ICONERROR);
+        MessageBoxA(NULL, "Init Error", "WindowCreate: NULL HWND", MB_ICONERROR);
         return false;
 
     }
 
     if (!winManager.InitWindow()) {
-        MessageBox(NULL, L"Init Error", L"InitWindow: NULL HWND", MB_ICONERROR);
+        MessageBoxA(NULL, "Init Error", "InitWindow: NULL HWND", MB_ICONERROR);
         return false;
     }
 
@@ -28,7 +28,7 @@ bool InitSystem::WindowInitialize(HINSTANCE hInstance) {
 bool InitSystem::BMPInitialize() {
 
     if (!resManager.LoadAllBMP()) { 
-        MessageBox(NULL, L"Init Error", L"Load BMP", MB_ICONERROR);
+        MessageBoxA(NULL, "Init Error", "Load BMP", MB_ICONERROR);
         return false;
     } 
 

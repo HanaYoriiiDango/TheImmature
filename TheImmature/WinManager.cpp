@@ -37,7 +37,7 @@ LRESULT CALLBACK WindowManager::StaticWndProc(HWND hwnd, UINT msg, WPARAM wParam
 
 LRESULT WindowManager::HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
-    case WM_CREATE: 
+    case WM_CREATE:
         SetTimer(hwnd, 1, 16, NULL);
 
         break;
@@ -49,16 +49,16 @@ LRESULT WindowManager::HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
         Render();
 
         EndPaint(hwnd, &ps);
-        
+
     }
-        break;
+                 break;
 
     case WM_TIMER:
     {
-        
+
         // ЕДИНСТВЕННОЕ место для автозапуска
         if (g_NeedAutoStartDialog && w_dialog && game.Current_State == DIALOG) {
-            OutputDebugStringW(L"[WM TIMER] Запуск диалога...");
+            OutputDebugStringA("[WM TIMER] Запуск диалога...");
             w_dialog->StartDialogInWorld();
             g_NeedAutoStartDialog = false;
         }
@@ -69,7 +69,7 @@ LRESULT WindowManager::HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 
     break;
 
-    
+
     case WM_KEYDOWN:
         if (wParam == VK_SPACE && !start) {
             start = true;
@@ -119,7 +119,7 @@ void WindowManager::Render() {
 
     // Проверяем существование HDC  
     if (!window.hdc) {
-        MessageBox(NULL, L"Render Error", L"window HDC is NULL", MB_ICONERROR);
+        MessageBoxA(NULL, "Render Error", "window HDC is NULL", MB_ICONERROR);
         return;
     }
 
@@ -127,7 +127,7 @@ void WindowManager::Render() {
     HDC memDC = CreateCompatibleDC(window.hdc);
 
     if (!memDC) {
-        MessageBox(NULL, L"Render Error", L"Failed to CreateCompatibleDC", MB_ICONERROR);
+        MessageBoxA(NULL, "Render Error", "Failed to CreateCompatibleDC", MB_ICONERROR);
         return;
     }
 
@@ -135,10 +135,10 @@ void WindowManager::Render() {
     HBITMAP hMemBmp = CreateCompatibleBitmap(window.hdc, window.width, window.height);
 
     if (!hMemBmp) {
-        MessageBox(NULL, L"Render Error", L"Failed to CreateCompatibleBitmap", MB_ICONERROR);
+        MessageBoxA(NULL, "Render Error", "Failed to CreateCompatibleBitmap", MB_ICONERROR);
         DeleteDC(memDC);
         return;
-    } 
+    }
 
     // Выбираем битмап в контекст 
     HBITMAP hOldBmp = (HBITMAP)SelectObject(memDC, hMemBmp);
@@ -158,7 +158,7 @@ void WindowManager::Render() {
         w_render.ShowProcessGame(); // Это рисует фон, UI и т.д.
 
         if (g_NeedAutoStartDialog && w_dialog) {
-            OutputDebugStringW(L"[WM RENDER] Автозапуск диалога!");
+            OutputDebugStringA("[WM RENDER] Автозапуск диалога!");
             //w_dialog->StartDialogInWorld();
             //g_NeedAutoStartDialog = false;
         }
@@ -185,17 +185,17 @@ void WindowManager::Render() {
 bool WindowManager::RegistrClass(HINSTANCE hInstance) {
     if (!hInstance) return false;
 
-    const wchar_t* CLASS_NAME = L"Main";
-    WNDCLASSEX wc = {};
+    const char* CLASS_NAME = "Main";
+    WNDCLASSEXA  wc = {};
 
-    wc.cbSize = sizeof(WNDCLASSEX);
+    wc.cbSize = sizeof(WNDCLASSEXA);
     wc.lpfnWndProc = StaticWndProc;
     wc.hInstance = hInstance;
     wc.hCursor = NULL;
     wc.lpszClassName = CLASS_NAME;
 
-    if (!RegisterClassEx(&wc)) {
-        MessageBox(NULL, L"Error class registr!", L"Error", MB_ICONERROR);
+    if (!RegisterClassExA(&wc)) {
+        MessageBoxA(NULL, "Error class registr!", "Error", MB_ICONERROR);
         return false;
     }
 
@@ -210,11 +210,11 @@ bool WindowManager::WindowCreate() {
     window.width = GetSystemMetrics(SM_CXSCREEN);
     window.height = GetSystemMetrics(SM_CYSCREEN);
 
-    window.hwnd = CreateWindowEx(
-        0, 
-        window.className, 
-        L"The Immature", 
-        WS_POPUP | WS_MAXIMIZE, 
+    window.hwnd = CreateWindowExA(
+        0,
+        window.className,
+        "The Immature",
+        WS_POPUP | WS_MAXIMIZE,
         0, 0,
         window.width, window.height,
         NULL, NULL, window.hInstance, this);
@@ -222,7 +222,7 @@ bool WindowManager::WindowCreate() {
     if (!window.hwnd) return false;
 
     SetCursor(NULL); // Скрыть курсор
-    ShowCursor(FALSE); 
+    ShowCursor(FALSE);
 
     return true;
 

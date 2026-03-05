@@ -237,31 +237,24 @@ void GameLogicSystem::OnDialogCompleted(Emotion_ world) {
     int totalNPCs = CountNPCsInWorld(world);
     int completed = dialogsCompletedByWorld[world];
 
-    wchar_t debug[256];
-    swprintf(debug, 256, L"[LOGIC] OnDialogCompleted: мир=%s, NPC всего=%d, завершено=%d",
-        Worlds_Names[world].c_str(), totalNPCs, completed);
-    OutputDebugStringW(debug);
-
     // Выводим всех NPC в этом мире для отладки
     for (size_t i = 0; i < Characters.size(); i++) {
         const NPC& npc = Characters[i];
         if (npc.world_link == world) {
-            swprintf(debug, 256, L"[LOGIC]   NPC[%zu]: %s (id: %s)",
-                i, npc.name.c_str(), npc.id.c_str());
-            OutputDebugStringW(debug);
+           
         }
     }
 
     if (totalNPCs > 0 && completed >= totalNPCs) {
         // ВСЕ NPC в этом мире пройдены
-        OutputDebugStringW(L"[LOGIC] >>> Все NPC пройдены! Запускаем выбор мира.");
+        OutputDebugStringA("[LOGIC] >>> Все NPC пройдены! Запускаем выбор мира.");
         StartWorldSelection();
 
         // Сбрасываем счетчик для этого мира
         dialogsCompletedByWorld[world] = 0;
     }
     else {
-        OutputDebugStringW(L"[LOGIC] >>> Еще есть NPC. Запускаем следующий диалог.");
+        OutputDebugStringA("[LOGIC] >>> Еще есть NPC. Запускаем следующий диалог.");
         g_NeedAutoStartDialog = true;
     }
 }
@@ -275,7 +268,7 @@ void GameLogicSystem::StartWorldSelection() {
     selectedPortal = 0;
     game.Current_State = WORLD_SELECTION;
 
-    OutputDebugStringW(L"[LOGIC] StartWorldSelection() - выбор миров");
+    OutputDebugStringA("[LOGIC] StartWorldSelection() - выбор миров");
 }
 
 // 4. Обработка ввода при выборе мира
@@ -313,12 +306,6 @@ void GameLogicSystem::ProcessWorldSelection(int keyCode) {
                 Hero.current_loc = portal.target;
                 Emotion_ newWorld = Worlds[Hero.current_loc].linked_emotion;
 
-                wchar_t msg[256];
-                swprintf(msg, 256, L"[LOGIC] Переход из %s в %s",
-                    Worlds_Names[oldWorld].c_str(),
-                    Worlds_Names[newWorld].c_str());
-                OutputDebugStringW(msg);
-
                 // Сбрасываем счетчики
                 ResetDialogCounterForWorld(oldWorld);
                 ResetDialogCounterForWorld(newWorld);
@@ -329,12 +316,7 @@ void GameLogicSystem::ProcessWorldSelection(int keyCode) {
 
                 // ⭐⭐⭐ УСТАНАВЛИВАЕМ ФЛАГ ДЛЯ АВТОЗАПУСКА ДИАЛОГА ⭐⭐⭐
                 g_NeedAutoStartDialog = true;
-                wchar_t debug[256];
-
-                OutputDebugStringW(L"[LOGIC] ===== ФЛАГ УСТАНОВЛЕН! =====");
-                swprintf(debug, 256, L"[LOGIC] Новый мир: %s, Hero.current_loc теперь: %d",
-                    Worlds_Names[newWorld].c_str(), Hero.current_loc);
-                OutputDebugStringW(debug);
+                OutputDebugStringA("[LOGIC] ===== ФЛАГ УСТАНОВЛЕН! =====");
 
                 return;
             }
@@ -364,53 +346,53 @@ void GameLogicSystem::RenderWorldSelection(HDC hdc) {
     }
 
     // Заголовок
-    l_Render->ShowText(hdc, L"Древо Перехода", 800, 100, 36);
-    l_Render->ShowText(hdc, Worlds[Hero.current_loc].name + L":", 800, 150, 28);
-    l_Render->ShowText(hdc, L"Куда отправишься дальше?", 800, 180, 24);
+    l_Render->ShowText(hdc, "Древо Перехода", 800, 100, 36);
+    l_Render->ShowText(hdc, Worlds[Hero.current_loc].name + ":", 800, 150, 28);
+    l_Render->ShowText(hdc, "Куда отправишься дальше?", 800, 180, 24);
 
     if (availablePortals.empty()) {
-        l_Render->ShowText(hdc, L"Нет доступных миров для перехода", 800, 250, 24);
+        l_Render->ShowText(hdc, "Нет доступных миров для перехода", 800, 250, 24);
         return;
     }
 
     // Список ДОСТУПНЫХ миров
     for (int i = 0; i < availablePortals.size(); i++) {
         const Portal_& portal = availablePortals[i];
-        std::wstring worldText = Worlds[portal.target].name;
+        std::string worldText = Worlds[portal.target].name;
 
         // Показываем сколько NPC в целевом мире
         int npcCount = CountNPCsInWorld(portal.target);
-        std::wstring status = L" [" + std::to_wstring(npcCount) + L" NPC]";
+        std::string status = " [" + std::to_string(npcCount) + " NPC]";
         worldText += status;
 
         // Подсветка выбранного
         if (i == selectedPortal) {
-            worldText = L">> " + worldText + L" <<";
+            worldText = ">> " + worldText + " <<";
         }
         else {
-            worldText = std::to_wstring(i + 1) + L") " + worldText;
+            worldText = std::to_string(i + 1) + ") " + worldText;
         }
 
         l_Render->ShowText(hdc, worldText, 800, 250 + i * 50, 24);
     }
 
     // Подсказка
-    l_Render->ShowText(hdc, L"↑↓: Выбор мира   Enter: Перейти   ESC: Отмена",
+    l_Render->ShowText(hdc, "↑↓: Выбор мира   Enter: Перейти   ESC: Отмена",
         800, 550, 20);
 
     // Отладочная информация
-    wchar_t debug[256];
-    swprintf(debug, 256, L"Доступно миров: %d", availablePortals.size());
+    char debug[256];
+    sprintf(debug,"Доступно миров: %d", availablePortals.size());
     l_Render->ShowText(hdc, debug, 800, 600, 18);
 }
 
 // 7. Сброс счетчика
 void GameLogicSystem::ResetDialogCounterForWorld(Emotion_ world) {
     dialogsCompletedByWorld[world] = 0;
-    wchar_t debug[256];
-    swprintf(debug, 256, L"[LOGIC] Сброс счетчика для мира: %s",
+    char debug[256];
+    sprintf(debug, "[LOGIC] Сброс счетчика для мира: %s",
         Worlds_Names[world].c_str());
-    OutputDebugStringW(debug);
+    OutputDebugStringA(debug);
 }
 
 int GameLogicSystem::GetFirstNpcIndexInWorld(Emotion_ world) {
