@@ -377,12 +377,12 @@ void GameLogicSystem::RenderWorldSelection(HDC hdc) {
     }
 
     // Подсказка
-    l_Render->ShowText(hdc, "↑↓: Выбор мира   Enter: Перейти   ESC: Отмена",
+    l_Render->ShowText(hdc, "Стрелки: Выбор   Enter: Подтвердить   ESC: Выход",
         800, 550, 20);
-
+    
     // Отладочная информация
     char debug[256];
-    sprintf(debug,"Доступно миров: %d", availablePortals.size());
+    sprintf_s(debug, sizeof(debug), "Доступно миров: %zd", availablePortals.size());
     l_Render->ShowText(hdc, debug, 800, 600, 18);
 }
 
@@ -390,7 +390,7 @@ void GameLogicSystem::RenderWorldSelection(HDC hdc) {
 void GameLogicSystem::ResetDialogCounterForWorld(Emotion_ world) {
     dialogsCompletedByWorld[world] = 0;
     char debug[256];
-    sprintf(debug, "[LOGIC] Сброс счетчика для мира: %s",
+    sprintf_s(debug, sizeof(debug), "[LOGIC] Сброс счетчика для мира: %s",
         Worlds_Names[world].c_str());
     OutputDebugStringA(debug);
 }

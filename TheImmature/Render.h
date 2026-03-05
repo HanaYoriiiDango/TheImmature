@@ -35,11 +35,7 @@ public:
     void SetBuffer(const HDC& memDC);
     void SetDialogSystem(DialogSystem* dialog) { dialogSystem = dialog; }
 
-     void ShowText(
-        const HDC& hdc, const std::string& text,
-        int base_x, int base_y,
-        int base_font_size
-    );
+    void ShowText(HDC hdc, const std::string& utf8text, int base_x, int base_y, int base_font_size);
 
     void ShowBMP(
         const HDC& hdc,

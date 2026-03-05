@@ -24,60 +24,66 @@ int RenderSystem::GetScaledSize(int size) {
 }
 void RenderSystem::SetBuffer(const HDC& memDC) { buffer = memDC; }
 
-void RenderSystem::ShowText(
-    const HDC& hdc,
-    const std::string& text,
-    int base_x,
-    int base_y,
-    int base_font_size
-)
+void RenderSystem::ShowText(HDC hdc, const std::string& utf8text,
+    int base_x, int base_y, int base_font_size)
 {
     int x = GetScaledX(base_x);
     int y = GetScaledY(base_y);
     int font_size = GetScaledSize(base_font_size);
     font_size = max(12, font_size);
 
-    HFONT hFont = CreateFontA(
+    // UTF-8 → UTF-16
+    int wstrSize = MultiByteToWideChar(CP_UTF8, 0, utf8text.c_str(), -1, NULL, 0);
+    std::wstring wstr(wstrSize, 0);
+    MultiByteToWideChar(CP_UTF8, 0, utf8text.c_str(), -1, &wstr[0], wstrSize);
+
+    // Создаем шрифт (CreateFontW для Unicode)
+    HFONT hFont = CreateFontW(
         font_size, 0, 0, 0,
         FW_NORMAL, FALSE, FALSE, FALSE,
         DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
         CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-        DEFAULT_PITCH | FF_SWISS, "Arial"
+        DEFAULT_PITCH | FF_SWISS, L"Arial"
     );
 
     HFONT hOldFont = (HFONT)SelectObject(hdc, hFont);
-
     SetTextColor(hdc, RGB(0, 0, 0));
     SetBkMode(hdc, TRANSPARENT);
 
-    // === ИЗМЕНЕНИЕ НАЧИНАЕТСЯ ЗДЕСЬ ===
-
-    // Разделяем текст по \n
-    std::vector<std::string> lines;
+    // Разделяем по \n (работает одинаково для всех строк)
+    std::vector<std::wstring> lines;
     size_t start = 0;
-    size_t end = text.find('\n');
+    size_t end = utf8text.find('\n');
+    std::string temp = utf8text;
 
     while (end != std::string::npos) {
-        lines.push_back(text.substr(start, end - start));
+        std::string line = temp.substr(start, end - start);
+        // Конвертируем каждую строку отдельно
+        int sz = MultiByteToWideChar(CP_UTF8, 0, line.c_str(), -1, NULL, 0);
+        std::wstring wline(sz, 0);
+        MultiByteToWideChar(CP_UTF8, 0, line.c_str(), -1, &wline[0], sz);
+        lines.push_back(wline);
+
         start = end + 1;
-        end = text.find('\n', start);
+        end = temp.find('\n', start);
     }
-    lines.push_back(text.substr(start));
+    // Последняя строка
+    std::string lastLine = temp.substr(start);
+    int szLast = MultiByteToWideChar(CP_UTF8, 0, lastLine.c_str(), -1, NULL, 0);
+    std::wstring wlast(szLast, 0);
+    MultiByteToWideChar(CP_UTF8, 0, lastLine.c_str(), -1, &wlast[0], szLast);
+    lines.push_back(wlast);
 
-    // Рисуем каждую строку
-    int lineHeight = font_size + 4; // Межстрочный интервал
+    // Рисуем через TextOutW
+    int lineHeight = font_size + 4;
     for (size_t i = 0; i < lines.size(); i++) {
-        TextOutA(hdc, x, y + (i * lineHeight),
-            lines[i].c_str(), (int)lines[i].length());
+        TextOutW(hdc, x, y + i * lineHeight,
+            lines[i].c_str(), lines[i].length());
     }
 
-    // === ИЗМЕНЕНИЕ ЗАКОНЧИЛОСЬ ===
-
-    // clear
     SelectObject(hdc, hOldFont);
     DeleteObject(hFont);
 }
-
 void RenderSystem::ShowBMP(
     const HDC& hdc,
     int base_x, int base_y, 

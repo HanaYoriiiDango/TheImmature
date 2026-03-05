@@ -33,7 +33,7 @@ DialogText JsonManager::ParseDialogText(const json& textJson) {
 NPC JsonManager::LoadNPCFromFile(const std::string& filepath) {
     NPC npc;
 
-    std::ifstream file(filepath, std::ios::binary); // открываем в бинарном режиме
+    std::ifstream file(filepath); // открываем в бинарном режиме
 
     if (!file.is_open()) {
         JsonValidator::LogError("JsonManager", "Cannot open NPC file: " + filepath);
@@ -56,8 +56,9 @@ NPC JsonManager::LoadNPCFromFile(const std::string& filepath) {
         }
     }
     catch (const std::exception& e) {
-        JsonValidator::LogError("JsonManager::LoadNPCFromFile",
-            "Exception: " + std::string(e.what()));
+        std::string error = "[JSON] Ошибка парсинга " + filepath + ": " + e.what();
+        OutputDebugStringA(error.c_str());  
+        JsonValidator::LogError("JsonManager::LoadNPCFromFile", error);
         return npc;
     }
 
