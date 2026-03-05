@@ -78,9 +78,6 @@
     <ClCompile Include="main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="StringUtils.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="Logic.cpp">
       <Filter>src\game\Sources</Filter>
     </ClCompile>
@@ -117,9 +114,6 @@
       <Filter>src\window\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Global.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="StringUtils.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="Init.h">
