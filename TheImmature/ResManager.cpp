@@ -23,10 +23,10 @@ HBITMAP ResourceManager::LoadBMP(const wchar_t* name) {
     return hBmp;
 }
 
-HBITMAP ResourceManager::LoadBMP2(const std::string& path) {
-    std::wstring wpath = StringUtils::StringToWString(path);
-    return (HBITMAP)LoadImageW(NULL, wpath.c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-}
+//HBITMAP ResourceManager::LoadBMP2(const std::string& path) {
+//    std::wstring wpath = StringUtils::StringToWString(path);
+//    return (HBITMAP)LoadImageW(NULL, wpath.c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+//}
 
 HBITMAP ResourceManager::LoadBmpNpcs(const std::wstring& npcName) {
     if (npcName == L"Лоран") return LoadBMP(L"Loran.bmp");
@@ -154,30 +154,30 @@ Texture::ID ResourceManager::ParseTextureName(const std::string& filename) {
 
 }
 
-bool ResourceManager::LoadTextures() {
-
-    auto files = r_FileManager.FindAllFiles("data/textures", ".bmp");
-
-    if (files.empty()) {
-        MessageBoxW(NULL, L"files empty", L"sosi", MB_ICONERROR);
-        return false;
-    
-    }
-
-    int loadedCount = 0;
-
-    for (const auto& filename : files) {
-
-        Texture::ID id = ParseTextureName(filename);
-
-        if (id != Texture::ID::AllDefault || id != Texture::ID::NpcDefault) {
-
-            std::string fullpath = "textures/" + filename;
-            HBITMAP hBitmap = LoadBMP(StringUtils::StringToWString(fullPath).c_str());
-
-
-        }
-
-    }
-
-}
+//bool ResourceManager::LoadTextures() {
+//
+//    auto files = r_FileManager.FindAllFiles("data/textures", ".bmp");
+//
+//    if (files.empty()) {
+//        MessageBoxW(NULL, L"files empty", L"sosi", MB_ICONERROR);
+//        return false;
+//    
+//    }
+//
+//    int loadedCount = 0;
+//
+//    for (const auto& filename : files) {
+//
+//        Texture::ID id = ParseTextureName(filename);
+//
+//        if (id != Texture::ID::AllDefault || id != Texture::ID::NpcDefault) {
+//
+//            std::string fullpath = "textures/" + filename;
+//            HBITMAP hBitmap = LoadBMP(StringUtils::StringToWString(fullPath).c_str());
+//
+//
+//        }
+//
+//    }
+//
+//}
