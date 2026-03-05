@@ -32,7 +32,6 @@ public:
 
     ResourceManager(FileSystem& fm) : r_FileManager(fm) {} 
 
-
     ~ResourceManager() {
         Cleanup();  // Автоматическая очистка при уничтожении объекта
     }
@@ -44,12 +43,10 @@ public:
         return hBack; // fallback
     }
 
-    bool FindFiles(const wchar_t* filename);
-    HBITMAP LoadBMP(const wchar_t* name);
-    HBITMAP LoadBMP2(const std::string& path) {};
+    bool FindFiles(LPCSTR filename);
+    HBITMAP LoadBMP(LPCSTR filename);
 
-
-    HBITMAP LoadBmpNpcs(const std::wstring& npcName);
+    HBITMAP LoadBmpNpcs(const std::string& npcName);
 
     bool LoadAllBMP();
     void Cleanup();

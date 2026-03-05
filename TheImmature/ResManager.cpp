@@ -2,31 +2,26 @@
 #include "filesystem"
 #include <commdlg.h>
 
-bool ResourceManager::FindFiles(const wchar_t* filename) {
+bool ResourceManager::FindFiles(LPCSTR filename) {
 
-    return GetFileAttributesW(filename) != INVALID_FILE_ATTRIBUTES;
+    return GetFileAttributesA(filename) != INVALID_FILE_ATTRIBUTES;
 }
 
-HBITMAP ResourceManager::LoadBMP(const wchar_t* name) {
-    if (!FindFiles(name)) {
-        MessageBoxW(NULL, L"No find files", L"sosi", MB_ICONERROR);
+HBITMAP ResourceManager::LoadBMP(LPCSTR filename) {
+    if (!FindFiles(filename)) {
+        MessageBoxA(NULL, "No find files", "sosi", MB_ICONERROR);
         return NULL;
     }
 
-    HBITMAP hBmp = (HBITMAP)LoadImageW(NULL, name, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+    HBITMAP hBmp = (HBITMAP)LoadImageA(NULL, filename, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 
     if (!hBmp) {
-        MessageBoxW(NULL, L"LoadError", L"LoadImage Error", MB_ICONERROR);
+        MessageBoxA(NULL, "LoadError", "LoadImage Error", MB_ICONERROR);
         return NULL;
     }
 
     return hBmp;
 }
-
-//HBITMAP ResourceManager::LoadBMP2(const std::string& path) {
-//    std::wstring wpath = StringUtils::StringToWString(path);
-//    return (HBITMAP)LoadImageW(NULL, wpath.c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
-//}
 
 HBITMAP ResourceManager::LoadBmpNpcs(const std::string& npcName) {
     if (npcName == "Лоран") return LoadBMP("Loran.bmp");
@@ -36,16 +31,16 @@ HBITMAP ResourceManager::LoadBmpNpcs(const std::string& npcName) {
 }
 
 bool ResourceManager::LoadWorldBackgrounds() {
-    worldBackgrounds[ANGER] = LoadBMP(L"AngerBack.bmp");
-    worldBackgrounds[SADNESS] = LoadBMP(L"SadBack.bmp");
-    worldBackgrounds[FEAR] = LoadBMP(L"FearBack.bmp");
-    worldBackgrounds[POWER] = LoadBMP(L"PowerBack.bmp");
-    worldBackgrounds[CALM] = LoadBMP(L"WhiteBack.bmp"); // Заглушка
-    worldBackgrounds[JOY] = LoadBMP(L"WhiteBack.bmp");  // Заглушка
+    worldBackgrounds[ANGER] = LoadBMP("AngerBack.bmp");
+    worldBackgrounds[SADNESS] = LoadBMP("SadBack.bmp");
+    worldBackgrounds[FEAR] = LoadBMP("FearBack.bmp");
+    worldBackgrounds[POWER] = LoadBMP("PowerBack.bmp");
+    worldBackgrounds[CALM] = LoadBMP("WhiteBack.bmp"); // Заглушка
+    worldBackgrounds[JOY] = LoadBMP("WhiteBack.bmp");  // Заглушка
 
     for (int i = 0; i < COUNT_Emotions; i++) {
         if (!worldBackgrounds[i]) {
-            MessageBoxW(NULL, L"Failed to load world background", L"Error", MB_OK);
+            MessageBoxA(NULL, "Failed to load world background", "Error", MB_OK);
             return false;
         }
     }
@@ -54,14 +49,14 @@ bool ResourceManager::LoadWorldBackgrounds() {
 
 bool ResourceManager::LoadAllBMP() {
 
-    hBack = LoadBMP(L"SadBack.bmp");         // Фоновый битмап
-    backScales = LoadBMP(L"WhiteBack.bmp");     // Битмап для шкал
-    backReplace = LoadBMP(L"WhiteBack.bmp");    // Битмап для замен
-    backHero = LoadBMP(L"WhiteBack.bmp");      // Битмап для героя
-    backCharacter = LoadBMP(L"WhiteBack.bmp"); // Битмап для персонажа
-    backMainText = LoadBMP(L"WhiteBack.bmp");   // Битмап для основного текста
-    Hero.Icon = LoadBMP(L"GG.bmp");
-    ButtonStart = LoadBMP(L"buttonStart.bmp");
+    hBack = LoadBMP("SadBack.bmp");         // Фоновый битмап
+    backScales = LoadBMP("WhiteBack.bmp");     // Битмап для шкал
+    backReplace = LoadBMP("WhiteBack.bmp");    // Битмап для замен
+    backHero = LoadBMP("WhiteBack.bmp");      // Битмап для героя
+    backCharacter = LoadBMP("WhiteBack.bmp"); // Битмап для персонажа
+    backMainText = LoadBMP("WhiteBack.bmp");   // Битмап для основного текста
+    Hero.Icon = LoadBMP("GG.bmp");
+    ButtonStart = LoadBMP("buttonStart.bmp");
 
     if (!LoadWorldBackgrounds()) return false;
 
@@ -159,7 +154,7 @@ Texture::ID ResourceManager::ParseTextureName(const std::string& filename) {
 //    auto files = r_FileManager.FindAllFiles("data/textures", ".bmp");
 //
 //    if (files.empty()) {
-//        MessageBoxW(NULL, L"files empty", L"sosi", MB_ICONERROR);
+//        MessageBoxA(NULL, "files empty", "sosi", MB_ICONERROR);
 //        return false;
 //    
 //    }
@@ -173,7 +168,7 @@ Texture::ID ResourceManager::ParseTextureName(const std::string& filename) {
 //        if (id != Texture::ID::AllDefault || id != Texture::ID::NpcDefault) {
 //
 //            std::string fullpath = "textures/" + filename;
-//            HBITMAP hBitmap = LoadBMP(StringUtils::StringToWString(fullPath).c_str());
+//            HBITMAP hBitmap = LoadBMP((fullPath).c_str());
 //
 //
 //        }

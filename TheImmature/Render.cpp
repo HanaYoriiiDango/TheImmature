@@ -3,8 +3,8 @@
 #include "JsonManager.h" 
 #include "Dialog.h" 
 
-std::wstring RenderSystem::IntToWString(int value) {
-    return std::to_wstring(value);
+std::string RenderSystem::IntToString(int value) {
+    return std::to_string(value);
 }
 
 int RenderSystem::GetScaledX(int x) {
@@ -22,18 +22,11 @@ int RenderSystem::GetScaledSize(int size) {
     return (int)(size * window.uiScale);
 
 }
-void RenderSystem::SetBuffer(const HDC& memDC) {
-
-    buffer = memDC;
-    
-
-
-}
-
+void RenderSystem::SetBuffer(const HDC& memDC) { buffer = memDC; }
 
 void RenderSystem::ShowText(
     const HDC& hdc,
-    const std::wstring& text,
+    const std::string& text,
     int base_x,
     int base_y,
     int base_font_size
@@ -44,12 +37,12 @@ void RenderSystem::ShowText(
     int font_size = GetScaledSize(base_font_size);
     font_size = max(12, font_size);
 
-    HFONT hFont = CreateFontW(
+    HFONT hFont = CreateFontA(
         font_size, 0, 0, 0,
         FW_NORMAL, FALSE, FALSE, FALSE,
         DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
         CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
-        DEFAULT_PITCH | FF_SWISS, L"Arial"
+        DEFAULT_PITCH | FF_SWISS, "Arial"
     );
 
     HFONT hOldFont = (HFONT)SelectObject(hdc, hFont);
@@ -60,21 +53,21 @@ void RenderSystem::ShowText(
     // === ИЗМЕНЕНИЕ НАЧИНАЕТСЯ ЗДЕСЬ ===
 
     // Разделяем текст по \n
-    std::vector<std::wstring> lines;
+    std::vector<std::string> lines;
     size_t start = 0;
-    size_t end = text.find(L'\n');
+    size_t end = text.find('\n');
 
-    while (end != std::wstring::npos) {
+    while (end != std::string::npos) {
         lines.push_back(text.substr(start, end - start));
         start = end + 1;
-        end = text.find(L'\n', start);
+        end = text.find('\n', start);
     }
     lines.push_back(text.substr(start));
 
     // Рисуем каждую строку
     int lineHeight = font_size + 4; // Межстрочный интервал
     for (size_t i = 0; i < lines.size(); i++) {
-        TextOutW(hdc, x, y + (i * lineHeight),
+        TextOutA(hdc, x, y + (i * lineHeight),
             lines[i].c_str(), (int)lines[i].length());
     }
 
@@ -123,7 +116,7 @@ void RenderSystem::ShowObjectBeforeStart(float centrX, float centrY) {
     // background
     ShowBMP(buffer, 0, 0, 1920, 1080, r_resManager.GetbackMainText());
 
-    ShowText(buffer, L"Press SPACE to start", centrX, centrY, 56);
+    ShowText(buffer, "Press SPACE to start", centrX, centrY, 56);
 
 }
 
@@ -156,7 +149,7 @@ void RenderSystem::ShowProcessGame() {
     for (int i = 0; i < Emotion.size(); i++) {
 
         ShowText(buffer, Emotion_Names[i], 30, 700 + i * 60, 28);
-        ShowText(buffer, std::to_wstring(Hero.emotions[i]), 200, 700 + i * 60, 28);
+        ShowText(buffer, std::to_string(Hero.emotions[i]), 200, 700 + i * 60, 28);
 
     }
 
@@ -183,13 +176,13 @@ void RenderSystem::ShowProcessGame() {
 
 }
 
-void RenderSystem::ShowTextNPC(int value, std::wstring text) {
+void RenderSystem::ShowTextNPC(int value, std::string text) {
 
     ShowText(buffer, text, 470, 40 + value, 28);
 
 }
 
-void RenderSystem::ShowAnswersNPC(int value, std::wstring text) {
+void RenderSystem::ShowAnswersNPC(int value, std::string text) {
 
     ShowText(buffer, text, 470, 660 + value, 28);
 

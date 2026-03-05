@@ -19,7 +19,7 @@ private:
     DialogSystem* dialogSystem; // Ссылка на систему диалогов
 
     //Вспомогательные методы 
-    std::wstring IntToWString(int value);
+    std::string IntToString(int value);
     int GetScaledX(int x);
     int GetScaledY(int y);
     int GetScaledSize(int size);
@@ -36,7 +36,7 @@ public:
     void SetDialogSystem(DialogSystem* dialog) { dialogSystem = dialog; }
 
      void ShowText(
-        const HDC& hdc, const std::wstring& text,
+        const HDC& hdc, const std::string& text,
         int base_x, int base_y,
         int base_font_size
     );
@@ -51,8 +51,8 @@ public:
     void ShowObjectBeforeStart(float centrX = 1920.0f / 2.0f, float centrY = 1080.0f / 2.0f);
     void ShowProcessGame();
     void ShowDialog();
-    void ShowTextNPC(int value, std::wstring text);
-    void ShowAnswersNPC(int value, std::wstring text);
+    void ShowTextNPC(int value, std::string text);
+    void ShowAnswersNPC(int value, std::string text);
 
 
 };
