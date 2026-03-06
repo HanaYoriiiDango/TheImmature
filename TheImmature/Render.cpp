@@ -84,6 +84,68 @@ void RenderSystem::ShowText(HDC hdc, const std::string& utf8text,
     SelectObject(hdc, hOldFont);
     DeleteObject(hFont);
 }
+
+void RenderSystem::ShowANSIText(HDC hdc, const std::string& ansiText,
+    int base_x, int base_y, int base_font_size)
+{
+    int x = GetScaledX(base_x);
+    int y = GetScaledY(base_y);
+    int font_size = GetScaledSize(base_font_size);
+    font_size = max(12, font_size);
+
+    // Вся строка целиком (для CreateFontW не нужно, но оставим)
+    int size = MultiByteToWideChar(1251, 0, ansiText.c_str(), -1, NULL, 0);
+    std::wstring wstr(size, 0);
+    MultiByteToWideChar(1251, 0, ansiText.c_str(), -1, &wstr[0], size);
+
+    // Создаем шрифт
+    HFONT hFont = CreateFontW(
+        font_size, 0, 0, 0,
+        FW_NORMAL, FALSE, FALSE, FALSE,
+        DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
+        CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
+        DEFAULT_PITCH | FF_SWISS, L"Arial"
+    );
+
+    HFONT hOldFont = (HFONT)SelectObject(hdc, hFont);
+    SetTextColor(hdc, RGB(0, 0, 0));
+    SetBkMode(hdc, TRANSPARENT);
+
+    // Разделяем по \n
+    std::vector<std::wstring> lines;
+    size_t start = 0;
+    size_t end = ansiText.find('\n');
+    std::string temp = ansiText;
+
+    while (end != std::string::npos) {
+        std::string line = temp.substr(start, end - start);
+        // КОНВЕРТИРУЕМ С 1251, А НЕ CP_UTF8!
+        int sz = MultiByteToWideChar(1251, 0, line.c_str(), -1, NULL, 0);  // ← ИСПРАВЛЕНО
+        std::wstring wline(sz, 0);
+        MultiByteToWideChar(1251, 0, line.c_str(), -1, &wline[0], sz);
+        lines.push_back(wline);
+
+        start = end + 1;
+        end = temp.find('\n', start);
+    }
+
+    // Последняя строка
+    std::string lastLine = temp.substr(start);
+    int szLast = MultiByteToWideChar(1251, 0, lastLine.c_str(), -1, NULL, 0);  // ← ИСПРАВЛЕНО
+    std::wstring wlast(szLast, 0);
+    MultiByteToWideChar(1251, 0, lastLine.c_str(), -1, &wlast[0], szLast);
+    lines.push_back(wlast);
+
+    // Рисуем через TextOutW
+    int lineHeight = font_size + 4;
+    for (size_t i = 0; i < lines.size(); i++) {
+        TextOutW(hdc, x, y + i * lineHeight,
+            lines[i].c_str(), lines[i].length());
+    }
+
+    SelectObject(hdc, hOldFont);
+    DeleteObject(hFont);
+}
 void RenderSystem::ShowBMP(
     const HDC& hdc,
     int base_x, int base_y, 
@@ -154,13 +216,13 @@ void RenderSystem::ShowProcessGame() {
     // Выводим эмоции
     for (int i = 0; i < Emotion.size(); i++) {
 
-        ShowText(buffer, Emotion_Names[i], 30, 700 + i * 60, 28);
-        ShowText(buffer, std::to_string(Hero.emotions[i]), 200, 700 + i * 60, 28);
+        ShowANSIText(buffer, Emotion_Names[i], 30, 700 + i * 60, 28);
+        ShowANSIText(buffer, std::to_string(Hero.emotions[i]), 200, 700 + i * 60, 28);
 
     }
 
     // Выводи текущий мир 
-    ShowText(buffer, Worlds[Hero.current_loc].name, 30, 660, 28);
+    ShowANSIText(buffer, Worlds[Hero.current_loc].name, 30, 660, 28);
 
     Hero.icon_show = true;
 

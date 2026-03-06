@@ -346,12 +346,12 @@ void GameLogicSystem::RenderWorldSelection(HDC hdc) {
     }
 
     // Заголовок
-    l_Render->ShowText(hdc, "Древо Перехода", 800, 100, 36);
-    l_Render->ShowText(hdc, Worlds[Hero.current_loc].name + ":", 800, 150, 28);
-    l_Render->ShowText(hdc, "Куда отправишься дальше?", 800, 180, 24);
+    l_Render->ShowANSIText(hdc, "Древо Перехода", 800, 100, 36);
+    l_Render->ShowANSIText(hdc, Worlds[Hero.current_loc].name + ":", 800, 150, 28);
+    l_Render->ShowANSIText(hdc, "Куда отправишься дальше?", 800, 180, 24);
 
     if (availablePortals.empty()) {
-        l_Render->ShowText(hdc, "Нет доступных миров для перехода", 800, 250, 24);
+        l_Render->ShowANSIText(hdc, "Нет доступных миров для перехода", 800, 250, 24);
         return;
     }
 
@@ -373,17 +373,17 @@ void GameLogicSystem::RenderWorldSelection(HDC hdc) {
             worldText = std::to_string(i + 1) + ") " + worldText;
         }
 
-        l_Render->ShowText(hdc, worldText, 800, 250 + i * 50, 24);
+        l_Render->ShowANSIText(hdc, worldText, 800, 250 + i * 50, 24);
     }
 
     // Подсказка
-    l_Render->ShowText(hdc, "Стрелки: Выбор   Enter: Подтвердить   ESC: Выход",
+    l_Render->ShowANSIText(hdc, "Стрелки: Выбор   Enter: Подтвердить   ESC: Выход",
         800, 550, 20);
     
     // Отладочная информация
     char debug[256];
     sprintf_s(debug, sizeof(debug), "Доступно миров: %zd", availablePortals.size());
-    l_Render->ShowText(hdc, debug, 800, 600, 18);
+    l_Render->ShowANSIText(hdc, debug, 800, 600, 18);
 }
 
 // 7. Сброс счетчика

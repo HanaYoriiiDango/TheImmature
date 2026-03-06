@@ -36,6 +36,7 @@ public:
     void SetDialogSystem(DialogSystem* dialog) { dialogSystem = dialog; }
 
     void ShowText(HDC hdc, const std::string& utf8text, int base_x, int base_y, int base_font_size);
+    void ShowANSIText(HDC hdc, const std::string& utf8text, int base_x, int base_y, int base_font_size);
 
     void ShowBMP(
         const HDC& hdc,
