@@ -24,6 +24,21 @@ HBITMAP ResourceManager::LoadBMP(LPCSTR filename) {
 }
 
 HBITMAP ResourceManager::LoadBmpNpcs(const std::string& npcName) {
+
+    std::string debug = "[LoadBmpNpcs] Received name: '";
+    debug += npcName;
+    debug += "' (length: " + std::to_string(npcName.length()) + ")\n";
+    OutputDebugStringA(debug.c_str());
+
+    // Побайтовый вывод для поиска невидимых символов
+    std::string hexDump;
+    for (unsigned char c : npcName) {
+        char buf[10];
+        sprintf_s(buf, sizeof(buf), "0x%02X ", c);
+        hexDump += buf;
+    }
+    OutputDebugStringA(("[LoadBmpNpcs] Hex: " + hexDump + "\n").c_str());
+
     if (npcName == "Лоран") return LoadBMP("Loran.bmp");
     else if (npcName == "Ними") return LoadBMP("Nimi.bmp");
     else if (npcName == "Элиор и Нивра") return LoadBMP("Elion.bmp");

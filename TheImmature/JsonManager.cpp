@@ -33,7 +33,7 @@ DialogText JsonManager::ParseDialogText(const json& textJson) {
 NPC JsonManager::LoadNPCFromFile(const std::string& filepath) {
     NPC npc;
 
-    std::ifstream file(filepath); // открываем в бинарном режиме
+    std::ifstream file(filepath); 
 
     if (!file.is_open()) {
         JsonValidator::LogError("JsonManager", "Cannot open NPC file: " + filepath);
@@ -46,7 +46,7 @@ NPC JsonManager::LoadNPCFromFile(const std::string& filepath) {
 
         npc.id = jsonData["id"].get<std::string>();
         npc.name = jsonData["name"].get<std::string>();
-        //npc.icon = j_ResManager.LoadBmpNpcs(npc.name);
+        npc.icon = j_ResManager.LoadBmpNpcs(npc.name);
 
         std::string worldLink = jsonData["world_link"].get<std::string>();
         npc.world_link = JsonValidator::StringToEmotion(worldLink);
