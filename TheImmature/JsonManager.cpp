@@ -46,7 +46,7 @@ NPC JsonManager::LoadNPCFromFile(const std::string& filepath) {
 
         npc.id = jsonData["id"].get<std::string>();
         npc.name = jsonData["name"].get<std::string>();
-        npc.icon = j_ResManager.LoadBmpNpcs(npc.name);
+        npc.icon = j_ResManager.LoadBmpNpcs(npc.id);
 
         std::string worldLink = jsonData["world_link"].get<std::string>();
         npc.world_link = JsonValidator::StringToEmotion(worldLink);

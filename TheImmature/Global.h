@@ -8,40 +8,6 @@
 // Перечисления
 enum Emotion_ { JOY, SADNESS, POWER, FEAR, CALM, ANGER, COUNT_Emotions }; // Список БАЗОВЫХ эмоций для удобства работы 
 
-namespace Texture {
-
-    enum class ID {
-
-        // World background
-        Background_JOY,
-        Background_SAD, 
-        Background_POWER,
-        Background_FEAR,
-        Background_CALM,
-        Background_ANGER,
-
-        // UI
-        hBack,          // Фоновый битмап
-        backScales,     // Битмап для шкал
-        backReplace,    // Битмап для замен
-        backHero,       // Битмап для героя
-        backCharacter,  // Битмап для персонажа
-        backMainText,   // Битмап для основного текста
-        ButtonStart,    // кнопка старта 
-
-        // Персонажи
-        HeroGG,
-        NpcLoran,
-        NpcNimi,
-        NpcElion,
-        NpcDefault,
-
-        AllDefault, // общая заглушка 
-
-        Count  // размер массива
-    };
-}
-
 enum GameState {
     MAIN_MENU,
     DIALOG,
@@ -71,10 +37,23 @@ struct Window_ {
 
 };
 
+struct UI {
+    HBITMAP hBack = nullptr;          // начальный фон 
+    HBITMAP backScales = nullptr;     // Битмап для шкал
+    HBITMAP backReplace = nullptr;    // Битмап для замен
+    HBITMAP backHero = nullptr;       // Битмап для героя
+    HBITMAP backCharacter = nullptr;  // Битмап для персонажа
+    HBITMAP backMainText = nullptr;   // Битмап для основного текста
+
+    HBITMAP worldBackgrounds[COUNT_Emotions];
+
+};
+
 struct Portal_ {
     std::string name;
     Emotion_ target;
     bool open = true;
+
 };
 
 // Структура для ответов
@@ -152,6 +131,7 @@ struct GameSession {
 
 extern Player Hero;
 extern Location Worlds[COUNT_Emotions]; 
+extern UI Interface;
 // Внешние объявления глобальных переменных
 extern std::vector<Emotion_> Emotion;
 extern std::string Emotion_Names[COUNT_Emotions];
