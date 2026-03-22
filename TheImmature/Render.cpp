@@ -182,7 +182,7 @@ void RenderSystem::ShowObjectBeforeStart(float centrX, float centrY) {
     if (!buffer) return;
 
     // background
-    ShowBMP(buffer, 0, 0, 1920, 1080, r_resManager.GetbackMainText());
+    ShowBMP(buffer, 0, 0, 1920, 1080, Interface.hBack);
 
     ShowText(buffer, "Press SPACE to start", centrX, centrY, 56);
 
@@ -194,24 +194,24 @@ void RenderSystem::ShowProcessGame() {
 
     // 1. Фон в зависимости от текущего мира
     HBITMAP currentBg = Worlds[Hero.current_loc].background;
-    if (!currentBg) currentBg = r_resManager.GethBack(); // fallback
+    if (!currentBg) currentBg = Interface.hBack; // fallback
 
     ShowBMP(buffer, 0, 0, 1920, 1080, currentBg, false);
 
     // Back icon hero
-    ShowBMP(buffer, 20, 20, 400, 600, r_resManager.GetBackCharacter(), false, true);
+    ShowBMP(buffer, 20, 20, 400, 600, Interface.backHero, false, true);
 
     //Back scales
-    ShowBMP(buffer, 20, 650, 400, 400, r_resManager.GetBackScales(), false, true);
+    ShowBMP(buffer, 20, 650, 400, 400, Interface.backScales, false, true);
 
     //Back main text
-    ShowBMP(buffer, 450, 20, 1020, 600, r_resManager.GetbackMainText(), false, true);
+    ShowBMP(buffer, 450, 20, 1020, 600, Interface.backMainText, false, true);
 
     //Back replaces
-    ShowBMP(buffer, 450, 650, 1440, 400, r_resManager.GetBackReplace(), false, true);
+    ShowBMP(buffer, 450, 650, 1440, 400, Interface.backReplace, false, true);
 
     //Back icon character
-    ShowBMP(buffer, 1500, 20, 390, 600, r_resManager.GetBackCharacter(), false, true);
+    ShowBMP(buffer, 1500, 20, 390, 600, Interface.backCharacter, false, true);
 
     // Выводим эмоции
     for (int i = 0; i < Emotion.size(); i++) {

@@ -23,24 +23,16 @@ HBITMAP ResourceManager::LoadBMP(LPCSTR filename) {
     return hBmp;
 }
 
-HBITMAP ResourceManager::LoadBmpNpcs(const std::string& npcId) { // загружает BMP npc
+HBITMAP ResourceManager::LoadBmpNpcs(const std::string& npcName) { // загружает BMP npc
 
-
-    if (npcId.find("anger_laurent") != std::string::npos)
-        return LoadBMP("Loran.bmp");
-    else if (npcId.find("sadness_laurent") != std::string::npos)
-        return LoadBMP("Loran.bmp");
-    else if (npcId.find("sadness_nimi") != std::string::npos)
-        return LoadBMP("Nimi.bmp");
-    else if (npcId.find("sadness_nimi") != std::string::npos)
-        return LoadBMP("Nimi.bmp");
-    else if (npcId.find("elior") != std::string::npos)
-        return LoadBMP("Elion.bmp");
-    else
-        return LoadBMP("DefaultBMP.bmp");
+    if (npcName == "Nimi") return LoadBMP("Nimi.bmp");
+    if (npcName == "Elion") return LoadBMP("Elion.bmp");
+    if (npcName == "Loran") return LoadBMP("Loran.bmp");
+    else return LoadBMP("DefaultBMP.bmp");
 }
 
 bool ResourceManager::LoadWorldBackgrounds() {
+
     Interface.worldBackgrounds[ANGER] = LoadBMP("AngerBack.bmp");
     Interface.worldBackgrounds[SADNESS] = LoadBMP("SadBack.bmp");
     Interface.worldBackgrounds[FEAR] = LoadBMP("FearBack.bmp");
