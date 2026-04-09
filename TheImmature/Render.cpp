@@ -1,7 +1,7 @@
 ﻿#include "Global.h"
 #include "Render.h"
 #include "JsonManager.h" 
-#include "Dialog.h" 
+#include "Dialog.h"  
 
 std::string RenderSystem::IntToString(int value) {
     return std::to_string(value);
@@ -166,7 +166,7 @@ void RenderSystem::ShowBMP(
 
         GetObject(hBitmap, sizeof(BITMAP), &bm);
 
-        if (transparent) TransparentBlt(hdc, x, y, w, h, memDC, 0, 0, w, h, RGB(0, 0, 0));
+        if (transparent) TransparentBlt(hdc, x, y, w, h, memDC, 0, 0, w, h, RGB(255, 255, 255));
         if (bitblt) BitBlt(hdc, x, y, w, h, memDC, 0, 0, SRCCOPY);
         else StretchBlt(hdc, x, y, w, h, memDC, 0, 0, bm.bmWidth, bm.bmHeight, SRCCOPY);
 
@@ -188,40 +188,80 @@ void RenderSystem::ShowObjectBeforeStart(float centrX, float centrY) {
 
 }
 
+void RenderSystem::DrawLine(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color) { // algorithm Brezenheim
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = (x1 < x2) ? 1 : -1;
+    int sy = (y1 < y2) ? 1 : -1;
+    int err = dx - dy;
+
+    while (true) {
+        SetPixel(hdc, x1, y1, color);
+        if (x1 == x2 && y1 == y2) break;
+        int e2 = 2 * err;
+        if (e2 > -dy) { err -= dy; x1 += sx; }
+        if (e2 < dx) { err += dx; y1 += sy; }
+    }
+
+}
+
+void RenderSystem::PixelDiagramm() {
+
+    if (!buffer) return;
+
+    int cx = GetScaledX(218);   
+    int cy = GetScaledY(848);   
+    int maxR = GetScaledSize(160);  
+
+    int pointsX[6], pointsY[6];
+
+    for (int i = 0; i < 6; i++) {
+        float angle = (3.14159f / 2.0f) - i * (2.0f * 3.14159f / 6.0f);
+        float t = Hero.emotions[i] / 100.0f;
+        float r = maxR * t;
+
+        pointsX[i] = cx + (int)(r * cos(angle));
+        pointsY[i] = cy - (int)(r * sin(angle));
+
+
+
+
+    }
+
+    for (int i = 0; i < 6; i++) {
+        int next = (i + 1) % 6;
+        DrawLine(buffer, pointsX[i], pointsY[i], pointsX[next], pointsY[next], RGB(255, 0, 255));
+    }
+
+}
+
 void RenderSystem::ShowProcessGame() {
 
     if (!buffer) return;
 
-    // 1. Фон в зависимости от текущего мира
     HBITMAP currentBg = Worlds[Hero.current_loc].background;
     if (!currentBg) currentBg = Interface.hBack; // fallback
 
     ShowBMP(buffer, 0, 0, 1920, 1080, currentBg, false);
 
     // Back icon hero
-    ShowBMP(buffer, 20, 20, 400, 600, Interface.backHero, false, true);
+    ShowBMP(buffer, 20, 20, 400, 600, Interface.backCharacter, true, false);
 
     //Back scales
-    ShowBMP(buffer, 20, 650, 400, 400, Interface.backScales, false, true);
+    ShowBMP(buffer, 20, 650, 400, 400, Interface.backScales, true, false);
 
     //Back main text
-    ShowBMP(buffer, 450, 20, 1020, 600, Interface.backMainText, false, true);
+    ShowBMP(buffer, 450, 20, 1020, 600, Interface.backMainText, true, false);
 
     //Back replaces
-    ShowBMP(buffer, 450, 650, 1440, 400, Interface.backReplace, false, true);
+    ShowBMP(buffer, 450, 650, 1200, 450, Interface.backReplace, false, true);
 
     //Back icon character
-    ShowBMP(buffer, 1500, 20, 390, 600, Interface.backCharacter, false, true);
+    ShowBMP(buffer, 1500, 20, 390, 600, Interface.backCharacter, true, false);
 
-    // Выводим эмоции
-    for (int i = 0; i < Emotion.size(); i++) {
+    PixelDiagramm();
 
-        ShowANSIText(buffer, Emotion_Names[i], 30, 700 + i * 60, 28);
-        ShowANSIText(buffer, std::to_string(Hero.emotions[i]), 200, 700 + i * 60, 28);
-
-    }
-
-    // Выводи текущий мир 
+    // output current world 
     ShowANSIText(buffer, Worlds[Hero.current_loc].name, 30, 660, 28);
 
     Hero.icon_show = true;
@@ -229,7 +269,7 @@ void RenderSystem::ShowProcessGame() {
     if (Hero.Icon) {
         if (Hero.icon_show) {
 
-            ShowBMP(buffer, 40, 40, 370, 560, Hero.Icon, false, true);
+            //ShowBMP(buffer, 25, 25, 400, 400, Hero.Icon, true);
 
         }
     }

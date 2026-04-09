@@ -224,10 +224,10 @@ void DialogSystem::Render(HDC hdc) {
     }
     else if (currentNPC && currentText) {
         if (currentNPC->icon) {
-            d_Render.ShowBMP(hdc,
-                1520, 40, 370, 560,
-                currentNPC->icon,
-                 false, true);
+            //d_Render.ShowBMP(hdc,
+            //    1520, 40, 370, 560,
+            //    currentNPC->icon,
+            //     false, true);
         }
 
         d_Render.ShowText(hdc, currentNPC->name + ":", 470, 40, 28);
@@ -241,7 +241,7 @@ void DialogSystem::Render(HDC hdc) {
             else {
                 answerText = std::to_string(i + 1) + ") " + answerText;
             }
-            d_Render.ShowText(hdc, answerText, 470, 670 + i * 40, 22);
+            d_Render.ShowText(hdc, answerText, 480, 670 + i * 40, 22);
         }
 
         d_Render.ShowANSIText(hdc, "Стрелочки: Выбор   Enter: Подтвердить   ESC: Выход", 470, 590, 20);

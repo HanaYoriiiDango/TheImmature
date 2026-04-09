@@ -51,12 +51,12 @@ bool ResourceManager::LoadWorldBackgrounds() {
 
 bool ResourceManager::LoadAllBMP() {
 
-    Interface.hBack = LoadBMP("SadBack.bmp");         // Фоновый битмап
-    Interface.backScales = LoadBMP("WhiteBack.bmp");     // Битмап для шкал
-    Interface.backReplace = LoadBMP("WhiteBack.bmp");    // Битмап для замен
-    Interface.backHero = LoadBMP("WhiteBack.bmp");      // Битмап для героя
-    Interface.backCharacter = LoadBMP("WhiteBack.bmp"); // Битмап для персонажа
-    Interface.backMainText = LoadBMP("WhiteBack.bmp");   // Битмап для основного текста
+    Interface.hBack = LoadBMP("SpaceBack1.bmp");         // Фоновый битмап
+    Interface.backScales = LoadBMP("Diagram_Lep1.bmp");     // Битмап для шкал
+    Interface.backReplace = LoadBMP("Ass2.bmp");    // Битмап для замен
+    Interface.backHero = LoadBMP("Ass15.bmp");      // Битмап для героя
+    Interface.backCharacter = LoadBMP("Ass15.bmp"); // Битмап для персонажа
+    Interface.backMainText = LoadBMP("Main1.bmp");   // Битмап для основного текста
     Hero.Icon = LoadBMP("GG.bmp");
 
     if (!LoadWorldBackgrounds()) return false;

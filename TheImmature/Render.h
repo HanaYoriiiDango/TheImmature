@@ -46,6 +46,10 @@ public:
     );
 
     void ShowObjectBeforeStart(float centrX = 1920.0f / 2.0f, float centrY = 1080.0f / 2.0f);
+    void GetPoint(int index, int value, int& outX, int& outY);
+    void DrawLine(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
+
+    void PixelDiagramm();
     void ShowProcessGame();
     void ShowDialog();
     void ShowTextNPC(int value, std::string text);
