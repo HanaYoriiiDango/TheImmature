@@ -380,10 +380,6 @@ void GameLogicSystem::RenderWorldSelection(HDC hdc) {
     l_Render->ShowANSIText(hdc, "Стрелки: Выбор   Enter: Подтвердить   ESC: Выход",
         800, 550, 20);
     
-    // Отладочная информация
-    char debug[256];
-    sprintf_s(debug, sizeof(debug), "Доступно миров: %zd", availablePortals.size());
-    l_Render->ShowANSIText(hdc, debug, 800, 600, 18);
 }
 
 // 7. Сброс счетчика

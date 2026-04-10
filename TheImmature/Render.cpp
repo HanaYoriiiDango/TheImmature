@@ -119,8 +119,8 @@ void RenderSystem::ShowANSIText(HDC hdc, const std::string& ansiText,
 
     while (end != std::string::npos) {
         std::string line = temp.substr(start, end - start);
-        // КОНВЕРТИРУЕМ С 1251, А НЕ CP_UTF8!
-        int sz = MultiByteToWideChar(1251, 0, line.c_str(), -1, NULL, 0);  // ← ИСПРАВЛЕНО
+        
+        int sz = MultiByteToWideChar(1251, 0, line.c_str(), -1, NULL, 0);  
         std::wstring wline(sz, 0);
         MultiByteToWideChar(1251, 0, line.c_str(), -1, &wline[0], sz);
         lines.push_back(wline);
@@ -131,7 +131,7 @@ void RenderSystem::ShowANSIText(HDC hdc, const std::string& ansiText,
 
     // Последняя строка
     std::string lastLine = temp.substr(start);
-    int szLast = MultiByteToWideChar(1251, 0, lastLine.c_str(), -1, NULL, 0);  // ← ИСПРАВЛЕНО
+    int szLast = MultiByteToWideChar(1251, 0, lastLine.c_str(), -1, NULL, 0);  
     std::wstring wlast(szLast, 0);
     MultiByteToWideChar(1251, 0, lastLine.c_str(), -1, &wlast[0], szLast);
     lines.push_back(wlast);
@@ -205,32 +205,105 @@ void RenderSystem::DrawLine(HDC hdc, int x1, int y1, int x2, int y2, COLORREF co
 
 }
 
+void RenderSystem::IsColorDiagramm() {
+
+    switch (Hero.current_loc) {
+    case(SADNESS): 
+        Interface.colorDiagramm[0] = 30; // blue
+        Interface.colorDiagramm[1] = 40;
+        Interface.colorDiagramm[2] = 140;
+        break;
+
+    case(JOY):
+        Interface.colorDiagramm[0] = 220; // yellow
+        Interface.colorDiagramm[1] = 180;
+        Interface.colorDiagramm[2] = 20;
+        break;
+
+    case(POWER):
+        Interface.colorDiagramm[0] = 160; // red
+        Interface.colorDiagramm[1] = 30;
+        Interface.colorDiagramm[2] = 30;
+        break;
+
+    case(FEAR):
+        Interface.colorDiagramm[0] = 110; // fiol
+        Interface.colorDiagramm[1] = 30;
+        Interface.colorDiagramm[2] = 140;
+        break;
+
+    case(CALM):
+        Interface.colorDiagramm[0] = 30; // green 
+        Interface.colorDiagramm[1] = 100;
+        Interface.colorDiagramm[2] = 60;
+        break;
+
+    case(ANGER):
+        Interface.colorDiagramm[0] = 170; // black red
+        Interface.colorDiagramm[1] = 50;
+        Interface.colorDiagramm[2] = 15;
+        break;
+
+
+    }
+}
+
 void RenderSystem::PixelDiagramm() {
 
     if (!buffer) return;
 
     int cx = GetScaledX(218);   
     int cy = GetScaledY(848);   
-    int maxR = GetScaledSize(160);  
+    int maxR = GetScaledSize(160); 
+    float PI = 3.14159f;
 
     int pointsX[6], pointsY[6];
 
     for (int i = 0; i < 6; i++) {
-        float angle = (3.14159f / 2.0f) - i * (2.0f * 3.14159f / 6.0f);
+        float angle = (PI / 2.0f) - i * (2.0f * PI / 6.0f);
         float t = Hero.emotions[i] / 100.0f;
         float r = maxR * t;
 
         pointsX[i] = cx + (int)(r * cos(angle));
         pointsY[i] = cy - (int)(r * sin(angle));
 
-
-
-
     }
+
+    POINT points[6];
+    for (int i = 0; i < 6; i++) {
+        points[i].x = pointsX[i];
+        points[i].y = pointsY[i];
+    }
+
+    // ЗАЛИВКА 
+    IsColorDiagramm();
+
+    HBRUSH hBrush = CreateSolidBrush(RGB(Interface.colorDiagramm[0], Interface.colorDiagramm[1], Interface.colorDiagramm[2]));  // цвет заливки
+    HPEN hPen = CreatePen(PS_NULL, 0, 0); 
+    SelectObject(buffer, hBrush);
+    SelectObject(buffer, hPen);
+    Polygon(buffer, points, 6);
+    DeleteObject(hBrush);
+    DeleteObject(hPen);
 
     for (int i = 0; i < 6; i++) {
         int next = (i + 1) % 6;
-        DrawLine(buffer, pointsX[i], pointsY[i], pointsX[next], pointsY[next], RGB(255, 0, 255));
+        DrawLine(buffer, pointsX[i], pointsY[i], pointsX[next], pointsY[next],
+        RGB(Interface.colorDiagramm[0], Interface.colorDiagramm[1], Interface.colorDiagramm[2]));
+    }
+
+    for (int i = 0; i < 6; i++) {
+
+        std::string value = IntToString(Hero.emotions[i]);
+
+        float angle = (PI / 2.0f) - i * (2.0f * PI / 6.0f);
+
+        int X = 110.0f + (int)(maxR + 215.0f * cos(angle));
+        int Y = 1139.0f - (int)(maxR + 215.0f * sin(angle));
+
+
+        ShowANSIText(buffer, value, GetScaledX(X), GetScaledY(Y), 27);
+
     }
 
 }

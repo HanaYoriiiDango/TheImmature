@@ -50,6 +50,8 @@ public:
     void DrawLine(HDC hdc, int x1, int y1, int x2, int y2, COLORREF color);
 
     void PixelDiagramm();
+    void IsColorDiagramm();
+
     void ShowProcessGame();
     void ShowDialog();
     void ShowTextNPC(int value, std::string text);

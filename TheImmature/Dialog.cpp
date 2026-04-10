@@ -220,7 +220,7 @@ void DialogSystem::Render(HDC hdc) {
             }
         }
 
-        d_Render.ShowANSIText(hdc, "Стрелочки: Выбор   Enter: Подтвердить   ESC: Выход", 470, 590, 20);
+        d_Render.ShowANSIText(hdc, "Стрелочки: Выбор   Enter: Подтвердить   ESC: Выход", 470, 570, 20);
     }
     else if (currentNPC && currentText) {
         if (currentNPC->icon) {
@@ -244,6 +244,6 @@ void DialogSystem::Render(HDC hdc) {
             d_Render.ShowText(hdc, answerText, 480, 670 + i * 40, 22);
         }
 
-        d_Render.ShowANSIText(hdc, "Стрелочки: Выбор   Enter: Подтвердить   ESC: Выход", 470, 590, 20);
+        d_Render.ShowANSIText(hdc, "Стрелочки: Выбор   Enter: Подтвердить   ESC: Выход", 470, 570, 20);
     }
 }

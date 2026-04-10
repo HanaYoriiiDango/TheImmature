@@ -47,6 +47,8 @@ struct UI {
 
     HBITMAP worldBackgrounds[COUNT_Emotions];
 
+    int colorDiagramm[3] = {0, 0, 0};
+
 };
 
 struct Portal_ {
