@@ -252,9 +252,9 @@ void RenderSystem::PixelDiagramm() {
 
     if (!buffer) return;
 
-    int cx = GetScaledX(218);   
-    int cy = GetScaledY(848);   
-    int maxR = GetScaledSize(160); 
+    int cx = 218;   
+    int cy = 848;   
+    int maxR = 160; 
     float PI = 3.14159f;
 
     int pointsX[6], pointsY[6];
@@ -271,8 +271,8 @@ void RenderSystem::PixelDiagramm() {
 
     POINT points[6];
     for (int i = 0; i < 6; i++) {
-        points[i].x = pointsX[i];
-        points[i].y = pointsY[i];
+        points[i].x = GetScaledX(pointsX[i]);
+        points[i].y = GetScaledY(pointsY[i]);
     }
 
     // ЗАЛИВКА 
@@ -288,7 +288,8 @@ void RenderSystem::PixelDiagramm() {
 
     for (int i = 0; i < 6; i++) {
         int next = (i + 1) % 6;
-        DrawLine(buffer, pointsX[i], pointsY[i], pointsX[next], pointsY[next],
+        DrawLine(buffer, GetScaledX(pointsX[i]), GetScaledY(pointsY[i])
+            , GetScaledX(pointsX[next]), GetScaledY(pointsY[next]),
         RGB(Interface.colorDiagramm[0], Interface.colorDiagramm[1], Interface.colorDiagramm[2]));
     }
 
@@ -298,11 +299,10 @@ void RenderSystem::PixelDiagramm() {
 
         float angle = (PI / 2.0f) - i * (2.0f * PI / 6.0f);
 
-        int X = 110.0f + (int)(maxR + 215.0f * cos(angle));
-        int Y = 1139.0f - (int)(maxR + 215.0f * sin(angle));
+        int baseX = 45.0f + (int)(maxR + 180.0f * cos(angle));
+        int baseY = 999.0f - (int)(maxR + 180.0f * sin(angle));
 
-
-        ShowANSIText(buffer, value, GetScaledX(X), GetScaledY(Y), 27, 
+        ShowANSIText(buffer, value, baseX, baseY, 27,
             Interface.colorDiagramm[0], Interface.colorDiagramm[1], Interface.colorDiagramm[2]);
 
     }
