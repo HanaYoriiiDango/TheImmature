@@ -25,7 +25,7 @@ int RenderSystem::GetScaledSize(int size) {
 void RenderSystem::SetBuffer(const HDC& memDC) { buffer = memDC; }
 
 void RenderSystem::ShowText(HDC hdc, const std::string& utf8text,
-    int base_x, int base_y, int base_font_size)
+    int base_x, int base_y, int base_font_size, int R, int G, int B)
 {
     int x = GetScaledX(base_x);
     int y = GetScaledY(base_y);
@@ -47,7 +47,7 @@ void RenderSystem::ShowText(HDC hdc, const std::string& utf8text,
     );
 
     HFONT hOldFont = (HFONT)SelectObject(hdc, hFont);
-    SetTextColor(hdc, RGB(0, 0, 0));
+    SetTextColor(hdc, RGB(R, G, B));
     SetBkMode(hdc, TRANSPARENT);
 
     // Разделяем по \n (работает одинаково для всех строк)
@@ -86,14 +86,14 @@ void RenderSystem::ShowText(HDC hdc, const std::string& utf8text,
 }
 
 void RenderSystem::ShowANSIText(HDC hdc, const std::string& ansiText,
-    int base_x, int base_y, int base_font_size)
+    int base_x, int base_y, int base_font_size, int R, int G, int B)
 {
     int x = GetScaledX(base_x);
     int y = GetScaledY(base_y);
     int font_size = GetScaledSize(base_font_size);
     font_size = max(12, font_size);
 
-    // Вся строка целиком (для CreateFontW не нужно, но оставим)
+    // Вся строка целиком 
     int size = MultiByteToWideChar(1251, 0, ansiText.c_str(), -1, NULL, 0);
     std::wstring wstr(size, 0);
     MultiByteToWideChar(1251, 0, ansiText.c_str(), -1, &wstr[0], size);
@@ -108,7 +108,7 @@ void RenderSystem::ShowANSIText(HDC hdc, const std::string& ansiText,
     );
 
     HFONT hOldFont = (HFONT)SelectObject(hdc, hFont);
-    SetTextColor(hdc, RGB(0, 0, 0));
+    SetTextColor(hdc, RGB(R, G, B));
     SetBkMode(hdc, TRANSPARENT);
 
     // Разделяем по \n
@@ -302,7 +302,8 @@ void RenderSystem::PixelDiagramm() {
         int Y = 1139.0f - (int)(maxR + 215.0f * sin(angle));
 
 
-        ShowANSIText(buffer, value, GetScaledX(X), GetScaledY(Y), 27);
+        ShowANSIText(buffer, value, GetScaledX(X), GetScaledY(Y), 27, 
+            Interface.colorDiagramm[0], Interface.colorDiagramm[1], Interface.colorDiagramm[2]);
 
     }
 
@@ -312,7 +313,7 @@ void RenderSystem::ShowProcessGame() {
 
     if (!buffer) return;
 
-    HBITMAP currentBg = Worlds[Hero.current_loc].background;
+    HBITMAP currentBg = Interface.worldBackgrounds[Hero.current_loc];
     if (!currentBg) currentBg = Interface.hBack; // fallback
 
     ShowBMP(buffer, 0, 0, 1920, 1080, currentBg, false);
@@ -327,22 +328,23 @@ void RenderSystem::ShowProcessGame() {
     ShowBMP(buffer, 450, 20, 1020, 600, Interface.backMainText, true, false);
 
     //Back replaces
-    ShowBMP(buffer, 450, 650, 1200, 450, Interface.backReplace, false, true);
+    ShowBMP(buffer, 450, 650, 1300, 400, Interface.backReplace, true, false);
 
     //Back icon character
-    ShowBMP(buffer, 1500, 20, 390, 600, Interface.backCharacter, true, false);
+    ShowBMP(buffer, 1500, 20, 400, 600, Interface.backCharacter, true, false);
 
-    PixelDiagramm();
+    PixelDiagramm(); 
 
     // output current world 
-    ShowANSIText(buffer, Worlds[Hero.current_loc].name, 30, 660, 28);
+    ShowANSIText(buffer, Worlds[Hero.current_loc].name, 30, 660, 28, 
+        Interface.colorDiagramm[0], Interface.colorDiagramm[1], Interface.colorDiagramm[2]);
 
-    Hero.icon_show = true;
+    Hero.icon_show = false;
 
     if (Hero.Icon) {
         if (Hero.icon_show) {
 
-            //ShowBMP(buffer, 25, 25, 400, 400, Hero.Icon, true);
+            ShowBMP(buffer, 25, 25, 400, 400, Hero.Icon, true);
 
         }
     }
@@ -351,9 +353,6 @@ void RenderSystem::ShowProcessGame() {
     if (game.Current_State == DIALOG && dialogSystem) {
         dialogSystem->Render(buffer);
     }
-
-    
-
 
 }
 

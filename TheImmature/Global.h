@@ -5,19 +5,14 @@
 #include <ctime>
 #include <cstdint>
 
-// Перечисления
-enum Emotion_ { JOY, SADNESS, POWER, FEAR, CALM, ANGER, COUNT_Emotions }; // Список БАЗОВЫХ эмоций для удобства работы 
+// enums
+enum Emotion_ { JOY, SADNESS, POWER, FEAR, CALM, ANGER, COUNT_Emotions }; 
 
-enum GameState {
-    MAIN_MENU,
-    DIALOG,
-    WORLD_SELECTION
-};
+enum GameState { MAIN_MENU, DIALOG, WORLD_SELECTION };
 
-// Структуры
-
+// structs
 struct Window_ {
-
+    
     // Основные поля окна 
     HWND hwnd = nullptr;
     HINSTANCE hInstance = nullptr;

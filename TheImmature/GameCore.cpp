@@ -42,6 +42,7 @@ bool GameCore::InitGame(HINSTANCE hInstance) {
 void GameCore::Run() {
 
     WinManager.WinUpdate();
+    Logic.SwitchTrack();
     WinManager.WhileMessage();
 
 }

@@ -59,6 +59,6 @@ public:
     int GetFirstNpcIndexInWorld(Emotion_ world);
     void StartNextDialogInWorld(Emotion_ world);
 
-
+    void SwitchTrack();
 
 };

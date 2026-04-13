@@ -9,7 +9,7 @@ bool ResourceManager::FindFiles(LPCSTR filename) {
 
 HBITMAP ResourceManager::LoadBMP(LPCSTR filename) {
     if (!FindFiles(filename)) {
-        MessageBoxA(NULL, "No find files", "sosi", MB_ICONERROR);
+        MessageBoxA(NULL, filename, "No find files:" , MB_ICONERROR);
         return NULL;
     }
 
@@ -25,10 +25,10 @@ HBITMAP ResourceManager::LoadBMP(LPCSTR filename) {
 
 HBITMAP ResourceManager::LoadBmpNpcs(const std::string& npcName) { // загружает BMP npc
 
-    if (npcName == "Nimi") return LoadBMP("Nimi.bmp");
-    if (npcName == "Elion") return LoadBMP("Elion.bmp");
-    if (npcName == "Loran") return LoadBMP("Loran.bmp");
-    else return LoadBMP("DefaultBMP.bmp");
+    if (npcName == "Nimi") return LoadBMP("Bebezyna.bmp");
+    if (npcName == "Elion") return LoadBMP("Bebezyna.bmp");
+    if (npcName == "Loran") return LoadBMP("Bebezyna.bmp");
+    else return LoadBMP("Bebezyna.bmp");
 }
 
 bool ResourceManager::LoadWorldBackgrounds() {
@@ -37,8 +37,8 @@ bool ResourceManager::LoadWorldBackgrounds() {
     Interface.worldBackgrounds[SADNESS] = LoadBMP("SadBack.bmp");
     Interface.worldBackgrounds[FEAR] = LoadBMP("FearBack.bmp");
     Interface.worldBackgrounds[POWER] = LoadBMP("PowerBack.bmp");
-    Interface.worldBackgrounds[CALM] = LoadBMP("WhiteBack.bmp"); // Заглушка
-    Interface.worldBackgrounds[JOY] = LoadBMP("WhiteBack.bmp");  // Заглушка
+    Interface.worldBackgrounds[CALM] = LoadBMP("CalmBack.bmp"); // Заглушка
+    Interface.worldBackgrounds[JOY] = LoadBMP("JoyBack.bmp");  // Заглушка
 
     for (int i = 0; i < COUNT_Emotions; i++) {
         if (!Interface.worldBackgrounds[i]) {
@@ -51,17 +51,17 @@ bool ResourceManager::LoadWorldBackgrounds() {
 
 bool ResourceManager::LoadAllBMP() {
 
-    Interface.hBack = LoadBMP("SpaceBack1.bmp");         // Фоновый битмап
-    Interface.backScales = LoadBMP("Diagram_Lep1.bmp");     // Битмап для шкал
-    Interface.backReplace = LoadBMP("Ass2.bmp");    // Битмап для замен
-    Interface.backHero = LoadBMP("Ass15.bmp");      // Битмап для героя
-    Interface.backCharacter = LoadBMP("Ass15.bmp"); // Битмап для персонажа
-    Interface.backMainText = LoadBMP("Main1.bmp");   // Битмап для основного текста
-    Hero.Icon = LoadBMP("GG.bmp");
+    Interface.hBack = LoadBMP("Menu.bmp");         // Фоновый битмап
+    Interface.backScales = LoadBMP("Diagram_Lep.bmp");     // Битмап для шкал
+    Interface.backReplace = LoadBMP("AnswersBack.bmp");    // Битмап для замен
+    Interface.backHero = LoadBMP("PortretBack.bmp");      // Битмап для героя
+    Interface.backCharacter = LoadBMP("PortretBack.bmp"); // Битмап для персонажа
+    Interface.backMainText = LoadBMP("MainTextBack.bmp");   // Битмап для основного текста
+    Hero.Icon = LoadBMP("RicardoHui.bmp");
 
     if (!LoadWorldBackgrounds()) return false;
 
-    if (!Interface.hBack) return false; // Проверка загрузки 
+    if (!Interface.hBack) return false; // Проверка загрузки  
     if (!Interface.backScales) return false;
     if (!Interface.backReplace) return false;
     if (!Interface.backHero) return false;

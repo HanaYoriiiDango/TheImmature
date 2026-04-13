@@ -62,8 +62,7 @@ void GameLogicSystem::MovingPlayer() {
     if (!available_worlds.empty()) {
         int random_index = rand() % available_worlds.size();
         Hero.current_loc = available_worlds[random_index];
-       /* cout << ">> Переход в " << Worlds_Names[Hero.current_loc] << endl;*/
-
+        SwitchTrack();
         vector<int>().swap(available_worlds);
 
     }
@@ -313,6 +312,7 @@ void GameLogicSystem::ProcessWorldSelection(int keyCode) {
                 // Возвращаем состояние
                 isSelectingWorld = false;
                 game.Current_State = DIALOG;
+                SwitchTrack();
 
                 // ⭐⭐⭐ УСТАНАВЛИВАЕМ ФЛАГ ДЛЯ АВТОЗАПУСКА ДИАЛОГА ⭐⭐⭐
                 g_NeedAutoStartDialog = true;
@@ -431,4 +431,42 @@ void GameLogicSystem::StartNextDialogInWorld(Emotion_ world) {
 
     // Нужно как-то вызвать StartDialogWithNPC или аналогичную функцию
     // Если нет такой функции, то нужно изменить архитектуру
+}
+
+void GameLogicSystem::SwitchTrack() {
+
+    mciSendString(TEXT("stop all"), NULL, 0, NULL);
+    mciSendString(TEXT("close music"), NULL, 0, NULL);
+
+    if (game.Current_State == MAIN_MENU) {
+        mciSendString(TEXT("open \"Menu_Soundtrack.mp3\" alias music"), NULL, 0, NULL);
+        mciSendString(TEXT("play music repeat"), NULL, 0, NULL);
+        return;
+    }
+
+    if (game.Current_State == DIALOG) {
+
+        switch (Hero.current_loc) {
+        case(ANGER):
+            mciSendString(TEXT("open \"Anger_Soundtrack.mp3\" alias music"), NULL, 0, NULL);
+            mciSendString(TEXT("play music repeat"), NULL, 0, NULL);
+            break;
+
+        case(FEAR):
+            mciSendString(TEXT("open \"Fear_Soundtrack.mp3\" alias music"), NULL, 0, NULL);
+            mciSendString(TEXT("play music repeat"), NULL, 0, NULL);
+            break;
+
+        case(SADNESS):
+            mciSendString(TEXT("open \"Sadness_Soundtrack.mp3\" alias music"), NULL, 0, NULL);
+            mciSendString(TEXT("play music repeat"), NULL, 0, NULL);
+            break;
+
+        case(POWER):
+            mciSendString(TEXT("open \"Power_Soundtrack.mp3\" alias music"), NULL, 0, NULL);
+            mciSendString(TEXT("play music repeat"), NULL, 0, NULL);
+            break;
+
+        }
+    }
 }

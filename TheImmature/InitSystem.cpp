@@ -51,13 +51,6 @@ void InitSystem::CreateWorlds() {
         Worlds[i].name = Worlds_Names[i];
         Worlds[i].linked_emotion = Emotion[i];
 
-      /*  Worlds[JOY].background = ;
-        Worlds[SADNESS].background = ;
-        Worlds[POWER].background = ;
-        Worlds[FEAR].background = ;
-        Worlds[CALM].background = ;
-        Worlds[ANGER].background = ;*/
-
         // Закрываем CALM и JOY для демо
         if (i == CALM || i == JOY) {
             Worlds[i].is_available = false;

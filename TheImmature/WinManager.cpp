@@ -74,6 +74,7 @@ LRESULT WindowManager::HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
         if (wParam == VK_SPACE && !start) {
             start = true;
             game.Current_State = DIALOG;
+            w_logic->SwitchTrack();
             g_NeedAutoStartDialog = true; // ТОЛЬКО ФЛАГ, таймер сам запустит
             return 0;
         }
@@ -82,6 +83,9 @@ LRESULT WindowManager::HandleMessage(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
             // Обрабатываем в зависимости от состояния игры
             if (game.Current_State == DIALOG && w_dialog) {
                 w_dialog->ProcessInput((int)wParam);
+                //w_logic->SwitchTrack();
+
+
             }
             else if (game.Current_State == WORLD_SELECTION && w_logic) {
                 w_logic->ProcessWorldSelection((int)wParam);
